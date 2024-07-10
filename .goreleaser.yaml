@@ -1,0 +1,28 @@
+---
+version: 2
+
+before:
+  hooks:
+    - ./boot.sh
+
+builds:
+  - id: ruckus_sz_agent
+    binary: ruckus_sz_agent
+    main: ./
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+    goarch:
+      - 386
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - 6
+      - 7
+
+checksum:
+  name_template: "checksums.txt"
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+# vim: set ts=2 sw=2 tw=0 fo=cnqoj
