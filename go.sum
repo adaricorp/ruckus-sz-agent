@@ -288,8 +288,8 @@ github.com/grafana/jsonparser v0.0.0-20240425183733-ea80629e1a32 h1:NznuPwItog+r
 github.com/grafana/jsonparser v0.0.0-20240425183733-ea80629e1a32/go.mod h1:796sq+UcONnSlzA3RtlBZ+b/hrerkZXiEmO8oMjyRwY=
 github.com/grafana/loki/pkg/push v0.0.0-20240612144945-b4d44f89f997 h1:AER5dn/g0Sky7OiIwRo3g8b5C3sSCrAjF2FLbsZ1FlY=
 github.com/grafana/loki/pkg/push v0.0.0-20240612144945-b4d44f89f997/go.mod h1:lJEF/Wh5MYlmBem6tOYAFObkLsuikfrEf8Iy9AdMPiQ=
-github.com/grafana/loki/v3 v3.0.0 h1:5heCJG7vV72ONmDdN82l7CUJP8FyLa9fg5AeU/b0tH4=
-github.com/grafana/loki/v3 v3.0.0/go.mod h1:ngR+Eqf1gnTpJltNc58go+FsFy+wIYPyTMj/nM9gofs=
+github.com/grafana/loki/v3 v3.1.0 h1:ADnUU4/+JMaF2x4MxkSs/ZcxDTmayIJgn2e86ei1S/8=
+github.com/grafana/loki/v3 v3.1.0/go.mod h1:Du7JDHnXUgvc7wCc50ebAn/WnYDSew7yaI/CgBngsgw=
 github.com/grafana/pyroscope-go/godeltaprof v0.1.7 h1:C11j63y7gymiW8VugJ9ZW0pWfxTZugdSJyC48olk5KY=
 github.com/grafana/pyroscope-go/godeltaprof v0.1.7/go.mod h1:Tk376Nbldo4Cha9RgiU7ik8WKFkNpfds98aUzS8omLE=
 github.com/grafana/regexp v0.0.0-20240518133315-a468a5bfb3bc h1:GN2Lv3MGO7AS6PrRoT6yV5+wkrOpcszoIsO4+4ds248=
@@ -324,8 +324,8 @@ github.com/hashicorp/go-multierror v1.1.0/go.mod h1:spPvp8C1qA32ftKqdAHm4hHTbPw+
 github.com/hashicorp/go-multierror v1.1.1 h1:H5DkEtf6CXdFp0N0Em5UCwQpXMWke8IA0+lD48awMYo=
 github.com/hashicorp/go-multierror v1.1.1/go.mod h1:iw975J/qwKPdAO1clOe2L8331t/9/fmwbPZ6JB6eMoM=
 github.com/hashicorp/go-retryablehttp v0.5.3/go.mod h1:9B5zBasrRhHXnJnui7y6sL7es7NDiJgTc6Er0maI1Xs=
-github.com/hashicorp/go-retryablehttp v0.7.4 h1:ZQgVdpTdAL7WpMIwLzCfbalOcSUdkDZnpUv3/+BxzFA=
-github.com/hashicorp/go-retryablehttp v0.7.4/go.mod h1:Jy/gPYAdjqffZ/yFGCFV2doI5wjtH1ewM9u8iYVjtX8=
+github.com/hashicorp/go-retryablehttp v0.7.7 h1:C8hUCYzor8PIfXHa4UrZkU4VvK8o9ISHxT2Q8+VepXU=
+github.com/hashicorp/go-retryablehttp v0.7.7/go.mod h1:pkQpWZeYWskR+D1tR2O5OcBFOxfA7DoAO6xtkuQnHTk=
 github.com/hashicorp/go-rootcerts v1.0.2 h1:jzhAVGtqPKbwpyCPELlgNWhE1znq+qwJtW5Oi2viEzc=
 github.com/hashicorp/go-rootcerts v1.0.2/go.mod h1:pqUvnprVnM5bf7AOirdbb01K4ccR319Vf4pU3K5EGc8=
 github.com/hashicorp/go-sockaddr v1.0.0/go.mod h1:7Xibr9yA9JjQq1JpNB2Vw7kxv8xerXegt+ozgdvDeDU=
