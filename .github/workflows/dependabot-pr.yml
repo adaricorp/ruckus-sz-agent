@@ -1,12 +1,92 @@
 ---
 name: Dependabot PR check
 
-on: pull_request
+on: pull_request_target
 
 jobs:
-  dependabot-check:
-    name: Check for dependabot
+  goreleaser:
+    name: Build with goreleaser
     runs-on: ubuntu-latest
     if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
-      - run: echo "PR created by Dependabot"
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: "go.mod"
+          check-latest: true
+
+      - name: Generate GitHub app token
+        id: github-app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: adaricorp
+
+      - name: Configure git authentication
+        run: |
+          git config --global url."https://x-access-token:${{ steps.github-app-token.outputs.token }}@github.com/".insteadOf "https://github.com/"
+
+      - name: Set build date
+        run: |
+          echo "BUILD_DATE=$(date)" >> ${GITHUB_ENV}
+
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: latest
+          args: release --clean --skip=publish --snapshot
+        env:
+          BUILD_USER: ${{ github.actor }} (via Github Actions)
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ruckus-sz-agent
+          path: dist/
+
+  codechecks:
+    name: Code checks
+    runs-on: ubuntu-latest
+    if: ${{ github.actor == 'dependabot[bot]' }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: "go.mod"
+          check-latest: true
+
+      - name: Generate GitHub app token
+        id: github-app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: adaricorp
+
+      - name: Configure git authentication
+        run: |
+          git config --global url."https://x-access-token:${{ steps.github-app-token.outputs.token }}@github.com/".insteadOf "https://github.com/"
+
+      - name: Bootstrap
+        run: ./boot.sh
+
+      - name: Lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          args: --out-format=github-actions,line-number
+
+      - name: Govulncheck
+        uses: golang/govulncheck-action@v1
+        with:
+          go-version-file: "go.mod"
+          repo-checkout: false
