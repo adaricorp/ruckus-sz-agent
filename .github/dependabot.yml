@@ -12,5 +12,11 @@ updates:
       interval: "daily"
     allow:
       - dependency-type: "all"
-    ignore:
-      - dependency-name: "ruckus-sz-proto"
+    registries:
+      - github
+registries:
+  github:
+    type: "git"
+    url: "https://github.com"
+    username: "x-access-token"
+    password: "${{ secrets.DEPENDABOT_TOKEN }}"
