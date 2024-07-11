@@ -13,4 +13,4 @@ updates:
     allow:
       - dependency-type: "all"
     ignore:
-      - dependency-name: "github.com/adaricorp/ruckus-sz-proto"
+      - dependency-name: "ruckus-sz-proto"
