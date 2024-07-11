@@ -10,6 +10,7 @@ jobs:
   goreleaser:
     name: Build with goreleaser
     runs-on: ubuntu-latest
+    if: ${{ github.actor != 'dependabot[bot]' }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -56,6 +57,7 @@ jobs:
   codechecks:
     name: Code checks
     runs-on: ubuntu-latest
+    if: ${{ github.actor != 'dependabot[bot]' }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
