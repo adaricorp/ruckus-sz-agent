@@ -1,0 +1,12 @@
+---
+name: Dependabot PR check
+
+on: pull_request
+
+jobs:
+  dependabot-check:
+    name: Check for dependabot
+    runs-on: ubuntu-latest
+    if: ${{ github.actor == 'dependabot[bot]' }}
+    steps:
+      - run: echo "PR created by Dependabot"
