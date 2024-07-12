@@ -12,7 +12,12 @@ builds:
     env:
       - CGO_ENABLED=0
     goos:
+      - darwin
+      - dragonfly
+      - freebsd
       - linux
+      - netbsd
+      - openbsd
     goarch:
       - 386
       - amd64
