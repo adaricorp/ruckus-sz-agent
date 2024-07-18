@@ -31,6 +31,14 @@ func parseMAC(mac string) string {
 	return strings.ToLower(mac)
 }
 
+func parseVLAN(vid int32) string {
+	if vid == 0 {
+		return ""
+	}
+
+	return strconv.Itoa(int(vid))
+}
+
 func handleEvent(systemID string, message *pb.EventMessage) error {
 	labelMap := map[string]string{
 		"service":    *lokiMetricId,
@@ -230,6 +238,7 @@ func handleApClient(systemID string, message *pb.APClientStats) error {
 			"radio_id":   strconv.Itoa(int(clientRadio.GetRadioId())),
 			"bssid":      clientWlan.GetBssid(),
 			"ssid":       clientWlan.GetSsid(),
+			"vlan":       parseVLAN(client.GetVlan()),
 			"client_mac": parseMAC(client.GetClientMac()),
 		}
 		maps.Copy(clientLabels, apLabels)
@@ -245,6 +254,7 @@ func handleApClient(systemID string, message *pb.APClientStats) error {
 		}
 
 		clientMetrics := map[string]interface{}{
+			"ruckus_client_wireless_vlan":                         client.GetVlan(),
 			"ruckus_client_wireless_snr_db":                       client.GetRssi(),
 			"ruckus_client_wireless_rssi_dbm":                     client.GetReceiveSignalStrength(),
 			"ruckus_client_wireless_noise_floor_dbm":              client.GetNoiseFloor(),
@@ -305,7 +315,7 @@ func handleApWiredClient(systemID string, message *pb.APWiredClientStats) error 
 	for _, client := range message.GetClients() {
 		clientLabels := map[string]string{
 			"port":       client.GetEthIF(),
-			"vlan":       strconv.Itoa(int(client.GetVlan())),
+			"vlan":       parseVLAN(client.GetVlan()),
 			"client_mac": parseMAC(client.GetClientMac()),
 		}
 		maps.Copy(clientLabels, apLabels)
@@ -319,6 +329,7 @@ func handleApWiredClient(systemID string, message *pb.APWiredClientStats) error 
 		}
 
 		clientMetrics := map[string]interface{}{
+			"ruckus_client_wired_vlan":                     client.GetVlan(),
 			"ruckus_client_wired_rx_bytes_total":           client.GetRxBytes(),
 			"ruckus_client_wired_tx_bytes_total":           client.GetTxBytes(),
 			"ruckus_client_wired_rx_drop_packets_total":    client.GetRxDrop(),
@@ -371,6 +382,7 @@ func handleApReport(systemID string, message *pb.APReportStats) error {
 			"radio_id":   strconv.Itoa(int(client.GetRadioId())),
 			"bssid":      client.GetBssid(),
 			"ssid":       client.GetSsid(),
+			"vlan":       strconv.Itoa(int(client.GetClientVlan())),
 			"client_mac": parseMAC(client.GetClientMac()),
 		}
 
