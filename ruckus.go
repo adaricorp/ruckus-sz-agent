@@ -141,7 +141,6 @@ func handleApStatus(systemID string, message *pb.APStatus) error {
 		}
 
 		radioInfoLabels := map[string]string{
-			"radio_id":   strconv.Itoa(int(radio.GetRadioId())),
 			"band":       radio.GetBand(),
 			"radio_mode": radio.GetRadioMode(),
 			"tx_power":   radio.GetTxPower(),
@@ -244,7 +243,6 @@ func handleApClient(systemID string, message *pb.APClientStats) error {
 		maps.Copy(clientLabels, apLabels)
 
 		clientInfoLabels := map[string]string{
-			"client_mac":   parseMAC(client.GetClientMac()),
 			"zone_name":    message.GetZoneName(),
 			"ipv4_address": client.GetIpAddress(),
 			"ipv6_address": client.GetIpv6Address(),
@@ -321,7 +319,6 @@ func handleApWiredClient(systemID string, message *pb.APWiredClientStats) error 
 		maps.Copy(clientLabels, apLabels)
 
 		clientInfoLabels := map[string]string{
-			"client_mac":   parseMAC(client.GetClientMac()),
 			"zone_id":      message.GetZoneId(),
 			"ipv4_address": client.GetIpAddress(),
 			"ipv6_address": client.GetIpv6Address(),
@@ -500,12 +497,10 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 			}
 
 			bladeIdInfoLabels := map[string]string{
-				"blade_id":   c.Key,
-				"blade_name": c.Name,
+				"blade_id": c.Key,
 			}
 
 			bladeInfoLabels := map[string]string{
-				"blade_name":    c.Name,
 				"hostname":      c.HostName,
 				"fw_version":    c.Firmware,
 				"cp_version":    c.CpVersion,

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"maps"
 	"time"
 
 	"github.com/gogo/protobuf/proto"
@@ -97,17 +98,13 @@ func appendMetrics(
 	errs := []error{}
 
 	for k, v := range metricMap {
-		var labels map[string]string
+		labels := map[string]string{}
 
-		labels, exists := labelMap[k]
-		if !exists {
-			labels, exists = labelMap["default"]
-			if !exists {
-				errs = append(errs, fmt.Errorf(
-					"No label set for metric %s and no default label set", k),
-				)
-			}
-		}
+		// Add default labels if they exist
+		maps.Copy(labels, labelMap["default"])
+
+		// Add metric-specific labels if they exist
+		maps.Copy(labels, labelMap[k])
 
 		m, err := newPromMetric(k, timestamp, labels, v)
 		if err != nil {
