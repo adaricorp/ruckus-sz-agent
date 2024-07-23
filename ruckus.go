@@ -121,12 +121,12 @@ func handleApStatus(systemID string, message *pb.APStatus) error {
 		"ruckus_ap_info": 1,
 	}
 
-	metricsFamily := map[string]*dto.MetricFamily{}
-
 	labelMap := map[string]map[string]string{
 		"ruckus_ap_info": apInfoLabels,
 		"default":        {},
 	}
+
+	metricsFamily := map[string]*dto.MetricFamily{}
 
 	if errs := appendMetrics(timestamp, apMetrics, labelMap, metricsFamily); len(errs) >= 1 {
 		for _, err := range errs {
