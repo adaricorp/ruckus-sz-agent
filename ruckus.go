@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"log/slog"
-	"maps"
 	"strconv"
 	"strings"
 	"time"
@@ -52,10 +51,12 @@ func handleEvent(systemID string, message *pb.EventMessage) error {
 
 		"subcategory": message.GetSubCategory(),
 
-		"zone_name":     message.GetZoneName(),
+		"zone_name": message.GetZoneName(),
+
 		"ap_group_name": message.GetApGroupName(),
 		"ap_mac":        parseMAC(message.GetApMac()),
-		"client_mac":    parseMAC(message.GetClientMac()),
+
+		"client_mac": parseMAC(message.GetClientMac()),
 	}
 
 	timestamp := time.UnixMilli(int64(message.GetTimestamp()))
@@ -86,7 +87,6 @@ func handleApStatus(systemID string, message *pb.APStatus) error {
 
 	apInfoLabels := map[string]string{
 		"ap_group_name": message.GetApgroupName(),
-		"zone_name":     apSystem.GetZoneName(),
 		"ipv4_address":  apSystem.GetIp(),
 		"ipv6_address":  apSystem.GetIpv6(),
 		"fw_version":    apSystem.GetFwVersion(),
@@ -209,6 +209,8 @@ func handleApStatus(systemID string, message *pb.APStatus) error {
 	apLabels := map[string]string{
 		"system_id": systemID,
 
+		"zone_name": apSystem.GetZoneName(),
+
 		"ap_name": apSystem.GetDeviceName(),
 		"ap_mac":  parseMAC(apSystem.GetAp()),
 	}
@@ -223,11 +225,6 @@ func handleApStatus(systemID string, message *pb.APStatus) error {
 func handleApClient(systemID string, message *pb.APClientStats) error {
 	timestamp := time.Unix(int64(message.GetSampleTime()), 0)
 
-	apLabels := map[string]string{
-		"ap_name": message.GetDeviceName(),
-		"ap_mac":  parseMAC(message.GetAp()),
-	}
-
 	metricsFamily := map[string]*dto.MetricFamily{}
 
 	for _, client := range message.GetClients() {
@@ -240,10 +237,8 @@ func handleApClient(systemID string, message *pb.APClientStats) error {
 			"vlan":       parseVLAN(client.GetVlan()),
 			"client_mac": parseMAC(client.GetClientMac()),
 		}
-		maps.Copy(clientLabels, apLabels)
 
 		clientInfoLabels := map[string]string{
-			"zone_name":    message.GetZoneName(),
 			"ipv4_address": client.GetIpAddress(),
 			"ipv6_address": client.GetIpv6Address(),
 			"os_type":      client.GetOsType(),
@@ -290,11 +285,16 @@ func handleApClient(systemID string, message *pb.APClientStats) error {
 		}
 	}
 
-	systemLabels := map[string]string{
+	apLabels := map[string]string{
 		"system_id": systemID,
+
+		"zone_name": message.GetZoneName(),
+
+		"ap_name": message.GetDeviceName(),
+		"ap_mac":  parseMAC(message.GetAp()),
 	}
 
-	if err := prom.write(metricsFamily, systemLabels); err != nil {
+	if err := prom.write(metricsFamily, apLabels); err != nil {
 		return errors.Wrapf(err, "Error writing metrics to prometheus")
 	}
 
@@ -304,10 +304,6 @@ func handleApClient(systemID string, message *pb.APClientStats) error {
 func handleApWiredClient(systemID string, message *pb.APWiredClientStats) error {
 	timestamp := time.Unix(int64(message.GetSampleTime()), 0)
 
-	apLabels := map[string]string{
-		"ap_mac": parseMAC(message.GetApmac()),
-	}
-
 	metricsFamily := map[string]*dto.MetricFamily{}
 
 	for _, client := range message.GetClients() {
@@ -316,10 +312,8 @@ func handleApWiredClient(systemID string, message *pb.APWiredClientStats) error 
 			"vlan":       parseVLAN(client.GetVlan()),
 			"client_mac": parseMAC(client.GetClientMac()),
 		}
-		maps.Copy(clientLabels, apLabels)
 
 		clientInfoLabels := map[string]string{
-			"zone_id":      message.GetZoneId(),
 			"ipv4_address": client.GetIpAddress(),
 			"ipv6_address": client.GetIpv6Address(),
 			"hostname":     client.GetHostname(),
@@ -358,11 +352,15 @@ func handleApWiredClient(systemID string, message *pb.APWiredClientStats) error 
 		}
 	}
 
-	systemLabels := map[string]string{
+	apLabels := map[string]string{
 		"system_id": systemID,
+
+		"zone_id": message.GetZoneId(),
+
+		"ap_mac": parseMAC(message.GetApmac()),
 	}
 
-	if err := prom.write(metricsFamily, systemLabels); err != nil {
+	if err := prom.write(metricsFamily, apLabels); err != nil {
 		return errors.Wrapf(err, "Error writing metrics to prometheus")
 	}
 
@@ -725,7 +723,8 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 	}
 
 	clusterLabels := map[string]string{
-		"system_id":    systemID,
+		"system_id": systemID,
+
 		"cluster_name": clusterSummary.ClusterName,
 	}
 
