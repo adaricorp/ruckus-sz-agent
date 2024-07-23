@@ -87,7 +87,6 @@ func handleApStatus(systemID string, message *pb.APStatus) error {
 	apInfoLabels := map[string]string{
 		"ap_group_name": message.GetApgroupName(),
 		"zone_name":     apSystem.GetZoneName(),
-		"device_name":   apSystem.GetDeviceName(),
 		"ipv4_address":  apSystem.GetIp(),
 		"ipv6_address":  apSystem.GetIpv6(),
 		"fw_version":    apSystem.GetFwVersion(),
@@ -210,7 +209,8 @@ func handleApStatus(systemID string, message *pb.APStatus) error {
 	apLabels := map[string]string{
 		"system_id": systemID,
 
-		"ap_mac": parseMAC(apSystem.GetAp()),
+		"ap_name": apSystem.GetDeviceName(),
+		"ap_mac":  parseMAC(apSystem.GetAp()),
 	}
 
 	if err := prom.write(metricsFamily, apLabels); err != nil {
@@ -224,7 +224,8 @@ func handleApClient(systemID string, message *pb.APClientStats) error {
 	timestamp := time.Unix(int64(message.GetSampleTime()), 0)
 
 	apLabels := map[string]string{
-		"ap_mac": parseMAC(message.GetAp()),
+		"ap_name": message.GetDeviceName(),
+		"ap_mac":  parseMAC(message.GetAp()),
 	}
 
 	metricsFamily := map[string]*dto.MetricFamily{}
@@ -235,7 +236,6 @@ func handleApClient(systemID string, message *pb.APClientStats) error {
 
 		clientLabels := map[string]string{
 			"radio_id":   strconv.Itoa(int(clientRadio.GetRadioId())),
-			"bssid":      clientWlan.GetBssid(),
 			"ssid":       clientWlan.GetSsid(),
 			"vlan":       parseVLAN(client.GetVlan()),
 			"client_mac": parseMAC(client.GetClientMac()),
@@ -377,7 +377,6 @@ func handleApReport(systemID string, message *pb.APReportStats) error {
 
 		clientLabels := map[string]string{
 			"radio_id":   strconv.Itoa(int(client.GetRadioId())),
-			"bssid":      client.GetBssid(),
 			"ssid":       client.GetSsid(),
 			"vlan":       strconv.Itoa(int(client.GetClientVlan())),
 			"client_mac": parseMAC(client.GetClientMac()),
@@ -417,7 +416,8 @@ func handleApReport(systemID string, message *pb.APReportStats) error {
 	apLabels := map[string]string{
 		"system_id": systemID,
 
-		"ap_mac": parseMAC(message.GetAp()),
+		"ap_name": message.GetDeviceName(),
+		"ap_mac":  parseMAC(message.GetAp()),
 	}
 
 	if err := prom.write(metricsFamily, apLabels); err != nil {
