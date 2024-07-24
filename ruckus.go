@@ -102,7 +102,7 @@ func handleApStatus(systemID string, message *pb.APStatus) error {
 		"ruckus_ap_uptime_seconds_total":            apSystem.GetUptime(),
 		"ruckus_ap_current_temperature":             apSystem.GetCurrentTemperature(),
 		"ruckus_ap_state":                           int(apSystem.GetApState()),
-		"ruckus_ap_connected_clients":               apSystem.GetTotalConnectedClient(),
+		"ruckus_ap_clients_connected":               apSystem.GetTotalConnectedClient(),
 		"ruckus_ap_memory_used_percentage":          100 - apSystem.GetFreeMemoryPercentage(),
 		"ruckus_ap_storage_used_percentage":         100 - apSystem.GetFreeStoragePercentage(),
 		"ruckus_ap_cpu_used_percentage":             apSystem.GetCpuPercentage(),
@@ -172,7 +172,7 @@ func handleApStatus(systemID string, message *pb.APStatus) error {
 			"ruckus_radio_eirp_dbm":                              radio.GetEirp(),
 			"ruckus_radio_tx_rts_total":                          radio.GetTxRtsCnt(),
 			"ruckus_radio_failed_clients_total":                  radio.GetTotalFailureClientCount(),
-			"ruckus_radio_connected_clients":                     radio.GetTotalClientCnts(),
+			"ruckus_radio_clients_connected":                     radio.GetTotalClientCnts(),
 			"ruckus_radio_rx_multicast_bytes_total":              radio.GetRxMcastBytes(),
 			"ruckus_radio_tx_multicast_bytes_total":              radio.GetTxMcastBytes(),
 			"ruckus_radio_rx_error_packets_total":                radio.GetRxErrorPkts(),
@@ -512,7 +512,7 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 			}
 
 			bladeMetrics := map[string]interface{}{
-				"ruckus_blade_connected_clients":    c.ClientCount,
+				"ruckus_blade_clients_connected":    c.ClientCount,
 				"ruckus_blade_aps_associated":       c.AssociateAPs,
 				"ruckus_blade_aps_connected":        c.ApCount,
 				"ruckus_blade_uptime_seconds_total": c.UptimeSec,
