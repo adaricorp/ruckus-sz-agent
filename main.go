@@ -298,6 +298,15 @@ func main() {
 				continue
 			}
 			clusterMessage := configMessage.GetClusterInfo()
+
+			if clusterMessage.GetAps() != "" {
+				slog.Debug("Starting to process cluster ap configuration message")
+				if err := handleApConfigurationMessage(systemId, configMessage); err != nil {
+					slog.Error("Error processing cluster ap configuration message", "error", err)
+				}
+				slog.Debug("Finished processing cluster ap configuration message")
+			}
+
 			if clusterMessage.GetControlBlades() != "" {
 				slog.Debug("Starting to process cluster configuration message")
 				if err := handleSystemConfigurationMessage(systemId, configMessage); err != nil {

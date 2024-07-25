@@ -1,5 +1,28 @@
 package main
 
+type ApConfig struct {
+	BladeID           string `json:",omitempty"`
+	GpsInfo           string `json:",omitempty"`
+	ApID              string `json:",omitempty"`
+	IP                string `json:",omitempty"`
+	AltitudeUnit      string `json:",omitempty"`
+	Description       string `json:",omitempty"`
+	ApGroupID         string `json:",omitempty"`
+	DeviceName        string `json:",omitempty"`
+	ExtIP             string `json:",omitempty"`
+	RogueEnabled      bool   `json:",omitempty"`
+	UpTime            int    `json:",omitempty"`
+	LastSeen          int64  `json:",omitempty"`
+	Serial            string `json:",omitempty"`
+	ConnectionStatus  string `json:",omitempty"`
+	ZoneID            string `json:",omitempty"`
+	Model             string `json:",omitempty"`
+	Location          string `json:",omitempty"`
+	AltitudeValue     int    `json:",omitempty"`
+	FwVersion         string `json:",omitempty"`
+	RegistrationState string `json:",omitempty"`
+}
+
 type ControlBladeConfig struct {
 	DNSV6List               []interface{} `json:",omitempty"`
 	PrimaryDNSServer        string        `json:",omitempty"`
