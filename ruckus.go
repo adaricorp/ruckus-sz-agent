@@ -38,6 +38,10 @@ func parseVLAN(vid int32) string {
 	return strconv.Itoa(int(vid))
 }
 
+func parseAPConnectionStatus(status string) bool {
+	return strings.ToLower(status) == "connect"
+}
+
 func handleEvent(systemID string, message *pb.EventMessage) error {
 	labelMap := map[string]string{
 		"service":    *lokiMetricId,
@@ -419,6 +423,87 @@ func handleApReport(systemID string, message *pb.APReportStats) error {
 	}
 
 	if err := prom.write(metricsFamily, apLabels); err != nil {
+		return errors.Wrapf(err, "Error writing metrics to prometheus")
+	}
+
+	return nil
+}
+
+func handleApConfigurationMessage(systemID string, message *pb.ConfigurationMessage) error {
+	timestamp := time.UnixMilli(int64(message.GetTimestamp()))
+
+	clusterInfo := message.GetClusterInfo()
+
+	metricsFamily := map[string]*dto.MetricFamily{}
+
+	var apConfig []ApConfig
+	err := json.Unmarshal([]byte(clusterInfo.GetAps()), &apConfig)
+	if err != nil {
+		slog.Error("Failed to ap configuration to JSON", "error", err)
+	} else {
+		for _, ap := range apConfig {
+			apLabels := map[string]string{
+				"zone_id": ap.ZoneID,
+
+				"ap_name": ap.DeviceName,
+				"ap_mac":  parseMAC(ap.ApID),
+			}
+
+			apInfoLabels := map[string]string{
+				"blade_id":              ap.BladeID,
+				"gps_position":          ap.GpsInfo,
+				"ipv4_address":          ap.IP,
+				"description":           ap.Description,
+				"ipv4_address_external": ap.ExtIP,
+				"serial_number":         ap.Serial,
+				"model":                 ap.Model,
+				"location":              ap.Location,
+				"fw_version":            ap.FwVersion,
+			}
+
+			apMetrics := map[string]interface{}{
+				"ruckus_cluster_ap_connected":           parseAPConnectionStatus(ap.ConnectionStatus),
+				"ruckus_cluster_ap_last_seen_timestamp": ap.LastSeen,
+
+				"ruckus_cluster_ap_info": 1,
+			}
+
+			regState, err := strconv.Atoi(ap.RegistrationState)
+			if err == nil {
+				apMetrics["ruckus_cluster_ap_registration_state"] = regState
+			} else {
+				slog.Error(
+					"Failed to convert ap registration state from string",
+					"value",
+					ap.RegistrationState,
+					"error",
+					err,
+				)
+			}
+
+			labelMap := map[string]map[string]string{
+				"ruckus_cluster_ap_info": apInfoLabels,
+				"default":                apLabels,
+			}
+
+			if errs := appendMetrics(
+				timestamp,
+				apMetrics,
+				labelMap,
+				metricsFamily,
+			); len(errs) >= 1 {
+				for _, err := range errs {
+					slog.Error("Error while appending metrics", "error", err)
+				}
+			}
+		}
+	}
+
+	clusterLabels := map[string]string{
+		"system_id": systemID,
+	}
+
+	if err := prom.write(metricsFamily, clusterLabels); err != nil {
 		return errors.Wrapf(err, "Error writing metrics to prometheus")
 	}
 
