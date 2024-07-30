@@ -418,6 +418,8 @@ func handleApReport(systemID string, message *pb.APReportStats) error {
 	apLabels := map[string]string{
 		"system_id": systemID,
 
+		"zone_name": message.GetZoneName(),
+
 		"ap_name": message.GetDeviceName(),
 		"ap_mac":  parseMAC(message.GetAp()),
 	}
