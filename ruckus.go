@@ -119,8 +119,8 @@ func handleApStatus(systemID string, message *pb.APStatus) error {
 		"ruckus_ap_lan_tx_bytes_total":              apSystem.GetLanStatsTxBytes(),
 		"ruckus_ap_lan_rx_error_packets_total":      apSystem.GetLanStatsRxErrorPkts(),
 		"ruckus_ap_lan_tx_error_packets_total":      apSystem.GetLanStatsTxErrorPkts(),
-		"ruckus_ap_lan_rx_dropped_packets_total":    apSystem.GetLanStatsRxDroppedPkts(),
-		"ruckus_ap_lan_tx_dropped_packets_total":    apSystem.GetLanStatsTxDroppedPkts(),
+		"ruckus_ap_lan_rx_drop_packets_total":       apSystem.GetLanStatsRxDroppedPkts(),
+		"ruckus_ap_lan_tx_drop_packets_total":       apSystem.GetLanStatsTxDroppedPkts(),
 
 		"ruckus_ap_info": 1,
 	}
