@@ -59,7 +59,7 @@ func (p prometheusWriteClient) write(metrics map[string]*dto.MetricFamily, label
 
 	ctx := context.Background()
 
-	err = p.client.Store(ctx, compressedRequest, 0)
+	_, err = p.client.Store(ctx, compressedRequest, 0)
 	if err != nil {
 		return errors.Wrapf(err, "Unable to send write request to prometheus")
 	}
