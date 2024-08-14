@@ -139,10 +139,10 @@ func handleApStatus(systemID string, message *pb.APStatus) error {
 	for _, radio := range apStatusData.GetAPRadio() {
 		radioLabels := map[string]string{
 			"radio_id": strconv.Itoa(int(radio.GetRadioId())),
+			"band":     radio.GetBand(),
 		}
 
 		radioInfoLabels := map[string]string{
-			"band":       radio.GetBand(),
 			"radio_mode": radio.GetRadioMode(),
 			"tx_power":   radio.GetTxPower(),
 		}
