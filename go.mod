@@ -61,7 +61,7 @@ require (
 	github.com/grafana/dskit v0.0.0-20240611171734-87c7e9e7a4fe // indirect
 	github.com/grafana/gomemcache v0.0.0-20240229205252-cd6a66d6fb56 // indirect
 	github.com/grafana/jsonparser v0.0.0-20240425183733-ea80629e1a32 // indirect
-	github.com/grafana/pyroscope-go/godeltaprof v0.1.7 // indirect
+	github.com/grafana/pyroscope-go/godeltaprof v0.1.8 // indirect
 	github.com/grafana/regexp v0.0.0-20240518133315-a468a5bfb3bc // indirect
 	github.com/hashicorp/consul/api v1.29.2 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
