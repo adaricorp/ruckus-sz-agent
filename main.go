@@ -8,6 +8,7 @@ import (
 	"log/slog"
 	"os"
 	"os/signal"
+	"runtime"
 	"strings"
 	"syscall"
 	"time"
@@ -159,6 +160,18 @@ func init() {
 
 func main() {
 	var err error
+
+	slog.Info(
+		fmt.Sprintf("Starting %s", binName),
+		"version",
+		version,
+		"build_context",
+		fmt.Sprintf(
+			"go=%s, platform=%s",
+			runtime.Version(),
+			runtime.GOOS+"/"+runtime.GOARCH,
+		),
+	)
 
 	prom, err = newPrometheusWriteClient(*prometheusRemoteWriteURI, timeout)
 	if err != nil {
