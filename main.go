@@ -18,17 +18,22 @@ import (
 	"github.com/eclipse/paho.golang/paho"
 	"github.com/peterbourgon/ff/v4"
 	"github.com/peterbourgon/ff/v4/ffhelp"
+	"github.com/prometheus/client_golang/prometheus"
 	"google.golang.org/protobuf/proto"
 )
 
 const (
 	binName = "ruckus_sz_agent"
 	timeout = 10 * time.Second
+
+	instrumentationInterval = 30 * time.Second
 )
 
 var (
 	version = "dev"
 	date    = "unknown"
+
+	hostname string
 
 	pahoDebugLogger           *log.Logger
 	pahoErrorLogger           *log.Logger
@@ -173,6 +178,16 @@ func main() {
 		),
 	)
 
+	hostname, err = os.Hostname()
+	if err != nil {
+		slog.Error(
+			"Failed to get system hostname",
+			"error",
+			err,
+		)
+		os.Exit(1)
+	}
+
 	prom, err = newPrometheusWriteClient(*prometheusRemoteWriteURI, timeout)
 	if err != nil {
 		slog.Error(
@@ -251,9 +266,56 @@ func main() {
 		os.Exit(0)
 	}()
 
+	// Instrumentation metric handler
+	registerInstrumentationMetrics()
+	ticker := time.NewTicker(instrumentationInterval)
+	defer ticker.Stop()
+	go func() {
+		for {
+			<-ticker.C
+			metrics, err := prometheus.DefaultGatherer.Gather()
+			if err != nil {
+				slog.Error(
+					"Failed to gather from prometheus registry",
+					"error",
+					err,
+				)
+				continue
+			}
+
+			labels := map[string]string{
+				"job":      binName,
+				"instance": hostname,
+			}
+
+			metricsFamily, errs := metricSliceToMap(metrics)
+			if len(errs) >= 1 {
+				for _, err := range errs {
+					slog.Error(
+						"Error while converting metrics slice to map",
+						"error",
+						err,
+					)
+				}
+			}
+
+			if err := prom.write(metricsFamily, labels); err != nil {
+				slog.Error(
+					"Error writing metrics to prometheus",
+					"error",
+					err,
+				)
+			}
+		}
+	}()
+
+	// MQTT message handler
 	for message := range mqttChannel {
+		instMqttMessageCounter.Inc()
+		instMqttBytesCounter.Add(float64(len(message.Payload)))
 		sciMessage := &pb.SciMessage{}
 		if err := proto.Unmarshal(message.Payload, sciMessage); err != nil {
+			instMqttUnparseableMessageCounter.Inc()
 			slog.Error("Failed to parse MQTT message", "error", err)
 			continue
 		}
@@ -266,8 +328,10 @@ func main() {
 			}
 			slog.Debug("Starting to process event message")
 			if err := handleEvent(systemId, event); err != nil {
+				instUnparseableMessageCounter.WithLabelValues("event").Inc()
 				slog.Error("Error processing event message", "error", err)
 			} else {
+				instProcessedMessageCounter.WithLabelValues("event").Inc()
 				slog.Debug("Finished processing event message")
 			}
 		} else if apStatus := sciMessage.GetApStatus(); apStatus != nil {
@@ -276,36 +340,48 @@ func main() {
 			}
 			slog.Debug("Starting to process ap status message")
 			if err := handleApStatus(systemId, apStatus); err != nil {
+				instUnparseableMessageCounter.WithLabelValues("ap_status").Inc()
 				slog.Error("Error processing ap status message", "error", err)
+			} else {
+				instProcessedMessageCounter.WithLabelValues("ap_status").Inc()
+				slog.Debug("Finished processing ap status message")
 			}
-			slog.Debug("Finished processing ap status message")
 		} else if apClient := sciMessage.GetApClient(); apClient != nil {
 			if *prometheusRemoteWriteURI == "" {
 				continue
 			}
 			slog.Debug("Starting to process ap client message")
 			if err := handleApClient(systemId, apClient); err != nil {
+				instUnparseableMessageCounter.WithLabelValues("ap_client").Inc()
 				slog.Error("Error processing ap client message", "error", err)
+			} else {
+				instProcessedMessageCounter.WithLabelValues("ap_client").Inc()
+				slog.Debug("Finished processing ap client message")
 			}
-			slog.Debug("Finished processing ap client message")
 		} else if apWiredClient := sciMessage.GetApWiredClient(); apWiredClient != nil {
 			if *prometheusRemoteWriteURI == "" {
 				continue
 			}
 			slog.Debug("Starting to process ap wired client message")
 			if err := handleApWiredClient(systemId, apWiredClient); err != nil {
+				instUnparseableMessageCounter.WithLabelValues("ap_wired_client").Inc()
 				slog.Error("Error processing ap wired client message", "error", err)
+			} else {
+				instProcessedMessageCounter.WithLabelValues("ap_wired_client").Inc()
+				slog.Debug("Finished processing ap wired client message")
 			}
-			slog.Debug("Finished processing ap wired client message")
 		} else if apReport := sciMessage.GetApReport(); apReport != nil {
 			if *prometheusRemoteWriteURI == "" {
 				continue
 			}
 			slog.Debug("Starting to process ap report message")
 			if err := handleApReport(systemId, apReport); err != nil {
+				instUnparseableMessageCounter.WithLabelValues("ap_report").Inc()
 				slog.Error("Error processing ap report message", "error", err)
+			} else {
+				instProcessedMessageCounter.WithLabelValues("ap_report").Inc()
+				slog.Debug("Finished processing ap report message")
 			}
-			slog.Debug("Finished processing ap report message")
 		} else if configMessage := sciMessage.GetConfigurationMessage(); configMessage != nil {
 			if *prometheusRemoteWriteURI == "" {
 				continue
@@ -315,19 +391,26 @@ func main() {
 			if clusterMessage.GetAps() != "" {
 				slog.Debug("Starting to process cluster ap configuration message")
 				if err := handleApConfigurationMessage(systemId, configMessage); err != nil {
+					instUnparseableMessageCounter.WithLabelValues("cluster_ap_configuration").Inc()
 					slog.Error("Error processing cluster ap configuration message", "error", err)
+				} else {
+					instProcessedMessageCounter.WithLabelValues("cluster_ap_configuration").Inc()
+					slog.Debug("Finished processing cluster ap configuration message")
 				}
-				slog.Debug("Finished processing cluster ap configuration message")
 			}
 
 			if clusterMessage.GetControlBlades() != "" {
 				slog.Debug("Starting to process cluster configuration message")
 				if err := handleSystemConfigurationMessage(systemId, configMessage); err != nil {
+					instUnparseableMessageCounter.WithLabelValues("cluster_configuration").Inc()
 					slog.Error("Error processing cluster configuration message", "error", err)
+				} else {
+					instProcessedMessageCounter.WithLabelValues("cluster_configuration").Inc()
+					slog.Debug("Finished processing cluster configuration message")
 				}
-				slog.Debug("Finished processing cluster configuration message")
 			}
 		} else {
+			instUnhandledMessageCounter.Inc()
 			if *logLevel == "debug" {
 				jsonSciMessage, err := json.Marshal(sciMessage)
 				if err != nil {

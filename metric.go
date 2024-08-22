@@ -125,3 +125,22 @@ func appendMetrics(
 
 	return nil
 }
+
+func metricSliceToMap(metrics []*dto.MetricFamily) (map[string]*dto.MetricFamily, []error) {
+	metricsFamily := map[string]*dto.MetricFamily{}
+
+	errs := []error{}
+
+	for _, metric := range metrics {
+		if _, exists := metricsFamily[metric.GetName()]; exists {
+			errs = append(
+				errs,
+				fmt.Errorf("Map already contains metric %s", metric.GetName()),
+			)
+
+		}
+		metricsFamily[metric.GetName()] = metric
+	}
+
+	return metricsFamily, errs
+}
