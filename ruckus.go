@@ -149,7 +149,7 @@ func handleApStatus(systemID string, message *pb.APStatus) error {
 
 		radioMetrics := map[string]interface{}{
 			"ruckus_radio_channel":                                  radio.GetChannel(),
-			"ruckus_radio_rx_phy_errors_total":                      radio.GetPhyError(),
+			"ruckus_radio_rx_phy_errors":                            radio.GetPhyError(),
 			"ruckus_radio_noise_floor_dbm":                          radio.GetNoiseFloor(),
 			"ruckus_radio_rx_bytes_total":                           radio.GetRxBytes(),
 			"ruckus_radio_tx_bytes_total":                           radio.GetTxBytes(),
