@@ -170,7 +170,7 @@ func handleApStatus(systemID string, message *pb.APStatus) error {
 			"ruckus_radio_connections_total":                        radio.GetConnectionTotalCount(),
 			"ruckus_radio_channel_changes_total":                    radio.GetNumOfChannelChange(),
 			"ruckus_radio_latency_flagged":                          radio.GetIsLatencyFlagged(),
-			"ruckus_radio_connection_failure_flagged":               radio.GetIsConnectionFailureFlagged(),
+			"ruckus_radio_connection_failures_flagged":              radio.GetIsConnectionFailureFlagged(),
 			"ruckus_radio_airtime_flagged":                          radio.GetIsAirtimeFlagged(),
 			"ruckus_radio_enabled":                                  radio.GetIsRadioEnabled(),
 			"ruckus_radio_eirp_dbm":                                 radio.GetEirp(),
@@ -386,18 +386,18 @@ func handleApReport(systemID string, message *pb.APReportStats) error {
 		}
 
 		clientMetrics := map[string]interface{}{
-			"ruckus_client_wireless_ttc_authentication":    client.GetClientAuthTTC(),
-			"ruckus_client_wireless_ttc_association":       client.GetClientAssocTTC(),
-			"ruckus_client_wireless_ttc_eap":               client.GetClientEapTTC(),
-			"ruckus_client_wireless_ttc_radius":            client.GetClientRadiusTTC(),
-			"ruckus_client_wireless_ttc_dhcp":              client.GetClientDhcpTTC(),
-			"ruckus_client_wireless_band_capability":       client.GetBandCap(),
-			"ruckus_client_wireless_vht_capability":        client.GetVHTCap(),
-			"ruckus_client_wireless_stream_capability":     client.GetStreamCap(),
-			"ruckus_client_wireless_btm_capability":        client.GetStreamCap(),
-			"ruckus_client_wireless_wifi6_capability":      client.GetWiFi6Cap(),
-			"ruckus_client_wireless_roaming_failure_total": client.GetRoamingFailureCount(),
-			"ruckus_client_wireless_roaming_success_total": client.GetRoamingSuccessCount(),
+			"ruckus_client_wireless_ttc_authentication":      client.GetClientAuthTTC(),
+			"ruckus_client_wireless_ttc_association":         client.GetClientAssocTTC(),
+			"ruckus_client_wireless_ttc_eap":                 client.GetClientEapTTC(),
+			"ruckus_client_wireless_ttc_radius":              client.GetClientRadiusTTC(),
+			"ruckus_client_wireless_ttc_dhcp":                client.GetClientDhcpTTC(),
+			"ruckus_client_wireless_band_capability":         client.GetBandCap(),
+			"ruckus_client_wireless_vht_capability":          client.GetVHTCap(),
+			"ruckus_client_wireless_stream_capability":       client.GetStreamCap(),
+			"ruckus_client_wireless_btm_capability":          client.GetStreamCap(),
+			"ruckus_client_wireless_wifi6_capability":        client.GetWiFi6Cap(),
+			"ruckus_client_wireless_roaming_failures_total":  client.GetRoamingFailureCount(),
+			"ruckus_client_wireless_roaming_successes_total": client.GetRoamingSuccessCount(),
 		}
 
 		labelMap := map[string]map[string]string{
