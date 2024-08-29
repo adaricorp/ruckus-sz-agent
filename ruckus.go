@@ -265,7 +265,7 @@ func handleApClient(systemID string, message *pb.APClientStats) error {
 			"ruckus_client_wireless_rx_errors_total":              client.GetRxError(),
 			"ruckus_client_wireless_tx_errors_total":              client.GetTxError(),
 			"ruckus_client_wireless_reassociations_total":         client.GetReassocCount(),
-			"ruckus_client_wireless_tx_retry_bytes_total":         client.GetTxRetryBytes(),
+			"ruckus_client_wireless_tx_retry_packets_total":       client.GetTxRetry(),
 			"ruckus_client_wireless_rx_drop_packets_total":        client.GetRxDropPkts(),
 
 			"ruckus_client_wireless_info": float64(1),
