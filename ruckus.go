@@ -42,6 +42,22 @@ func parseAPConnectionStatus(status string) bool {
 	return strings.ToLower(status) == "connect"
 }
 
+func parseLatLong(latlong string, idx int) string {
+	l := strings.Split(latlong, ",")
+	if len(l) == 2 {
+		return l[idx]
+	}
+	return ""
+}
+
+func parseLatitude(latlong string) string {
+	return parseLatLong(latlong, 0)
+}
+
+func parseLongitude(latlong string) string {
+	return parseLatLong(latlong, 1)
+}
+
 func handleEvent(systemID string, message *pb.EventMessage) error {
 	labelMap := map[string]string{
 		"service":    *lokiMetricId,
@@ -454,7 +470,8 @@ func handleApConfigurationMessage(systemID string, message *pb.ConfigurationMess
 
 			apInfoLabels := map[string]string{
 				"blade_id":              ap.BladeID,
-				"gps_position":          ap.GpsInfo,
+				"latitude":              parseLatitude(ap.GpsInfo),
+				"longitude":             parseLongitude(ap.GpsInfo),
 				"ipv4_address":          ap.IP,
 				"description":           ap.Description,
 				"ipv4_address_external": ap.ExtIP,
