@@ -41,7 +41,7 @@ func (l lokiWriteClient) write(entry logEntry) error {
 		Streams: []logproto.Stream{entry.marshal()},
 	})
 	if err != nil {
-		return errors.Wrapf(err, "Error writing event to loki")
+		return err
 	}
 
 	return nil
