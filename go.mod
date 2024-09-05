@@ -1,6 +1,6 @@
 module github.com/adaricorp/ruckus-sz-agent
 
-go 1.23.0
+go 1.23
 
 require (
 	github.com/adaricorp/ruckus-sz-proto v0.0.0-20240710033852-72200c217cce
