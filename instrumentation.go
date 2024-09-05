@@ -38,10 +38,10 @@ var (
 		},
 		[]string{"message_type"},
 	)
-	instUnparseableMessageCounter = prometheus.NewCounterVec(
+	instMessageErrorCounter = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
 			Namespace: binName,
-			Name:      "messages_unparseable_total",
+			Name:      "messages_errors_total",
 		},
 		[]string{"message_type"},
 	)
@@ -71,6 +71,6 @@ func registerInstrumentationMetrics() {
 	prometheus.MustRegister(instMQTTBytesCounter)
 	prometheus.MustRegister(instMQTTUnparseableMessageCounter)
 	prometheus.MustRegister(instProcessedMessageCounter)
-	prometheus.MustRegister(instUnparseableMessageCounter)
+	prometheus.MustRegister(instMessageErrorCounter)
 	prometheus.MustRegister(instUnhandledMessageCounter)
 }
