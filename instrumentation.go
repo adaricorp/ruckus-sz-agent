@@ -6,19 +6,26 @@ import (
 )
 
 var (
-	instMqttMessageCounter = prometheus.NewCounter(
+	instMQTTConnectionCounter = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Namespace: binName,
+			Name:      "mqtt_connections_total",
+		},
+		[]string{"server"},
+	)
+	instMQTTMessageCounter = prometheus.NewCounter(
 		prometheus.CounterOpts{
 			Namespace: binName,
 			Name:      "mqtt_messages_total",
 		},
 	)
-	instMqttBytesCounter = prometheus.NewCounter(
+	instMQTTBytesCounter = prometheus.NewCounter(
 		prometheus.CounterOpts{
 			Namespace: binName,
 			Name:      "mqtt_bytes_total",
 		},
 	)
-	instMqttUnparseableMessageCounter = prometheus.NewCounter(
+	instMQTTUnparseableMessageCounter = prometheus.NewCounter(
 		prometheus.CounterOpts{
 			Namespace: binName,
 			Name:      "mqtt_messages_unparseable_total",
@@ -31,10 +38,17 @@ var (
 		},
 		[]string{"message_type"},
 	)
-	instUnparseableMessageCounter = prometheus.NewCounterVec(
+	instMessageErrorCounter = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
 			Namespace: binName,
-			Name:      "messages_unparseable_total",
+			Name:      "messages_errors_total",
+		},
+		[]string{"message_type"},
+	)
+	instJSONUnparseableCounter = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Namespace: binName,
+			Name:      "json_messages_unparseable_total",
 		},
 		[]string{"message_type"},
 	)
@@ -43,6 +57,13 @@ var (
 			Namespace: binName,
 			Name:      "messages_unhandled_total",
 		},
+	)
+	instMetricErrorCounter = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Namespace: binName,
+			Name:      "metric_errors_total",
+		},
+		[]string{"metric_name"},
 	)
 )
 
@@ -59,10 +80,13 @@ func registerInstrumentationMetrics() {
 	versionCollector := versioncollector.NewCollector(binName)
 	prometheus.MustRegister(versionCollector)
 
-	prometheus.MustRegister(instMqttMessageCounter)
-	prometheus.MustRegister(instMqttBytesCounter)
-	prometheus.MustRegister(instMqttUnparseableMessageCounter)
+	prometheus.MustRegister(instMQTTConnectionCounter)
+	prometheus.MustRegister(instMQTTMessageCounter)
+	prometheus.MustRegister(instMQTTBytesCounter)
+	prometheus.MustRegister(instMQTTUnparseableMessageCounter)
 	prometheus.MustRegister(instProcessedMessageCounter)
-	prometheus.MustRegister(instUnparseableMessageCounter)
+	prometheus.MustRegister(instMessageErrorCounter)
+	prometheus.MustRegister(instJSONUnparseableCounter)
 	prometheus.MustRegister(instUnhandledMessageCounter)
+	prometheus.MustRegister(instMetricErrorCounter)
 }

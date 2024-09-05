@@ -323,11 +323,11 @@ func main() {
 
 	// MQTT message handler
 	for message := range mqttChannel {
-		instMqttMessageCounter.Inc()
-		instMqttBytesCounter.Add(float64(len(message.Payload)))
+		instMQTTMessageCounter.Inc()
+		instMQTTBytesCounter.Add(float64(len(message.Payload)))
 		sciMessage := &pb.SciMessage{}
 		if err := proto.Unmarshal(message.Payload, sciMessage); err != nil {
-			instMqttUnparseableMessageCounter.Inc()
+			instMQTTUnparseableMessageCounter.Inc()
 			slog.Error("Failed to parse MQTT message", "error", err)
 			continue
 		}
@@ -340,8 +340,8 @@ func main() {
 			}
 			slog.Debug("Starting to process event message")
 			if err := handleEvent(systemId, event); err != nil {
-				instUnparseableMessageCounter.WithLabelValues("event").Inc()
-				slog.Error("Error processing event message", "error", err)
+				instMessageErrorCounter.WithLabelValues("event").Inc()
+				slog.Error("Error processing event message", "error", err.Error())
 			} else {
 				instProcessedMessageCounter.WithLabelValues("event").Inc()
 				slog.Debug("Finished processing event message")
@@ -352,8 +352,8 @@ func main() {
 			}
 			slog.Debug("Starting to process ap status message")
 			if err := handleApStatus(systemId, apStatus); err != nil {
-				instUnparseableMessageCounter.WithLabelValues("ap_status").Inc()
-				slog.Error("Error processing ap status message", "error", err)
+				instMessageErrorCounter.WithLabelValues("ap_status").Inc()
+				slog.Error("Error processing ap status message", "error", err.Error())
 			} else {
 				instProcessedMessageCounter.WithLabelValues("ap_status").Inc()
 				slog.Debug("Finished processing ap status message")
@@ -364,8 +364,8 @@ func main() {
 			}
 			slog.Debug("Starting to process ap client message")
 			if err := handleApClient(systemId, apClient); err != nil {
-				instUnparseableMessageCounter.WithLabelValues("ap_client").Inc()
-				slog.Error("Error processing ap client message", "error", err)
+				instMessageErrorCounter.WithLabelValues("ap_client").Inc()
+				slog.Error("Error processing ap client message", "error", err.Error())
 			} else {
 				instProcessedMessageCounter.WithLabelValues("ap_client").Inc()
 				slog.Debug("Finished processing ap client message")
@@ -376,8 +376,8 @@ func main() {
 			}
 			slog.Debug("Starting to process ap wired client message")
 			if err := handleApWiredClient(systemId, apWiredClient); err != nil {
-				instUnparseableMessageCounter.WithLabelValues("ap_wired_client").Inc()
-				slog.Error("Error processing ap wired client message", "error", err)
+				instMessageErrorCounter.WithLabelValues("ap_wired_client").Inc()
+				slog.Error("Error processing ap wired client message", "error", err.Error())
 			} else {
 				instProcessedMessageCounter.WithLabelValues("ap_wired_client").Inc()
 				slog.Debug("Finished processing ap wired client message")
@@ -388,8 +388,8 @@ func main() {
 			}
 			slog.Debug("Starting to process ap report message")
 			if err := handleApReport(systemId, apReport); err != nil {
-				instUnparseableMessageCounter.WithLabelValues("ap_report").Inc()
-				slog.Error("Error processing ap report message", "error", err)
+				instMessageErrorCounter.WithLabelValues("ap_report").Inc()
+				slog.Error("Error processing ap report message", "error", err.Error())
 			} else {
 				instProcessedMessageCounter.WithLabelValues("ap_report").Inc()
 				slog.Debug("Finished processing ap report message")
@@ -403,8 +403,8 @@ func main() {
 			if clusterMessage.GetAps() != "" {
 				slog.Debug("Starting to process cluster ap configuration message")
 				if err := handleApConfigurationMessage(systemId, configMessage); err != nil {
-					instUnparseableMessageCounter.WithLabelValues("cluster_ap_configuration").Inc()
-					slog.Error("Error processing cluster ap configuration message", "error", err)
+					instMessageErrorCounter.WithLabelValues("cluster_ap_configuration").Inc()
+					slog.Error("Error processing cluster ap configuration message", "error", err.Error())
 				} else {
 					instProcessedMessageCounter.WithLabelValues("cluster_ap_configuration").Inc()
 					slog.Debug("Finished processing cluster ap configuration message")
@@ -414,8 +414,8 @@ func main() {
 			if clusterMessage.GetControlBlades() != "" {
 				slog.Debug("Starting to process cluster configuration message")
 				if err := handleSystemConfigurationMessage(systemId, configMessage); err != nil {
-					instUnparseableMessageCounter.WithLabelValues("cluster_configuration").Inc()
-					slog.Error("Error processing cluster configuration message", "error", err)
+					instMessageErrorCounter.WithLabelValues("cluster_configuration").Inc()
+					slog.Error("Error processing cluster configuration message", "error", err.Error())
 				} else {
 					instProcessedMessageCounter.WithLabelValues("cluster_configuration").Inc()
 					slog.Debug("Finished processing cluster configuration message")

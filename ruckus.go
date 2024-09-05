@@ -151,7 +151,7 @@ func handleApStatus(systemID string, message *pb.APStatus) error {
 
 	if errs := appendMetrics(timestamp, apMetrics, labelMap, metricsFamily); len(errs) >= 1 {
 		for _, err := range errs {
-			slog.Error("Error while appending metrics", "error", err)
+			slog.Error("Error while appending metrics", "error", err.Error())
 		}
 	}
 
@@ -221,7 +221,7 @@ func handleApStatus(systemID string, message *pb.APStatus) error {
 			metricsFamily,
 		); len(errs) >= 1 {
 			for _, err := range errs {
-				slog.Error("Error while appending metrics", "error", err)
+				slog.Error("Error while appending metrics", "error", err.Error())
 			}
 		}
 	}
@@ -302,7 +302,7 @@ func handleApClient(systemID string, message *pb.APClientStats) error {
 			metricsFamily,
 		); len(errs) >= 1 {
 			for _, err := range errs {
-				slog.Error("Error while appending metrics", "error", err)
+				slog.Error("Error while appending metrics", "error", err.Error())
 			}
 		}
 	}
@@ -371,7 +371,7 @@ func handleApWiredClient(systemID string, message *pb.APWiredClientStats) error 
 			metricsFamily,
 		); len(errs) >= 1 {
 			for _, err := range errs {
-				slog.Error("Error while appending metrics", "error", err)
+				slog.Error("Error while appending metrics", "error", err.Error())
 			}
 		}
 	}
@@ -430,7 +430,7 @@ func handleApReport(systemID string, message *pb.APReportStats) error {
 			metricsFamily,
 		); len(errs) >= 1 {
 			for _, err := range errs {
-				slog.Error("Error while appending metrics", "error", err)
+				slog.Error("Error while appending metrics", "error", err.Error())
 			}
 		}
 	}
@@ -461,7 +461,8 @@ func handleApConfigurationMessage(systemID string, message *pb.ConfigurationMess
 	var apConfig []ApConfig
 	err := json.Unmarshal([]byte(clusterInfo.GetAps()), &apConfig)
 	if err != nil {
-		slog.Error("Failed to ap configuration to JSON", "error", err)
+		instJSONUnparseableCounter.WithLabelValues("ap_configuration").Inc()
+		slog.Error("Failed to convert ap configuration to JSON", "error", err)
 	} else {
 		for _, ap := range apConfig {
 			apLabels := map[string]string{
@@ -516,7 +517,7 @@ func handleApConfigurationMessage(systemID string, message *pb.ConfigurationMess
 				metricsFamily,
 			); len(errs) >= 1 {
 				for _, err := range errs {
-					slog.Error("Error while appending metrics", "error", err)
+					slog.Error("Error while appending metrics", "error", err.Error())
 				}
 			}
 		}
@@ -586,7 +587,7 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 				metricsFamily,
 			); len(errs) >= 1 {
 				for _, err := range errs {
-					slog.Error("Error while appending metrics", "error", err)
+					slog.Error("Error while appending metrics", "error", err.Error())
 				}
 			}
 		}
@@ -595,6 +596,7 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 	var controlBladesConfig []ControlBladeConfig
 	err := json.Unmarshal([]byte(clusterInfo.GetControlBlades()), &controlBladesConfig)
 	if err != nil {
+		instJSONUnparseableCounter.WithLabelValues("system_configuration_control_blades").Inc()
 		slog.Error("Failed to convert blade configuration to JSON", "error", err)
 	} else {
 		for _, c := range controlBladesConfig {
@@ -640,7 +642,7 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 				metricsFamily,
 			); len(errs) >= 1 {
 				for _, err := range errs {
-					slog.Error("Error while appending metrics", "error", err)
+					slog.Error("Error while appending metrics", "error", err.Error())
 				}
 			}
 		}
@@ -649,6 +651,7 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 	var bladePerformance ControllerUtilization
 	err = json.Unmarshal([]byte(clusterInfo.GetControllerUtilizations()), &bladePerformance)
 	if err != nil {
+		instJSONUnparseableCounter.WithLabelValues("system_configuration_controller_utilization").Inc()
 		slog.Error("Failed to convert controller utilization to JSON", "error", err)
 	} else {
 		for _, blade := range bladePerformance.Cbutils {
@@ -736,6 +739,7 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 	var clusterSummary SystemSummary
 	err = json.Unmarshal([]byte(clusterInfo.GetSystemSummary()), &clusterSummary)
 	if err != nil {
+		instJSONUnparseableCounter.WithLabelValues("system_configuration_system_summary").Inc()
 		slog.Error("Failed to convert system summary to JSON", "error", err)
 	} else {
 		clusterInfoLabels := map[string]string{
@@ -825,7 +829,7 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 			metricsFamily,
 		); len(errs) >= 1 {
 			for _, err := range errs {
-				slog.Error("Error while appending metrics", "error", err)
+				slog.Error("Error while appending metrics", "error", err.Error())
 			}
 		}
 	}
