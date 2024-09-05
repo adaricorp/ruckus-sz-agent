@@ -6,6 +6,13 @@ import (
 )
 
 var (
+	instMQTTConnectionCounter = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Namespace: binName,
+			Name:      "mqtt_connections_total",
+		},
+		[]string{"server"},
+	)
 	instMQTTMessageCounter = prometheus.NewCounter(
 		prometheus.CounterOpts{
 			Namespace: binName,
@@ -59,6 +66,7 @@ func registerInstrumentationMetrics() {
 	versionCollector := versioncollector.NewCollector(binName)
 	prometheus.MustRegister(versionCollector)
 
+	prometheus.MustRegister(instMQTTConnectionCounter)
 	prometheus.MustRegister(instMQTTMessageCounter)
 	prometheus.MustRegister(instMQTTBytesCounter)
 	prometheus.MustRegister(instMQTTUnparseableMessageCounter)

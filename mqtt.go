@@ -40,6 +40,7 @@ func newMQTTConnection(
 		Errors:                        errorLogger,
 		PahoErrors:                    errorLogger,
 		OnConnectionUp: func(cm *autopaho.ConnectionManager, connAck *paho.Connack) {
+			instMQTTConnectionCounter.WithLabelValues(uri).Inc()
 			slog.Info("Connected to MQTT server", "server", uri)
 
 			if _, err := cm.Subscribe(context.Background(), &paho.Subscribe{
