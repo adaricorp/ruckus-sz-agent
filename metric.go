@@ -108,6 +108,7 @@ func appendMetrics(
 
 		m, err := newPromMetric(k, timestamp, labels, v)
 		if err != nil {
+			instMetricErrorCounter.WithLabelValues(k).Inc()
 			errs = append(errs, errors.Wrapf(err, "Error creating metric"))
 			continue
 		}

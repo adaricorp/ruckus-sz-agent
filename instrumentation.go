@@ -51,6 +51,13 @@ var (
 			Name:      "messages_unhandled_total",
 		},
 	)
+	instMetricErrorCounter = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Namespace: binName,
+			Name:      "metric_errors_total",
+		},
+		[]string{"metric_name"},
+	)
 )
 
 func registerInstrumentationMetrics() {
@@ -73,4 +80,5 @@ func registerInstrumentationMetrics() {
 	prometheus.MustRegister(instProcessedMessageCounter)
 	prometheus.MustRegister(instMessageErrorCounter)
 	prometheus.MustRegister(instUnhandledMessageCounter)
+	prometheus.MustRegister(instMetricErrorCounter)
 }
