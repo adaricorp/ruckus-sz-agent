@@ -461,7 +461,7 @@ func handleApConfigurationMessage(systemID string, message *pb.ConfigurationMess
 	var apConfig []ApConfig
 	err := json.Unmarshal([]byte(clusterInfo.GetAps()), &apConfig)
 	if err != nil {
-		slog.Error("Failed to ap configuration to JSON", "error", err)
+		slog.Error("Failed to convert ap configuration to JSON", "error", err)
 	} else {
 		for _, ap := range apConfig {
 			apLabels := map[string]string{
