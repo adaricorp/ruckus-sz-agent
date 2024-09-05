@@ -6,19 +6,19 @@ import (
 )
 
 var (
-	instMqttMessageCounter = prometheus.NewCounter(
+	instMQTTMessageCounter = prometheus.NewCounter(
 		prometheus.CounterOpts{
 			Namespace: binName,
 			Name:      "mqtt_messages_total",
 		},
 	)
-	instMqttBytesCounter = prometheus.NewCounter(
+	instMQTTBytesCounter = prometheus.NewCounter(
 		prometheus.CounterOpts{
 			Namespace: binName,
 			Name:      "mqtt_bytes_total",
 		},
 	)
-	instMqttUnparseableMessageCounter = prometheus.NewCounter(
+	instMQTTUnparseableMessageCounter = prometheus.NewCounter(
 		prometheus.CounterOpts{
 			Namespace: binName,
 			Name:      "mqtt_messages_unparseable_total",
@@ -59,9 +59,9 @@ func registerInstrumentationMetrics() {
 	versionCollector := versioncollector.NewCollector(binName)
 	prometheus.MustRegister(versionCollector)
 
-	prometheus.MustRegister(instMqttMessageCounter)
-	prometheus.MustRegister(instMqttBytesCounter)
-	prometheus.MustRegister(instMqttUnparseableMessageCounter)
+	prometheus.MustRegister(instMQTTMessageCounter)
+	prometheus.MustRegister(instMQTTBytesCounter)
+	prometheus.MustRegister(instMQTTUnparseableMessageCounter)
 	prometheus.MustRegister(instProcessedMessageCounter)
 	prometheus.MustRegister(instUnparseableMessageCounter)
 	prometheus.MustRegister(instUnhandledMessageCounter)

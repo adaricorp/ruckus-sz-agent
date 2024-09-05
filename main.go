@@ -323,11 +323,11 @@ func main() {
 
 	// MQTT message handler
 	for message := range mqttChannel {
-		instMqttMessageCounter.Inc()
-		instMqttBytesCounter.Add(float64(len(message.Payload)))
+		instMQTTMessageCounter.Inc()
+		instMQTTBytesCounter.Add(float64(len(message.Payload)))
 		sciMessage := &pb.SciMessage{}
 		if err := proto.Unmarshal(message.Payload, sciMessage); err != nil {
-			instMqttUnparseableMessageCounter.Inc()
+			instMQTTUnparseableMessageCounter.Inc()
 			slog.Error("Failed to parse MQTT message", "error", err)
 			continue
 		}
