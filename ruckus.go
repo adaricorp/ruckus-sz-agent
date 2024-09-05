@@ -151,7 +151,7 @@ func handleApStatus(systemID string, message *pb.APStatus) error {
 
 	if errs := appendMetrics(timestamp, apMetrics, labelMap, metricsFamily); len(errs) >= 1 {
 		for _, err := range errs {
-			slog.Error("Error while appending metrics", "error", err)
+			slog.Error("Error while appending metrics", "error", err.Error())
 		}
 	}
 
@@ -221,7 +221,7 @@ func handleApStatus(systemID string, message *pb.APStatus) error {
 			metricsFamily,
 		); len(errs) >= 1 {
 			for _, err := range errs {
-				slog.Error("Error while appending metrics", "error", err)
+				slog.Error("Error while appending metrics", "error", err.Error())
 			}
 		}
 	}
@@ -302,7 +302,7 @@ func handleApClient(systemID string, message *pb.APClientStats) error {
 			metricsFamily,
 		); len(errs) >= 1 {
 			for _, err := range errs {
-				slog.Error("Error while appending metrics", "error", err)
+				slog.Error("Error while appending metrics", "error", err.Error())
 			}
 		}
 	}
@@ -371,7 +371,7 @@ func handleApWiredClient(systemID string, message *pb.APWiredClientStats) error 
 			metricsFamily,
 		); len(errs) >= 1 {
 			for _, err := range errs {
-				slog.Error("Error while appending metrics", "error", err)
+				slog.Error("Error while appending metrics", "error", err.Error())
 			}
 		}
 	}
@@ -430,7 +430,7 @@ func handleApReport(systemID string, message *pb.APReportStats) error {
 			metricsFamily,
 		); len(errs) >= 1 {
 			for _, err := range errs {
-				slog.Error("Error while appending metrics", "error", err)
+				slog.Error("Error while appending metrics", "error", err.Error())
 			}
 		}
 	}
@@ -516,7 +516,7 @@ func handleApConfigurationMessage(systemID string, message *pb.ConfigurationMess
 				metricsFamily,
 			); len(errs) >= 1 {
 				for _, err := range errs {
-					slog.Error("Error while appending metrics", "error", err)
+					slog.Error("Error while appending metrics", "error", err.Error())
 				}
 			}
 		}
@@ -586,7 +586,7 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 				metricsFamily,
 			); len(errs) >= 1 {
 				for _, err := range errs {
-					slog.Error("Error while appending metrics", "error", err)
+					slog.Error("Error while appending metrics", "error", err.Error())
 				}
 			}
 		}
@@ -640,7 +640,7 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 				metricsFamily,
 			); len(errs) >= 1 {
 				for _, err := range errs {
-					slog.Error("Error while appending metrics", "error", err)
+					slog.Error("Error while appending metrics", "error", err.Error())
 				}
 			}
 		}
@@ -825,7 +825,7 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 			metricsFamily,
 		); len(errs) >= 1 {
 			for _, err := range errs {
-				slog.Error("Error while appending metrics", "error", err)
+				slog.Error("Error while appending metrics", "error", err.Error())
 			}
 		}
 	}
