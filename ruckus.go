@@ -84,16 +84,19 @@ func handleEvent(systemID string, message *pb.EventMessage) error {
 	// Label order is important for loki to generate a consistent key for stream
 	labelOrder := []string{"service", "severity", "category", "event_type"}
 
-	event := newLogEntry(
+	event, err := newLogEntry(
 		labelMap,
 		labelOrder,
 		metadataMap,
 		timestamp,
 		message.GetDescription(),
 	)
+	if err != nil {
+		return errors.Wrapf(err, "Error creating event (%s)", event)
+	}
 
 	if err := loki.write(event); err != nil {
-		return errors.Wrapf(err, "Error writing event to loki")
+		return errors.Wrapf(err, "Error writing event to loki (%s)", event)
 	}
 
 	return nil

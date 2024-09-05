@@ -41,6 +41,8 @@ var (
 	slogLevel                 *slog.LevelVar = new(slog.LevelVar)
 	lokiServer                *string
 	lokiMetricId              *string
+	lokiTimestampFuture       *time.Duration
+	lokiTimestampPast         *time.Duration
 	mqttURI                   *string
 	mqttTopic                 *string
 	mqttClientID              *string
@@ -84,6 +86,16 @@ func init() {
 		"loki-metric-id",
 		"ruckus",
 		"Name to uniquely identify event streams in loki",
+	)
+	lokiTimestampFuture = fs.DurationLong(
+		"loki-timestamp-future",
+		10*time.Minute,
+		"Reject sending events to loki which have a timestamp this much time ahead of current server time",
+	)
+	lokiTimestampPast = fs.DurationLong(
+		"loki-timestamp-past",
+		168*time.Hour,
+		"Reject sending events to loki which have a timestamp this much time behind current server time",
 	)
 	mqttURI = fs.StringLong(
 		"mqtt-server",
