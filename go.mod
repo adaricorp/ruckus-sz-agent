@@ -11,7 +11,7 @@ require (
 	github.com/grafana/loki/v3 v3.1.1
 	github.com/peterbourgon/ff/v4 v4.0.0-alpha.4
 	github.com/pkg/errors v0.9.1
-	github.com/prometheus/client_golang v1.20.2
+	github.com/prometheus/client_golang v1.20.3
 	github.com/prometheus/client_model v0.6.1
 	github.com/prometheus/common v0.58.0
 	github.com/prometheus/prometheus v0.54.1
