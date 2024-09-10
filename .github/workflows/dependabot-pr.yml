@@ -32,10 +32,6 @@ jobs:
         run: |
           git config --global url."https://x-access-token:${{ steps.github-app-token.outputs.token }}@github.com/".insteadOf "https://github.com/"
 
-      - name: Set build date
-        run: |
-          echo "BUILD_DATE=$(date)" >> ${GITHUB_ENV}
-
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6
         with:
