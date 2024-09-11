@@ -19,6 +19,7 @@ import (
 	"github.com/peterbourgon/ff/v4"
 	"github.com/peterbourgon/ff/v4/ffhelp"
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/common/version"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -30,9 +31,6 @@ const (
 )
 
 var (
-	version = "dev"
-	date    = "unknown"
-
 	hostname string
 
 	pahoDebugLogger           *log.Logger
@@ -66,7 +64,7 @@ func printUsage(fs ff.Flags) {
 
 // Print program version
 func printVersion() {
-	fmt.Printf("%s v%s built on %s\n", binName, version, date)
+	fmt.Printf("%s v%s built on %s\n", binName, version.Version, version.BuildDate)
 	os.Exit(0)
 }
 
@@ -181,7 +179,7 @@ func main() {
 	slog.Info(
 		fmt.Sprintf("Starting %s", binName),
 		"version",
-		version,
+		version.Version,
 		"build_context",
 		fmt.Sprintf(
 			"go=%s, platform=%s",

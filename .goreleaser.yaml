@@ -29,12 +29,15 @@ builds:
     ldflags:
       - >
           -s
-          -X "github.com/prometheus/common/version.Version={{.Version}}"
+          -w
+          -X "github.com/prometheus/common/version.Version={{ .Version }}"
+          -X "github.com/prometheus/common/version.Revision={{ .Commit }}"
+          -X "github.com/prometheus/common/version.BuildDate={{ .Date }}"
           {{- if index .Env "GITHUB_REF_NAME" }}
-          -X "github.com/prometheus/common/version.Revision={{ .Env.GITHUB_SHA }}"
           -X "github.com/prometheus/common/version.Branch={{ .Env.GITHUB_REF_NAME }}"
+          {{- end }}
+          {{- if index .Env "BUILD_USER" }}
           -X "github.com/prometheus/common/version.BuildUser={{ .Env.BUILD_USER }}"
-          -X "github.com/prometheus/common/version.BuildDate={{ .Env.BUILD_DATE }}"
           {{- end }}
 
 checksum:
