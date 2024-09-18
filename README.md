@@ -32,6 +32,7 @@ The following message types are supported:
   * Event
   * SzApConf
   * SzSystemConf
+  * SzZoneConf
 
 ## Downloading
 
