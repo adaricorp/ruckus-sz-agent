@@ -461,7 +461,7 @@ func handleApConfigurationMessage(systemID string, message *pb.ConfigurationMess
 	var apConfig []ApConfig
 	err := json.Unmarshal([]byte(clusterInfo.GetAps()), &apConfig)
 	if err != nil {
-		instJSONUnparseableCounter.WithLabelValues("ap_configuration").Inc()
+		instJSONUnparseableCounter.WithLabelValues(systemID, "ap_configuration").Inc()
 		slog.Error("Failed to convert ap configuration to JSON", "error", err)
 	} else {
 		for _, ap := range apConfig {
@@ -596,7 +596,10 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 	var controlBladesConfig []ControlBladeConfig
 	err := json.Unmarshal([]byte(clusterInfo.GetControlBlades()), &controlBladesConfig)
 	if err != nil {
-		instJSONUnparseableCounter.WithLabelValues("system_configuration_control_blades").Inc()
+		instJSONUnparseableCounter.WithLabelValues(
+			systemID,
+			"system_configuration_control_blades",
+		).Inc()
 		slog.Error("Failed to convert blade configuration to JSON", "error", err)
 	} else {
 		for _, c := range controlBladesConfig {
@@ -651,7 +654,10 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 	var bladePerformance ControllerUtilization
 	err = json.Unmarshal([]byte(clusterInfo.GetControllerUtilizations()), &bladePerformance)
 	if err != nil {
-		instJSONUnparseableCounter.WithLabelValues("system_configuration_controller_utilization").Inc()
+		instJSONUnparseableCounter.WithLabelValues(
+			systemID,
+			"system_configuration_controller_utilization",
+		).Inc()
 		slog.Error("Failed to convert controller utilization to JSON", "error", err)
 	} else {
 		for _, blade := range bladePerformance.Cbutils {
@@ -739,7 +745,10 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 	var clusterSummary SystemSummary
 	err = json.Unmarshal([]byte(clusterInfo.GetSystemSummary()), &clusterSummary)
 	if err != nil {
-		instJSONUnparseableCounter.WithLabelValues("system_configuration_system_summary").Inc()
+		instJSONUnparseableCounter.WithLabelValues(
+			systemID,
+			"system_configuration_system_summary",
+		).Inc()
 		slog.Error("Failed to convert system summary to JSON", "error", err)
 	} else {
 		clusterInfoLabels := map[string]string{
@@ -857,7 +866,7 @@ func handleZoneConfigurationMessage(systemID string, message *pb.ConfigurationMe
 	var zoneConfig []ZoneConfig
 	err := json.Unmarshal([]byte(clusterInfo.GetZones()), &zoneConfig)
 	if err != nil {
-		instJSONUnparseableCounter.WithLabelValues("zone_configuration").Inc()
+		instJSONUnparseableCounter.WithLabelValues(systemID, "zone_configuration").Inc()
 		slog.Error("Failed to convert zone configuration to JSON", "error", err)
 	} else {
 		for _, zone := range zoneConfig {
