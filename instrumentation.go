@@ -36,27 +36,28 @@ var (
 			Namespace: binName,
 			Name:      "messages_processed_total",
 		},
-		[]string{"message_type"},
+		[]string{"system_id", "message_type"},
 	)
 	instMessageErrorCounter = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
 			Namespace: binName,
 			Name:      "messages_errors_total",
 		},
-		[]string{"message_type"},
+		[]string{"system_id", "message_type"},
 	)
 	instJSONUnparseableCounter = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
 			Namespace: binName,
 			Name:      "json_messages_unparseable_total",
 		},
-		[]string{"message_type"},
+		[]string{"system_id", "message_type"},
 	)
-	instUnhandledMessageCounter = prometheus.NewCounter(
+	instUnhandledMessageCounter = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
 			Namespace: binName,
 			Name:      "messages_unhandled_total",
 		},
+		[]string{"system_id"},
 	)
 	instMetricErrorCounter = prometheus.NewCounterVec(
 		prometheus.CounterOpts{

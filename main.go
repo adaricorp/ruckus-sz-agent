@@ -330,18 +330,24 @@ func main() {
 			continue
 		}
 
-		systemId := sciMessage.GetSciSystemId()
+		systemID := sciMessage.GetSciSystemId()
 
 		if event := sciMessage.GetEventMessage(); event != nil {
 			if *lokiServer == "" {
 				continue
 			}
 			slog.Debug("Starting to process event message")
-			if err := handleEvent(systemId, event); err != nil {
-				instMessageErrorCounter.WithLabelValues("event").Inc()
+			if err := handleEvent(systemID, event); err != nil {
+				instMessageErrorCounter.WithLabelValues(
+					systemID,
+					"event",
+				).Inc()
 				slog.Error("Error processing event message", "error", err.Error())
 			} else {
-				instProcessedMessageCounter.WithLabelValues("event").Inc()
+				instProcessedMessageCounter.WithLabelValues(
+					systemID,
+					"event",
+				).Inc()
 				slog.Debug("Finished processing event message")
 			}
 		} else if apStatus := sciMessage.GetApStatus(); apStatus != nil {
@@ -349,11 +355,21 @@ func main() {
 				continue
 			}
 			slog.Debug("Starting to process ap status message")
-			if err := handleApStatus(systemId, apStatus); err != nil {
-				instMessageErrorCounter.WithLabelValues("ap_status").Inc()
-				slog.Error("Error processing ap status message", "error", err.Error())
+			if err := handleApStatus(systemID, apStatus); err != nil {
+				instMessageErrorCounter.WithLabelValues(
+					systemID,
+					"ap_status",
+				).Inc()
+				slog.Error(
+					"Error processing ap status message",
+					"error",
+					err.Error(),
+				)
 			} else {
-				instProcessedMessageCounter.WithLabelValues("ap_status").Inc()
+				instProcessedMessageCounter.WithLabelValues(
+					systemID,
+					"ap_status",
+				).Inc()
 				slog.Debug("Finished processing ap status message")
 			}
 		} else if apClient := sciMessage.GetApClient(); apClient != nil {
@@ -361,11 +377,21 @@ func main() {
 				continue
 			}
 			slog.Debug("Starting to process ap client message")
-			if err := handleApClient(systemId, apClient); err != nil {
-				instMessageErrorCounter.WithLabelValues("ap_client").Inc()
-				slog.Error("Error processing ap client message", "error", err.Error())
+			if err := handleApClient(systemID, apClient); err != nil {
+				instMessageErrorCounter.WithLabelValues(
+					systemID,
+					"ap_client",
+				).Inc()
+				slog.Error(
+					"Error processing ap client message",
+					"error",
+					err.Error(),
+				)
 			} else {
-				instProcessedMessageCounter.WithLabelValues("ap_client").Inc()
+				instProcessedMessageCounter.WithLabelValues(
+					systemID,
+					"ap_client",
+				).Inc()
 				slog.Debug("Finished processing ap client message")
 			}
 		} else if apWiredClient := sciMessage.GetApWiredClient(); apWiredClient != nil {
@@ -373,11 +399,21 @@ func main() {
 				continue
 			}
 			slog.Debug("Starting to process ap wired client message")
-			if err := handleApWiredClient(systemId, apWiredClient); err != nil {
-				instMessageErrorCounter.WithLabelValues("ap_wired_client").Inc()
-				slog.Error("Error processing ap wired client message", "error", err.Error())
+			if err := handleApWiredClient(systemID, apWiredClient); err != nil {
+				instMessageErrorCounter.WithLabelValues(
+					systemID,
+					"ap_wired_client",
+				).Inc()
+				slog.Error(
+					"Error processing ap wired client message",
+					"error",
+					err.Error(),
+				)
 			} else {
-				instProcessedMessageCounter.WithLabelValues("ap_wired_client").Inc()
+				instProcessedMessageCounter.WithLabelValues(
+					systemID,
+					"ap_wired_client",
+				).Inc()
 				slog.Debug("Finished processing ap wired client message")
 			}
 		} else if apReport := sciMessage.GetApReport(); apReport != nil {
@@ -385,11 +421,21 @@ func main() {
 				continue
 			}
 			slog.Debug("Starting to process ap report message")
-			if err := handleApReport(systemId, apReport); err != nil {
-				instMessageErrorCounter.WithLabelValues("ap_report").Inc()
-				slog.Error("Error processing ap report message", "error", err.Error())
+			if err := handleApReport(systemID, apReport); err != nil {
+				instMessageErrorCounter.WithLabelValues(
+					systemID,
+					"ap_report",
+				).Inc()
+				slog.Error(
+					"Error processing ap report message",
+					"error",
+					err.Error(),
+				)
 			} else {
-				instProcessedMessageCounter.WithLabelValues("ap_report").Inc()
+				instProcessedMessageCounter.WithLabelValues(
+					systemID,
+					"ap_report",
+				).Inc()
 				slog.Debug("Finished processing ap report message")
 			}
 		} else if configMessage := sciMessage.GetConfigurationMessage(); configMessage != nil {
@@ -400,44 +446,84 @@ func main() {
 
 			if clusterMessage.GetAps() != "" {
 				slog.Debug("Starting to process cluster ap configuration message")
-				if err := handleApConfigurationMessage(systemId, configMessage); err != nil {
-					instMessageErrorCounter.WithLabelValues("cluster_ap_configuration").Inc()
-					slog.Error("Error processing cluster ap configuration message", "error", err.Error())
+				if err := handleApConfigurationMessage(systemID, configMessage); err != nil {
+					instMessageErrorCounter.WithLabelValues(
+						systemID,
+						"cluster_ap_configuration",
+					).Inc()
+					slog.Error(
+						"Error processing cluster ap configuration message",
+						"error",
+						err.Error(),
+					)
 				} else {
-					instProcessedMessageCounter.WithLabelValues("cluster_ap_configuration").Inc()
-					slog.Debug("Finished processing cluster ap configuration message")
+					instProcessedMessageCounter.WithLabelValues(
+						systemID,
+						"cluster_ap_configuration",
+					).Inc()
+					slog.Debug(
+						"Finished processing cluster ap configuration message",
+					)
 				}
 			}
 
 			if clusterMessage.GetControlBlades() != "" {
 				slog.Debug("Starting to process cluster configuration message")
-				if err := handleSystemConfigurationMessage(systemId, configMessage); err != nil {
-					instMessageErrorCounter.WithLabelValues("cluster_configuration").Inc()
-					slog.Error("Error processing cluster configuration message", "error", err.Error())
+				if err := handleSystemConfigurationMessage(systemID, configMessage); err != nil {
+					instMessageErrorCounter.WithLabelValues(
+						systemID,
+						"cluster_configuration",
+					).Inc()
+					slog.Error(
+						"Error processing cluster configuration message",
+						"error",
+						err.Error(),
+					)
 				} else {
-					instProcessedMessageCounter.WithLabelValues("cluster_configuration").Inc()
-					slog.Debug("Finished processing cluster configuration message")
+					instProcessedMessageCounter.WithLabelValues(
+						systemID,
+						"cluster_configuration",
+					).Inc()
+					slog.Debug(
+						"Finished processing cluster configuration message",
+					)
 				}
 			}
 
 			if clusterMessage.GetZones() != "" {
 				slog.Debug("Starting to process cluster zone configuration message")
-				if err := handleZoneConfigurationMessage(systemId, configMessage); err != nil {
-					instMessageErrorCounter.WithLabelValues("cluster_zone_configuration").Inc()
-					slog.Error("Error processing cluster zone configuration message", "error", err.Error())
+				if err := handleZoneConfigurationMessage(systemID, configMessage); err != nil {
+					instMessageErrorCounter.WithLabelValues(
+						systemID,
+						"cluster_zone_configuration",
+					).Inc()
+					slog.Error(
+						"Error processing cluster zone configuration message",
+						"error",
+						err.Error(),
+					)
 				} else {
-					instProcessedMessageCounter.WithLabelValues("cluster_zone_configuration").Inc()
-					slog.Debug("Finished processing cluster zone configuration message")
+					instProcessedMessageCounter.WithLabelValues(
+						systemID,
+						"cluster_zone_configuration",
+					).Inc()
+					slog.Debug(
+						"Finished processing cluster zone configuration message",
+					)
 				}
 			}
 		} else {
-			instUnhandledMessageCounter.Inc()
+			instUnhandledMessageCounter.WithLabelValues(systemID).Inc()
 			if *logLevel == "debug" {
 				jsonSciMessage, err := json.Marshal(sciMessage)
 				if err != nil {
 					slog.Error("Failed to convert message to JSON", "error", err)
 				}
-				slog.Debug("Unhandled ruckus message", "message", string(jsonSciMessage))
+				slog.Debug(
+					"Unhandled ruckus message",
+					"message",
+					string(jsonSciMessage),
+				)
 			}
 		}
 	}
