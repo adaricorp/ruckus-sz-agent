@@ -201,3 +201,37 @@ type SystemSummary struct {
 	NumOfConnectedAPs                     int         `json:",omitempty"`
 	RxgwlicenseSummary                    string      `json:",omitempty"`
 }
+
+type ZoneConfig struct {
+	FailoverTargetCluster          interface{}   `json:",omitempty"`
+	GpsInfo                        string        `json:",omitempty"`
+	BackgroundScan5GEnabled        bool          `json:",omitempty"`
+	StagingZone                    bool          `json:",omitempty"`
+	CreatorUUID                    string        `json:",omitempty"`
+	LoadBalancingEnabled           bool          `json:",omitempty"`
+	NetworkTrafficPackageID        string        `json:",omitempty"`
+	Description                    string        `json:",omitempty"`
+	MobilityZoneName               string        `json:",omitempty"`
+	BackgroundScan6GEnabled        bool          `json:",omitempty"`
+	BandBalancingEnabled           bool          `json:",omitempty"`
+	ApMacList                      []interface{} `json:",omitempty"`
+	MoveToCluster                  interface{}   `json:",omitempty"`
+	ZoneName                       string        `json:",omitempty"`
+	ApHealthStatusConfig           interface{}   `json:",omitempty"`
+	Key                            string        `json:",omitempty"`
+	FwMaxRebootWait                interface{}   `json:",omitempty"`
+	RehomeClusterEnable            bool          `json:",omitempty"`
+	DhcpNatServiceEnabled          bool          `json:",omitempty"`
+	DomainUUID                     interface{}   `json:",omitempty"`
+	VlanOverlappingEnabled         interface{}   `json:",omitempty"`
+	LocationAdditionalInfo         string        `json:",omitempty"`
+	ApHealthStatusConfigJSONObject interface{}   `json:",omitempty"`
+	CreateDatetime                 int64         `json:",omitempty"`
+	NullValueColumnNames           []interface{} `json:",omitempty"`
+	BackgroundScan24GEnabled       bool          `json:",omitempty"`
+	ContactApr                     interface{}   `json:",omitempty"`
+	ClusterRedundancyEnabled       bool          `json:",omitempty"`
+	Location                       string        `json:",omitempty"`
+	SplitTunnelEnabledResult       interface{}   `json:",omitempty"`
+	MeshSSID                       interface{}   `json:",omitempty"`
+}

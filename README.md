@@ -32,6 +32,7 @@ The following message types are supported:
   * Event
   * SzApConf
   * SzSystemConf
+  * SzZoneConf
 
 ## Downloading
 
@@ -58,7 +59,7 @@ ruckus_sz_agent \
     --loki-server ""
 ```
 
-It is also possible to configure ruckus-sz-agent by using envionment variables:
+It is also possible to configure ruckus-sz-agent by using environment variables:
 
 ```
 RUCKUS_SZ_AGENT_MQTT_SERVER="mqtt://127.0.0.1:1883" ruckus_sz_agent

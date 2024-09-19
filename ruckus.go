@@ -846,3 +846,63 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 
 	return nil
 }
+
+func handleZoneConfigurationMessage(systemID string, message *pb.ConfigurationMessage) error {
+	timestamp := time.UnixMilli(int64(message.GetTimestamp()))
+
+	clusterInfo := message.GetClusterInfo()
+
+	metricsFamily := map[string]*dto.MetricFamily{}
+
+	var zoneConfig []ZoneConfig
+	err := json.Unmarshal([]byte(clusterInfo.GetZones()), &zoneConfig)
+	if err != nil {
+		instJSONUnparseableCounter.WithLabelValues("zone_configuration").Inc()
+		slog.Error("Failed to convert zone configuration to JSON", "error", err)
+	} else {
+		for _, zone := range zoneConfig {
+			zoneLabels := map[string]string{
+				"zone_id":   zone.Key,
+				"zone_name": zone.ZoneName,
+			}
+
+			zoneInfoLabels := map[string]string{
+				"latitude":            parseLatitude(zone.GpsInfo),
+				"longitude":           parseLongitude(zone.GpsInfo),
+				"description":         zone.Description,
+				"location":            zone.Location,
+				"location_additional": zone.LocationAdditionalInfo,
+			}
+
+			zoneMetrics := map[string]interface{}{
+				"ruckus_cluster_zone_info": 1,
+			}
+
+			labelMap := map[string]map[string]string{
+				"ruckus_cluster_zone_info": zoneInfoLabels,
+				"default":                  zoneLabels,
+			}
+
+			if errs := appendMetrics(
+				timestamp,
+				zoneMetrics,
+				labelMap,
+				metricsFamily,
+			); len(errs) >= 1 {
+				for _, err := range errs {
+					slog.Error("Error while appending metrics", "error", err.Error())
+				}
+			}
+		}
+	}
+
+	clusterLabels := map[string]string{
+		"system_id": systemID,
+	}
+
+	if err := prom.write(metricsFamily, clusterLabels); err != nil {
+		return errors.Wrapf(err, "Error writing metrics to prometheus")
+	}
+
+	return nil
+}

@@ -419,6 +419,17 @@ func main() {
 					slog.Debug("Finished processing cluster configuration message")
 				}
 			}
+
+			if clusterMessage.GetZones() != "" {
+				slog.Debug("Starting to process cluster zone configuration message")
+				if err := handleZoneConfigurationMessage(systemId, configMessage); err != nil {
+					instMessageErrorCounter.WithLabelValues("cluster_zone_configuration").Inc()
+					slog.Error("Error processing cluster zone configuration message", "error", err.Error())
+				} else {
+					instProcessedMessageCounter.WithLabelValues("cluster_zone_configuration").Inc()
+					slog.Debug("Finished processing cluster zone configuration message")
+				}
+			}
 		} else {
 			instUnhandledMessageCounter.Inc()
 			if *logLevel == "debug" {
