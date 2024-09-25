@@ -4,7 +4,18 @@ import (
 	"log/slog"
 	"strconv"
 	"strings"
+	"time"
 )
+
+func parseIntegerString(s string) int {
+	i, err := strconv.Atoi(s)
+	if err != nil {
+		slog.Error("Error parsing integer string", "string", s)
+		return 0
+	}
+
+	return i
+}
 
 func parseChannelWidth(width uint32) int {
 	switch width {
@@ -37,6 +48,10 @@ func parseAPConnectionStatus(status string) bool {
 
 func parseUpDown(s string) bool {
 	return strings.ToLower(s) == "up"
+}
+
+func parseOk(s string) bool {
+	return strings.ToLower(s) == "ok"
 }
 
 func parseLatLong(latlong string, idx int) string {
@@ -95,4 +110,84 @@ func parsePhyLinkSpeed(phyLink string) string {
 
 func parsePhyLinkDuplex(phyLink string) string {
 	return parsePhyLink(phyLink, 2)
+}
+
+func parseRegistrationStatus(status string) bool {
+	return strings.ToLower(status) == "approved"
+}
+
+func parseSwitchStatus(status string) bool {
+	return strings.ToLower(status) == "online"
+}
+
+func parseSTPStatus(status string) bool {
+	return strings.ToLower(status) == "forwarding"
+}
+
+func parseLongPortName(port string) string {
+	return shortPortNameRegex.FindString(port)
+}
+
+// Parse uptimes in the following formats:
+//   - hh:mm:ss.ms
+//   - dd days, hh:mm:ss.ms
+func parseUptime(t string) int64 {
+	var err error
+
+	p := strings.Split(t, ", ")
+	if len(p) != 1 && len(p) != 2 {
+		slog.Error("Error parsing uptime", "time", t)
+
+		return 0
+	}
+
+	// Parse days
+	days := 0
+	if len(p) == 2 {
+		d := strings.Split(p[0], " ")
+		if len(d) != 2 || !(d[1] == "days" || d[1] == "day") {
+			slog.Error("Error parsing days in uptime", "time", t, "days", p[0])
+
+			return 0
+		}
+
+		days, err = strconv.Atoi(d[0])
+		if err != nil {
+			slog.Error(
+				"Error converting days in uptime to int",
+				"error",
+				err.Error(),
+				"time",
+				t,
+				"days",
+				d[0],
+			)
+
+			return 0
+		}
+	}
+
+	duration := time.Duration(days) * 24 * time.Hour
+
+	// Parse hours/minutes/seconds
+	hours, err := time.Parse("15:04:05.00", p[len(p)-1])
+	if err != nil {
+		slog.Error(
+			"Error parsing hours in uptime",
+			"error",
+			err.Error(),
+			"time",
+			t,
+			"hours",
+			p[len(p)-1],
+		)
+
+		return 0
+	}
+
+	z, _ := time.Parse("15:04:05.00", "00:00:00.00")
+
+	duration += hours.Sub(z)
+
+	return int64(duration / time.Second)
 }
