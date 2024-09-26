@@ -42,6 +42,10 @@ func parseAPConnectionStatus(status string) bool {
 	return strings.ToLower(status) == "connect"
 }
 
+func parseUpDown(s string) bool {
+	return strings.ToLower(s) == "up"
+}
+
 func parseLatLong(latlong string, idx int) string {
 	l := strings.Split(latlong, ",")
 	if len(l) == 2 {
@@ -56,6 +60,26 @@ func parseLatitude(latlong string) string {
 
 func parseLongitude(latlong string) string {
 	return parseLatLong(latlong, 1)
+}
+
+func parsePhyLink(phyLink string, idx int) string {
+	l := strings.Split(phyLink, " ")
+	if len(l) <= 3 && idx < len(l) {
+		return l[idx]
+	}
+	return ""
+}
+
+func parsePhyLinkStatus(phyLink string) string {
+	return parsePhyLink(phyLink, 0)
+}
+
+func parsePhyLinkSpeed(phyLink string) string {
+	return parsePhyLink(phyLink, 1)
+}
+
+func parsePhyLinkDuplex(phyLink string) string {
+	return parsePhyLink(phyLink, 2)
 }
 
 func handleEvent(systemID string, message *pb.EventMessage) error {
@@ -152,6 +176,42 @@ func handleApStatus(systemID string, message *pb.APStatus) error {
 	if errs := appendMetrics(timestamp, apMetrics, labelMap, metricsFamily); len(errs) >= 1 {
 		for _, err := range errs {
 			slog.Error("Error while appending metrics", "error", err.Error())
+		}
+	}
+
+	for _, port := range apStatusData.GetLanPortStatus() {
+		portLabels := map[string]string{
+			"port_id": strconv.Itoa(int(port.GetPort())),
+			"port":    port.GetInterface(),
+		}
+
+		portInfoLabels := map[string]string{
+			"speed":          parsePhyLinkSpeed(port.GetPhyLink()),
+			"duplex":         parsePhyLinkDuplex(port.GetPhyLink()),
+			"phy_capability": port.GetPhyCapability(),
+		}
+
+		portMetrics := map[string]interface{}{
+			"ruckus_ap_lan_port_logical_state": parseUpDown(port.GetLogicLink()),
+			"ruckus_ap_lan_port_phy_state":     parseUpDown(parsePhyLinkStatus(port.GetPhyLink())),
+
+			"ruckus_ap_lan_port_info": 1,
+		}
+
+		labelMap := map[string]map[string]string{
+			"ruckus_ap_lan_port_info": portInfoLabels,
+			"default":                 portLabels,
+		}
+
+		if errs := appendMetrics(
+			timestamp,
+			portMetrics,
+			labelMap,
+			metricsFamily,
+		); len(errs) >= 1 {
+			for _, err := range errs {
+				slog.Error("Error while appending metrics", "error", err.Error())
+			}
 		}
 	}
 
