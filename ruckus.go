@@ -95,10 +95,11 @@ func handleEvent(systemID string, message *pb.EventMessage) error {
 
 		"subcategory": message.GetSubCategory(),
 
-		"zone_name": message.GetZoneName(),
-
+		"domain_name":   message.GetDomainName(),
+		"zone_name":     message.GetZoneName(),
 		"ap_group_name": message.GetApGroupName(),
-		"ap_mac":        parseMAC(message.GetApMac()),
+
+		"ap_mac": parseMAC(message.GetApMac()),
 
 		"client_mac": parseMAC(message.GetClientMac()),
 	}
@@ -133,7 +134,6 @@ func handleApStatus(systemID string, message *pb.APStatus) error {
 	timestamp := time.Unix(int64(message.GetSampleTime()), 0)
 
 	apInfoLabels := map[string]string{
-		"ap_group_name": message.GetApgroupName(),
 		"ipv4_address":  apSystem.GetIp(),
 		"ipv6_address":  apSystem.GetIpv6(),
 		"fw_version":    apSystem.GetFwVersion(),
@@ -289,7 +289,9 @@ func handleApStatus(systemID string, message *pb.APStatus) error {
 	apLabels := map[string]string{
 		"system_id": systemID,
 
-		"zone_name": apSystem.GetZoneName(),
+		"domain_name":   message.GetDomainName(),
+		"zone_name":     message.GetZoneName(),
+		"ap_group_name": message.GetApgroupName(),
 
 		"ap_name": apSystem.GetDeviceName(),
 		"ap_mac":  parseMAC(apSystem.GetAp()),
@@ -370,7 +372,9 @@ func handleApClient(systemID string, message *pb.APClientStats) error {
 	apLabels := map[string]string{
 		"system_id": systemID,
 
-		"zone_name": message.GetZoneName(),
+		"domain_name":   message.GetDomainName(),
+		"zone_name":     message.GetZoneName(),
+		"ap_group_name": message.GetApgroupName(),
 
 		"ap_name": message.GetDeviceName(),
 		"ap_mac":  parseMAC(message.GetAp()),
@@ -439,7 +443,8 @@ func handleApWiredClient(systemID string, message *pb.APWiredClientStats) error 
 	apLabels := map[string]string{
 		"system_id": systemID,
 
-		"zone_id": message.GetZoneId(),
+		"domain_id": message.GetDomainId(),
+		"zone_id":   message.GetZoneId(),
 
 		"ap_mac": parseMAC(message.GetApmac()),
 	}
@@ -498,7 +503,9 @@ func handleApReport(systemID string, message *pb.APReportStats) error {
 	apLabels := map[string]string{
 		"system_id": systemID,
 
-		"zone_name": message.GetZoneName(),
+		"domain_name":   message.GetDomainName(),
+		"zone_name":     message.GetZoneName(),
+		"ap_group_name": message.GetApgroupName(),
 
 		"ap_name": message.GetDeviceName(),
 		"ap_mac":  parseMAC(message.GetAp()),
@@ -526,7 +533,8 @@ func handleApConfigurationMessage(systemID string, message *pb.ConfigurationMess
 	} else {
 		for _, ap := range apConfig {
 			apLabels := map[string]string{
-				"zone_id": ap.ZoneID,
+				"zone_id":     ap.ZoneID,
+				"ap_group_id": ap.ApGroupID,
 
 				"ap_name": ap.DeviceName,
 				"ap_mac":  parseMAC(ap.ApID),
@@ -601,24 +609,59 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 
 	metricsFamily := map[string]*dto.MetricFamily{}
 
+	domainIDs := map[string]string{}
 	domainZones := map[string]map[string]string{}
 	for _, tenant := range clusterInfo.GetTenantInfos() {
 		adminDomain := tenant.GetAdminDomain()
 		adminDomainName := adminDomain.GetDomainName()
+
+		domainIDs[adminDomainName] = adminDomain.GetDomainId()
+
 		if domainZones[adminDomainName] == nil {
 			domainZones[adminDomainName] = map[string]string{}
 		}
+
 		for _, zone := range adminDomain.GetZoneInfos() {
 			domainZones[adminDomainName][zone.GetZoneId()] = zone.GetZoneName()
 		}
 
-		for _, domain := range adminDomain.GetSubDomainInfos() {
-			domainName := domain.GetDomainName()
-			if domainZones[domainName] == nil {
-				domainZones[domainName] = map[string]string{}
+		for _, subdomain := range adminDomain.GetSubDomainInfos() {
+			subdomainName := subdomain.GetDomainName()
+
+			domainIDs[subdomainName] = subdomain.GetDomainId()
+
+			if domainZones[subdomainName] == nil {
+				domainZones[subdomainName] = map[string]string{}
 			}
-			for _, zone := range domain.GetZoneInfos() {
-				domainZones[domainName][zone.GetZoneId()] = zone.GetZoneName()
+
+			for _, zone := range subdomain.GetZoneInfos() {
+				domainZones[subdomainName][zone.GetZoneId()] = zone.GetZoneName()
+			}
+		}
+	}
+
+	for domainName, domainID := range domainIDs {
+		domainLabels := map[string]string{
+			"domain_id":   domainID,
+			"domain_name": domainName,
+		}
+
+		domainMetrics := map[string]interface{}{
+			"ruckus_domain_info": 1,
+		}
+
+		labelMap := map[string]map[string]string{
+			"ruckus_domain_info": domainLabels,
+		}
+
+		if errs := appendMetrics(
+			timestamp,
+			domainMetrics,
+			labelMap,
+			metricsFamily,
+		); len(errs) >= 1 {
+			for _, err := range errs {
+				slog.Error("Error while appending metrics", "error", err.Error())
 			}
 		}
 	}
@@ -955,6 +998,57 @@ func handleZoneConfigurationMessage(systemID string, message *pb.ConfigurationMe
 			if errs := appendMetrics(
 				timestamp,
 				zoneMetrics,
+				labelMap,
+				metricsFamily,
+			); len(errs) >= 1 {
+				for _, err := range errs {
+					slog.Error("Error while appending metrics", "error", err.Error())
+				}
+			}
+		}
+	}
+
+	clusterLabels := map[string]string{
+		"system_id": systemID,
+	}
+
+	if err := prom.write(metricsFamily, clusterLabels); err != nil {
+		return errors.Wrapf(err, "Error writing metrics to prometheus")
+	}
+
+	return nil
+}
+
+func handleApGroupConfigurationMessage(systemID string, message *pb.ConfigurationMessage) error {
+	timestamp := time.UnixMilli(int64(message.GetTimestamp()))
+
+	clusterInfo := message.GetClusterInfo()
+
+	metricsFamily := map[string]*dto.MetricFamily{}
+
+	var apGroupConfig []ApGroupConfig
+	err := json.Unmarshal([]byte(clusterInfo.GetApGroups()), &apGroupConfig)
+	if err != nil {
+		instJSONUnparseableCounter.WithLabelValues(systemID, "ap_group_configuration").Inc()
+		slog.Error("Failed to convert ap group configuration to JSON", "error", err)
+	} else {
+		for _, apGroup := range apGroupConfig {
+			apGroupLabels := map[string]string{
+				"ap_group_id":   apGroup.Key,
+				"ap_group_name": apGroup.Name,
+			}
+
+			apGroupMetrics := map[string]interface{}{
+				"ruckus_ap_group_info": 1,
+			}
+
+			labelMap := map[string]map[string]string{
+				"ruckus_ap_group_info": apGroupLabels,
+			}
+
+			if errs := appendMetrics(
+				timestamp,
+				apGroupMetrics,
 				labelMap,
 				metricsFamily,
 			); len(errs) >= 1 {

@@ -235,3 +235,10 @@ type ZoneConfig struct {
 	SplitTunnelEnabledResult       interface{}   `json:",omitempty"`
 	MeshSSID                       interface{}   `json:",omitempty"`
 }
+
+type ApGroupConfig struct {
+	GpsInfo  string `json:",omitempty"`
+	Name     string `json:",omitempty"`
+	Location string `json:",omitempty"`
+	Key      string `json:",omitempty"`
+}
