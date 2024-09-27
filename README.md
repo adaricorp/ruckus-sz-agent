@@ -33,6 +33,7 @@ The following message types are supported:
   * SzApConf
   * SzSystemConf
   * SzZoneConf
+  * SzApGroupConf
 
 ## Downloading
 

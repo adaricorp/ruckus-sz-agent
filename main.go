@@ -512,6 +512,29 @@ func main() {
 					)
 				}
 			}
+
+			if clusterMessage.GetApGroups() != "" {
+				slog.Debug("Starting to process cluster ap group configuration message")
+				if err := handleApGroupConfigurationMessage(systemID, configMessage); err != nil {
+					instMessageErrorCounter.WithLabelValues(
+						systemID,
+						"cluster_ap_group_configuration",
+					).Inc()
+					slog.Error(
+						"Error processing cluster ap group configuration message",
+						"error",
+						err.Error(),
+					)
+				} else {
+					instProcessedMessageCounter.WithLabelValues(
+						systemID,
+						"cluster_ap_group_configuration",
+					).Inc()
+					slog.Debug(
+						"Finished processing cluster ap group configuration message",
+					)
+				}
+			}
 		} else {
 			instUnhandledMessageCounter.WithLabelValues(systemID).Inc()
 			if *logLevel == "debug" {
