@@ -62,6 +62,14 @@ func parsePhyLink(phyLink string, idx int) string {
 	return ""
 }
 
+func parseDisconnectReason(reasonCode string) string {
+	if reason, exists := WiFiReasonCodes[reasonCode]; exists {
+		return reason
+	}
+
+	return reasonCode
+}
+
 func parsePhyLinkStatus(phyLink string) string {
 	return parsePhyLink(phyLink, 0)
 }
