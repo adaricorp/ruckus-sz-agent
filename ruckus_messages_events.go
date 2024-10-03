@@ -20,6 +20,9 @@ func handleEvent(systemID string, message *pb.EventMessage) error {
 
 		"subcategory": message.GetSubCategory(),
 
+		"reason":            message.GetReason(),
+		"disconnect_reason": parseDisconnectReason(message.GetDisconnectReason()),
+
 		"domain_name":   message.GetDomainName(),
 		"zone_name":     message.GetZoneName(),
 		"ap_group_name": message.GetApGroupName(),
