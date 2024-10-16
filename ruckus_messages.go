@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log/slog"
 	"strconv"
 	"strings"
 )
@@ -39,10 +40,17 @@ func parseUpDown(s string) bool {
 }
 
 func parseLatLong(latlong string, idx int) string {
+	if latlong == "" {
+		return ""
+	}
+
 	l := strings.Split(latlong, ",")
 	if len(l) == 2 {
 		return l[idx]
 	}
+
+	slog.Error("Error parsing latlong", "latlong", latlong, "index", idx)
+
 	return ""
 }
 
@@ -59,6 +67,9 @@ func parsePhyLink(phyLink string, idx int) string {
 	if len(l) <= 3 && idx < len(l) {
 		return l[idx]
 	}
+
+	slog.Error("Error parsing phy link", "phylink", phyLink, "index", idx)
+
 	return ""
 }
 
