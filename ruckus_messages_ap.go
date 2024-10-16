@@ -350,7 +350,7 @@ func handleApReport(systemID string, message *pb.APReportStats) error {
 		clientLabels := map[string]string{
 			"radio_id":   strconv.Itoa(int(client.GetRadioId())),
 			"ssid":       client.GetSsid(),
-			"vlan":       strconv.Itoa(int(client.GetClientVlan())),
+			"vlan":       parseVLAN(int32(client.GetClientVlan())),
 			"client_mac": parseMAC(client.GetClientMac()),
 		}
 
