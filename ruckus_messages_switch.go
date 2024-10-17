@@ -16,12 +16,7 @@ import (
 func handleSwitchStatus(systemID string, ts int64, message *pb.SwitchStatus) error {
 	timestamp := time.UnixMilli(ts)
 
-	switchLabels := map[string]string{
-		"switch_serial": message.GetSerialNumber(),
-	}
-
 	switchInfoLabels := map[string]string{
-		"mac":              parseMAC(message.GetId()),
 		"firmware":         message.GetFirmware(),
 		"version":          message.GetSwitchSWVersion(),
 		"model":            message.GetModel(),
@@ -53,7 +48,7 @@ func handleSwitchStatus(systemID string, ts int64, message *pb.SwitchStatus) err
 
 	labelMap := map[string]map[string]string{
 		"ruckus_switch_info": switchInfoLabels,
-		"default":            switchLabels,
+		"default":            {},
 	}
 
 	metricsFamily := map[string]*dto.MetricFamily{}
@@ -81,8 +76,8 @@ func handleSwitchStatus(systemID string, ts int64, message *pb.SwitchStatus) err
 					}
 
 					psuLabels := map[string]string{
-						"switch_serial": unit.SerialNumber,
-						"psu_id":        strconv.Itoa(slot.SlotNumber),
+						"unit_serial": unit.SerialNumber,
+						"psu_id":      strconv.Itoa(slot.SlotNumber),
 					}
 
 					psuInfoLabels := map[string]string{
@@ -129,8 +124,8 @@ func handleSwitchStatus(systemID string, ts int64, message *pb.SwitchStatus) err
 			for _, unit := range fanStatus {
 				for _, slot := range unit.FanSlotList {
 					fanLabels := map[string]string{
-						"switch_serial": unit.SerialNumber,
-						"fan_id":        strconv.Itoa(slot.SlotNumber),
+						"unit_serial": unit.SerialNumber,
+						"fan_id":      strconv.Itoa(slot.SlotNumber),
 					}
 
 					fanMetrics := map[string]interface{}{
@@ -170,8 +165,8 @@ func handleSwitchStatus(systemID string, ts int64, message *pb.SwitchStatus) err
 			for _, unit := range temperatureStatus {
 				for _, slot := range unit.TemperatureSlotList {
 					temperatureLabels := map[string]string{
-						"switch_serial": unit.SerialNumber,
-						"sensor_id":     strconv.Itoa(slot.SlotNumber),
+						"unit_serial": unit.SerialNumber,
+						"sensor_id":   strconv.Itoa(slot.SlotNumber),
 					}
 
 					temperatureMetrics := map[string]interface{}{
@@ -208,6 +203,7 @@ func handleSwitchStatus(systemID string, ts int64, message *pb.SwitchStatus) err
 		"switch_group_name": message.GetSwitchGroupLevelOneName(),
 
 		"switch_name": message.GetSwitchName(),
+		"switch_mac":  parseMAC(message.GetId()),
 	}
 
 	if err := prom.write(metricsFamily, labels); err != nil {
@@ -227,10 +223,11 @@ func handleSwitchUnitStatus(systemID string, ts int64, switchUnits []*pb.SwitchU
 			"domain_name":       switchUnit.GetDomainName(),
 			"switch_group_name": switchUnit.GetSwitchGroupLevelOneName(),
 
-			"switch_name":   switchUnit.GetUnitName(),
-			"switch_serial": switchUnit.GetId(),
+			"switch_name": switchUnit.GetUnitName(),
+			"switch_mac":  parseMAC(switchUnit.GetSwitchId()),
 
-			"unit_id": strconv.Itoa(int(switchUnit.GetUnitId())),
+			"unit_id":     strconv.Itoa(int(switchUnit.GetUnitId())),
+			"unit_serial": switchUnit.GetId(),
 		}
 
 		switchUnitInfoLabels := map[string]string{
@@ -281,8 +278,10 @@ func handleSwitchPortStatus(systemID string, ts int64, ports []*pb.PortStatus) e
 			"domain_name":       port.GetDomainName(),
 			"switch_group_name": port.GetSwitchGroupLevelOneName(),
 
-			"switch_name":   port.GetSwitchName(),
-			"switch_serial": port.GetSwitchUnitId(),
+			"switch_name": port.GetSwitchName(),
+			"switch_mac":  parseMAC(port.GetSwitchId()),
+
+			"unit_serial": port.GetSwitchUnitId(),
 
 			"port": port.GetPortIdentifier(),
 		}
@@ -450,8 +449,10 @@ func handleSwitchConnectedDeviceStatus(
 			"domain_name":       device.GetDomainName(),
 			"switch_group_name": device.GetSwitchGroupLevelOneName(),
 
-			"switch_name":   device.GetSwitchName(),
-			"switch_serial": device.GetUnitId(),
+			"switch_name": device.GetSwitchName(),
+			"switch_mac":  parseMAC(device.GetSwitchId()),
+
+			"unit_serial": device.GetUnitId(),
 
 			"port": parseLongPortName(device.GetLocalPort()),
 
@@ -517,8 +518,10 @@ func handleSwitchClientVisibility(
 			"domain_name":       client.GetDomainName(),
 			"switch_group_name": client.GetSwitchGroupLevelOneName(),
 
-			"switch_name":   client.GetSwitchName(),
-			"switch_serial": client.GetUnitId(),
+			"switch_name": client.GetSwitchName(),
+			"switch_mac":  parseMAC(client.GetSwitchId()),
+
+			"unit_serial": client.GetUnitId(),
 
 			"port": client.GetSwitchPort(),
 
