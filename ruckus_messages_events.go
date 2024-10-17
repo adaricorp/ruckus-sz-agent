@@ -20,7 +20,6 @@ func handleEvent(systemID string, message *pb.EventMessage) error {
 
 		"subcategory": message.GetSubCategory(),
 
-		"reason":            message.GetReason(),
 		"disconnect_reason": parseDisconnectReason(message.GetDisconnectReason()),
 
 		"domain_name":   message.GetDomainName(),
@@ -30,6 +29,10 @@ func handleEvent(systemID string, message *pb.EventMessage) error {
 		"ap_mac": parseMAC(message.GetApMac()),
 
 		"client_mac": parseMAC(message.GetClientMac()),
+	}
+
+	if message.GetReason() != message.GetDescription() {
+		metadataMap["reason"] = message.GetReason()
 	}
 
 	timestamp := time.UnixMilli(int64(message.GetTimestamp()))
