@@ -103,88 +103,81 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 
 	metricsFamily := map[string]*dto.MetricFamily{}
 
-	domainIDs := map[string]string{}
-	domainZones := map[string]map[string]string{}
+	tenantDomains := map[string][]*pb.DomainMessage{}
 	for _, tenant := range clusterInfo.GetTenantInfos() {
-		adminDomain := tenant.GetAdminDomain()
-		adminDomainName := adminDomain.GetDomainName()
+		tenantName := tenant.GetTenantName()
+		tenantDomains[tenantName] = []*pb.DomainMessage{}
 
-		domainIDs[adminDomainName] = adminDomain.GetDomainId()
+		root := tenant.GetAdminDomain()
+		stack := []*pb.DomainMessage{root}
 
-		if domainZones[adminDomainName] == nil {
-			domainZones[adminDomainName] = map[string]string{}
-		}
+		for len(stack) > 0 {
+			for range stack {
+				node := stack[0]
+				tenantDomains[tenantName] = append(
+					tenantDomains[tenantName],
+					node,
+				)
 
-		for _, zone := range adminDomain.GetZoneInfos() {
-			domainZones[adminDomainName][zone.GetZoneId()] = zone.GetZoneName()
-		}
-
-		for _, subdomain := range adminDomain.GetSubDomainInfos() {
-			subdomainName := subdomain.GetDomainName()
-
-			domainIDs[subdomainName] = subdomain.GetDomainId()
-
-			if domainZones[subdomainName] == nil {
-				domainZones[subdomainName] = map[string]string{}
-			}
-
-			for _, zone := range subdomain.GetZoneInfos() {
-				domainZones[subdomainName][zone.GetZoneId()] = zone.GetZoneName()
+				stack = stack[1:]
+				stack = append(stack, node.GetSubDomainInfos()...)
 			}
 		}
 	}
 
-	for domainName, domainID := range domainIDs {
-		domainLabels := map[string]string{
-			"domain_id":   domainID,
-			"domain_name": domainName,
-		}
-
-		domainMetrics := map[string]interface{}{
-			"ruckus_domain_info": 1,
-		}
-
-		labelMap := map[string]map[string]string{
-			"ruckus_domain_info": domainLabels,
-		}
-
-		if errs := appendMetrics(
-			timestamp,
-			domainMetrics,
-			labelMap,
-			metricsFamily,
-		); len(errs) >= 1 {
-			for _, err := range errs {
-				slog.Error("Error while appending metrics", "error", err.Error())
-			}
-		}
-	}
-
-	for domainName, zones := range domainZones {
-		for zoneID, zoneName := range zones {
-			zoneLabels := map[string]string{
-				"domain_name": domainName,
-
-				"zone_id":   zoneID,
-				"zone_name": zoneName,
+	for tenantName, domains := range tenantDomains {
+		for _, domain := range domains {
+			domainLabels := map[string]string{
+				"tenant_name": tenantName,
+				"domain_id":   domain.GetDomainId(),
+				"domain_name": domain.GetDomainName(),
 			}
 
-			zoneMetrics := map[string]interface{}{
-				"ruckus_zone_info": 1,
+			domainMetrics := map[string]interface{}{
+				"ruckus_domain_info": 1,
 			}
 
 			labelMap := map[string]map[string]string{
-				"ruckus_zone_info": zoneLabels,
+				"ruckus_domain_info": domainLabels,
 			}
 
 			if errs := appendMetrics(
 				timestamp,
-				zoneMetrics,
+				domainMetrics,
 				labelMap,
 				metricsFamily,
 			); len(errs) >= 1 {
 				for _, err := range errs {
 					slog.Error("Error while appending metrics", "error", err.Error())
+				}
+			}
+
+			for _, zone := range domain.GetZoneInfos() {
+				zoneLabels := map[string]string{
+					"tenant_name": tenantName,
+					"domain_name": domain.GetDomainName(),
+
+					"zone_id":   zone.GetZoneId(),
+					"zone_name": zone.GetZoneName(),
+				}
+
+				zoneMetrics := map[string]interface{}{
+					"ruckus_zone_info": 1,
+				}
+
+				labelMap := map[string]map[string]string{
+					"ruckus_zone_info": zoneLabels,
+				}
+
+				if errs := appendMetrics(
+					timestamp,
+					zoneMetrics,
+					labelMap,
+					metricsFamily,
+				); len(errs) >= 1 {
+					for _, err := range errs {
+						slog.Error("Error while appending metrics", "error", err.Error())
+					}
 				}
 			}
 		}
