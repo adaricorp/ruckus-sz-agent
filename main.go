@@ -533,6 +533,28 @@ func main() {
 					slog.Debug("Finished processing switch client visibility message")
 				}
 			}
+		} else if switchConfigMessage := sciMessage.GetSwitchConfigurationMessage(); switchConfigMessage != nil {
+			if *prometheusRemoteWriteURI == "" {
+				continue
+			}
+			slog.Debug("Starting to process switch configuration message")
+			if err := handleSwitchConfigurationMessage(systemID, switchConfigMessage); err != nil {
+				instMessageErrorCounter.WithLabelValues(
+					systemID,
+					"switch_configuration",
+				).Inc()
+				slog.Error(
+					"Error processing switch configuration message",
+					"error",
+					err.Error(),
+				)
+			} else {
+				instProcessedMessageCounter.WithLabelValues(
+					systemID,
+					"switch_configuration",
+				).Inc()
+				slog.Debug("Finished processing switch configuration message")
+			}
 		} else if configMessage := sciMessage.GetConfigurationMessage(); configMessage != nil {
 			if *prometheusRemoteWriteURI == "" {
 				continue
