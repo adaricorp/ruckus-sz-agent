@@ -588,3 +588,79 @@ func handleSwitchClientVisibility(
 
 	return nil
 }
+
+func handleSwitchConfigurationMessage(
+	systemID string,
+	message *pb.SwitchConfigurationMessage,
+) error {
+	timestamp := time.UnixMilli(int64(message.GetTimestamp()))
+
+	clusterInfo := message.GetClusterInfo()
+
+	metricsFamily := map[string]*dto.MetricFamily{}
+
+	tenantDomains := map[string][]*pb.IcxDomainMessage{}
+	for _, tenant := range clusterInfo.GetTenantInfos() {
+		tenantName := tenant.GetTenantName()
+		tenantDomains[tenantName] = []*pb.IcxDomainMessage{}
+
+		root := tenant.GetAdminDomain()
+		stack := []*pb.IcxDomainMessage{root}
+
+		for len(stack) > 0 {
+			for range stack {
+				node := stack[0]
+				tenantDomains[tenantName] = append(
+					tenantDomains[tenantName],
+					node,
+				)
+
+				stack = stack[1:]
+				stack = append(stack, node.GetSubDomainInfos()...)
+			}
+		}
+	}
+
+	for tenantName, domains := range tenantDomains {
+		for _, domain := range domains {
+			for _, switchGroup := range domain.GetSwitchGroupInfos() {
+				switchGroupLabels := map[string]string{
+					"tenant_name": tenantName,
+					"domain_name": domain.GetDomainName(),
+
+					"switch_group_id":   switchGroup.GetSwitchGroupId(),
+					"switch_group_name": switchGroup.GetSwitchGroupName(),
+				}
+
+				switchGroupMetrics := map[string]interface{}{
+					"ruckus_switch_group_info": 1,
+				}
+
+				labelMap := map[string]map[string]string{
+					"ruckus_switch_group_info": switchGroupLabels,
+				}
+
+				if errs := appendMetrics(
+					timestamp,
+					switchGroupMetrics,
+					labelMap,
+					metricsFamily,
+				); len(errs) >= 1 {
+					for _, err := range errs {
+						slog.Error("Error while appending metrics", "error", err.Error())
+					}
+				}
+			}
+		}
+	}
+
+	systemLabels := map[string]string{
+		"system_id": systemID,
+	}
+
+	if err := prom.write(metricsFamily, systemLabels); err != nil {
+		return errors.Wrapf(err, "Error writing metrics to prometheus")
+	}
+
+	return nil
+}
