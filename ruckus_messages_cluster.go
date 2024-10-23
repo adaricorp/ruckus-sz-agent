@@ -266,48 +266,55 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 
 				quarterStartTime := time.UnixMilli(int64(t))
 
-				memoryUsedPerc, err := strconv.ParseFloat(q.MemoryPerc, 64)
-				if err != nil {
-					slog.Error(
-						"Failed to convert memory percentage from string",
-						"value",
-						q.MemoryPerc,
-						"error",
-						err,
-					)
-					continue
-				}
-				diskUsedPerc, err := strconv.ParseFloat(q.DiskPerc, 64)
-				if err != nil {
-					slog.Error(
-						"Failed to convert disk percentage from string",
-						"value",
-						q.DiskPerc,
-						"error",
-						err,
-					)
-					continue
-				}
-				cpuUsedPerc, err := strconv.ParseFloat(q.CPUPerc, 64)
-				if err != nil {
-					slog.Error(
-						"Failed to convert cpu percentage from string",
-						"value",
-						q.CPUPerc,
-						"error",
-						err,
-					)
-					continue
-				}
-
 				bladeLabels := map[string]string{
 					"blade_id": blade.ControlID,
 				}
 
-				bladeMetrics := map[string]interface{}{
-					"ruckus_blade_memory_used_percentage":  memoryUsedPerc,
-					"ruckus_blade_storage_used_percentage": diskUsedPerc,
-					"ruckus_blade_cpu_used_percentage":     cpuUsedPerc,
+				bladeMetrics := map[string]interface{}{}
+
+				if q.MemoryPerc != "" {
+					memoryUsedPerc, err := strconv.ParseFloat(q.MemoryPerc, 64)
+					if err != nil {
+						slog.Error(
+							"Failed to convert memory percentage from string",
+							"value",
+							q.MemoryPerc,
+							"error",
+							err,
+						)
+					} else {
+						bladeMetrics["ruckus_blade_memory_used_percentage"] = memoryUsedPerc
+					}
+				}
+
+				if q.DiskPerc != "" {
+					diskUsedPerc, err := strconv.ParseFloat(q.DiskPerc, 64)
+					if err != nil {
+						slog.Error(
+							"Failed to convert disk percentage from string",
+							"value",
+							q.DiskPerc,
+							"error",
+							err,
+						)
+					} else {
+						bladeMetrics["ruckus_blade_storage_used_percentage"] = diskUsedPerc
+					}
+				}
+
+				if q.CPUPerc != "" {
+					cpuUsedPerc, err := strconv.ParseFloat(q.CPUPerc, 64)
+					if err != nil {
+						slog.Error(
+							"Failed to convert cpu percentage from string",
+							"value",
+							q.CPUPerc,
+							"error",
+							err,
+						)
+					} else {
+						bladeMetrics["ruckus_blade_cpu_used_percentage"] = cpuUsedPerc
+					}
 				}
 
 				labelMap := map[string]map[string]string{
