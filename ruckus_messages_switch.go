@@ -17,14 +17,13 @@ func handleSwitchStatus(systemID string, ts int64, message *pb.SwitchStatus) err
 	timestamp := time.UnixMilli(ts)
 
 	switchInfoLabels := map[string]string{
-		"firmware":         message.GetFirmware(),
-		"version":          message.GetSwitchSWVersion(),
-		"model":            message.GetModel(),
-		"switch_type":      message.GetModules(),
 		"ipv4_address":     message.GetIpAddress(),
-		"status":           message.GetStatus(),
+		"fw_version":       message.GetFirmware(),
+		"sw_version":       message.GetSwitchSWVersion(),
+		"model":            message.GetModel(),
+		"serial_number":    message.GetSerialNumber(),
 		"mode":             message.GetSwitchMode(),
-		"sync_status":      message.GetLocalsyncStatus().String(),
+		"switch_type":      message.GetModules(),
 		"active_partition": message.GetPartitionInUse(),
 	}
 
@@ -66,15 +65,15 @@ func handleSwitchStatus(systemID string, ts int64, message *pb.SwitchStatus) err
 			instJSONUnparseableCounter.WithLabelValues(systemID, "switch_status_psu").Inc()
 			slog.Error("Failed to convert switch psu status to JSON", "error", err)
 		} else {
-			for _, unit := range psuStatus {
-				for i, slot := range unit.PowerSupplySlotList {
-					if i == 0 {
-						// Skip first entry which is a PSU summary for the
-						// entire stack, we are only interested in the PSU
-						// status for individual units in the switch stack
-						continue
-					}
+			for i, unit := range psuStatus {
+				if i == 0 {
+					// Skip first entry which is a PSU summary for the
+					// entire stack, we are only interested in the PSU
+					// status for individual units in the switch stack
+					continue
+				}
 
+				for _, slot := range unit.PowerSupplySlotList {
 					psuLabels := map[string]string{
 						"unit_serial": unit.SerialNumber,
 						"psu_id":      strconv.Itoa(slot.SlotNumber),
@@ -85,14 +84,14 @@ func handleSwitchStatus(systemID string, ts int64, message *pb.SwitchStatus) err
 					}
 
 					psuMetrics := map[string]interface{}{
-						"ruckus_switch_psu_status": parseOk(slot.Status),
+						"ruckus_switch_unit_psu_status": parseOk(slot.Status),
 
-						"ruckus_switch_psu_info": 1,
+						"ruckus_switch_unit_psu_info": 1,
 					}
 
 					psuLabelMap := map[string]map[string]string{
-						"ruckus_switch_psu_info": psuInfoLabels,
-						"default":                psuLabels,
+						"ruckus_switch_unit_psu_info": psuInfoLabels,
+						"default":                     psuLabels,
 					}
 
 					if errs := appendMetrics(
@@ -129,7 +128,7 @@ func handleSwitchStatus(systemID string, ts int64, message *pb.SwitchStatus) err
 					}
 
 					fanMetrics := map[string]interface{}{
-						"ruckus_switch_fan_status": parseOk(slot.Status),
+						"ruckus_switch_unit_fan_status": parseOk(slot.Status),
 					}
 
 					fanLabelMap := map[string]map[string]string{
@@ -170,7 +169,7 @@ func handleSwitchStatus(systemID string, ts int64, message *pb.SwitchStatus) err
 					}
 
 					temperatureMetrics := map[string]interface{}{
-						"ruckus_switch_temperature_celsius": slot.TemperatureValue,
+						"ruckus_switch_unit_temperature_celsius": slot.TemperatureValue,
 					}
 
 					temperatureLabelMap := map[string]map[string]string{
@@ -296,15 +295,14 @@ func handleSwitchPortStatus(systemID string, ts int64, ports []*pb.PortStatus) e
 
 			"stp_status": port.GetSpanningTreeStatus(),
 
-			"stack_port": strconv.FormatBool(port.GetUsedInFormingStack()),
-			"lag_port":   strconv.FormatBool(port.GetIsLagMember()),
-
-			"lldp_enabled": strconv.FormatBool(port.GetLldpEnabled()),
-			"poe_enabled":  strconv.FormatBool(port.GetPoeEnabled()),
+			"stack_enabled": strconv.FormatBool(port.GetUsedInFormingStack()),
+			"lag_enabled":   strconv.FormatBool(port.GetIsLagMember()),
+			"lldp_enabled":  strconv.FormatBool(port.GetLldpEnabled()),
+			"poe_enabled":   strconv.FormatBool(port.GetPoeEnabled()),
 
 			"speed":            port.GetPortSpeed(),
-			"speed_capability": port.GetPortSpeedCapacity(),
 			"transceiver_type": port.GetOpticsType(),
+			"phy_capability":   port.GetPortSpeedCapacity(),
 		}
 
 		lldpInfoLabels := map[string]string{
@@ -333,7 +331,7 @@ func handleSwitchPortStatus(systemID string, ts int64, ports []*pb.PortStatus) e
 		}
 
 		portMetrics := map[string]interface{}{
-			"ruckus_switch_port_status":        parsePortStatus(port.GetStatus()),
+			"ruckus_switch_port_phy_status":    parsePortStatus(port.GetStatus()),
 			"ruckus_switch_port_admin_status":  parsePortStatus(port.GetAdminStatus()),
 			"ruckus_switch_port_warning_state": port.GetIsInWarningState(),
 
