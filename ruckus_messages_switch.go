@@ -40,7 +40,6 @@ func handleSwitchStatus(systemID string, ts int64, message *pb.SwitchStatus) err
 		"ruckus_switch_operational_status":     message.GetOperational(),
 		"ruckus_switch_poe_total_milliwatts":   message.GetPoeTotal(),
 		"ruckus_switch_poe_used_milliwatts":    message.GetPoeUtilization(),
-		"ruckus_switch_priority":               message.GetPriority(),
 
 		"ruckus_switch_info": 1,
 	}
