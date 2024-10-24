@@ -336,18 +336,16 @@ func handleSwitchPortStatus(systemID string, ts int64, ports []*pb.PortStatus) e
 			"ruckus_switch_port_warning_state": port.GetIsInWarningState(),
 
 			"ruckus_switch_port_rx_bytes_total":             port.GetRx(),
-			"ruckus_switch_port_rx_unicast_packets_total":   port.GetUnicastIn(),
 			"ruckus_switch_port_rx_broadcast_packets_total": port.GetBroadcastIn(),
 			"ruckus_switch_port_rx_multicast_packets_total": port.GetMulticastIn(),
 			"ruckus_switch_port_tx_bytes_total":             port.GetTx(),
-			"ruckus_switch_port_tx_unicast_packets_total":   port.GetUnicastOut(),
 			"ruckus_switch_port_tx_broadcast_packets_total": port.GetBroadcastOut(),
 			"ruckus_switch_port_tx_multicast_packets_total": port.GetMulticastOut(),
 
-			"ruckus_switch_port_rx_discards_total":   port.GetInDiscard(),
 			"ruckus_switch_port_rx_errors_total":     port.GetInErr(),
+			"ruckus_switch_port_rx_crc_errors_total": port.GetCrcErr(),
+			"ruckus_switch_port_rx_discards_total":   port.GetInDiscard(),
 			"ruckus_switch_port_tx_errors_total":     port.GetOutErr(),
-			"ruckus_switch_port_tx_crc_errors_total": port.GetCrcErr(),
 
 			"ruckus_switch_port_info": 1,
 		}
