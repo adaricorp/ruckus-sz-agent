@@ -20,7 +20,7 @@ require (
 )
 
 require (
-	cloud.google.com/go/auth v0.9.9 // indirect
+	cloud.google.com/go/auth v0.10.0 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.4 // indirect
 	cloud.google.com/go/compute/metadata v0.5.2 // indirect
 	dario.cat/mergo v1.0.1 // indirect
