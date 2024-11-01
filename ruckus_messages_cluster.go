@@ -213,6 +213,7 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 			}
 
 			bladeMetrics := map[string]interface{}{
+				"ruckus_blade_state":                parseClusterState(c.BladeStateEnum),
 				"ruckus_blade_clients_connected":    c.ClientCount,
 				"ruckus_blade_aps_associated":       c.AssociateAPs,
 				"ruckus_blade_aps_connected":        c.ApCount,
@@ -355,12 +356,14 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 			"model":         clusterSummary.Model,
 			"serial_number": clusterSummary.SerialNumber,
 			"ipv4_address":  clusterSummary.IPAddress,
-			"state":         clusterSummary.ClusterState,
 			"blade_name":    clusterSummary.BladeName,
+			"state":         clusterSummary.ClusterState,
 			"blade_state":   clusterSummary.BladeState,
 		}
 
 		clusterMetrics := map[string]interface{}{
+			"ruckus_cluster_state":                         parseClusterState(clusterSummary.ClusterState),
+			"ruckus_cluster_blade_state":                   parseClusterState(clusterSummary.ClusterState),
 			"ruckus_cluster_control_blades":                clusterSummary.NumOfControlBlades,
 			"ruckus_cluster_control_blades_in_service":     clusterSummary.NumOfInServiceControlBlades,
 			"ruckus_cluster_control_blades_out_of_service": clusterSummary.NumOfOutOfServiceControlBlades,

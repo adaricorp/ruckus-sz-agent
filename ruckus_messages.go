@@ -62,6 +62,10 @@ func parseLongitude(latlong string) string {
 	return parseLatLong(latlong, 1)
 }
 
+func parseClusterState(s string) bool {
+	return strings.ToLower(s) == "in_service"
+}
+
 func parsePhyLink(phyLink string, idx int) string {
 	l := strings.Split(phyLink, " ")
 	if len(l) <= 3 && idx < len(l) {
