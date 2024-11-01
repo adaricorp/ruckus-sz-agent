@@ -229,7 +229,8 @@ func handleSwitchUnitStatus(systemID string, ts int64, switchUnits []*pb.SwitchU
 		}
 
 		switchUnitInfoLabels := map[string]string{
-			"mac":    parseMAC(switchUnit.GetSwitchId()),
+			"mac": parseMAC(switchUnit.GetSwitchId()),
+
 			"status": switchUnit.GetUnitStatus(),
 			"state":  switchUnit.GetUnitState(),
 		}
@@ -310,8 +311,9 @@ func handleSwitchPortStatus(systemID string, ts int64, ports []*pb.PortStatus) e
 		}
 
 		lagInfoLabels := map[string]string{
-			"lag_id":           strconv.Itoa(int(port.GetLagId())),
-			"lag_name":         port.GetLagName(),
+			"lag_id":   strconv.Itoa(int(port.GetLagId())),
+			"lag_name": port.GetLagName(),
+
 			"lag_status":       port.GetLagStatus(),
 			"lag_admin_status": port.GetLagAdminStatus(),
 		}
@@ -333,6 +335,8 @@ func handleSwitchPortStatus(systemID string, ts int64, ports []*pb.PortStatus) e
 			"ruckus_switch_port_phy_status":    parsePortStatus(port.GetStatus()),
 			"ruckus_switch_port_admin_status":  parsePortStatus(port.GetAdminStatus()),
 			"ruckus_switch_port_warning_state": port.GetIsInWarningState(),
+
+			"ruckus_switch_port_stp_status": parseSTPStatus(port.GetSpanningTreeStatus()),
 
 			"ruckus_switch_port_rx_bytes_total":             port.GetRx(),
 			"ruckus_switch_port_rx_broadcast_packets_total": port.GetBroadcastIn(),

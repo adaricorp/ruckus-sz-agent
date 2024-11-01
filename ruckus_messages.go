@@ -120,6 +120,10 @@ func parsePortStatus(status string) bool {
 	return strings.ToLower(status) == "up"
 }
 
+func parseSTPStatus(status string) bool {
+	return strings.ToLower(status) == "forwarding"
+}
+
 func parseLongPortName(port string) string {
 	return shortPortNameRegex.FindString(port)
 }
