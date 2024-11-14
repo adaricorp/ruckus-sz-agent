@@ -4,7 +4,7 @@ go 1.23
 
 require (
 	github.com/adaricorp/ruckus-sz-proto v0.0.0-20240710033852-72200c217cce
-	github.com/eclipse/paho.golang v0.21.0
+	github.com/eclipse/paho.golang v0.22.0
 	github.com/gogo/protobuf v1.3.2
 	github.com/golang/snappy v0.0.4
 	github.com/grafana/loki/pkg/push v0.0.0-20240829163656-ab1caea12325
