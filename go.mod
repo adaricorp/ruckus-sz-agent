@@ -16,7 +16,7 @@ require (
 	github.com/prometheus/common v0.60.1
 	github.com/prometheus/prometheus v0.55.1
 	google.golang.org/grpc v1.68.0
-	google.golang.org/protobuf v1.35.1
+	google.golang.org/protobuf v1.35.2
 )
 
 require (
