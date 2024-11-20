@@ -76,9 +76,5 @@ func newMQTTConnection(
 		return nil, errors.Wrapf(err, "Failed to create mqtt connection")
 	}
 
-	if err = mqttConnection.AwaitConnection(mqttContext); err != nil {
-		return nil, errors.Wrapf(err, "Failed waiting for mqtt connection")
-	}
-
 	return mqttConnection, nil
 }
