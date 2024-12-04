@@ -125,7 +125,7 @@ require (
 	go.etcd.io/etcd/client/v3 v3.5.17 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/collector/pdata v1.20.0 // indirect
-	go.opentelemetry.io/collector/semconv v0.114.0 // indirect
+	go.opentelemetry.io/collector/semconv v0.115.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.57.0 // indirect
 	go.opentelemetry.io/otel v1.32.0 // indirect
 	go.opentelemetry.io/otel/metric v1.32.0 // indirect
