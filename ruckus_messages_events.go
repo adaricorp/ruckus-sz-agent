@@ -22,11 +22,14 @@ func handleEvent(systemID string, message *pb.EventMessage) error {
 
 		"disconnect_reason": parseDisconnectReason(message.GetDisconnectReason()),
 
-		"domain_name":   message.GetDomainName(),
-		"zone_name":     message.GetZoneName(),
-		"ap_group_name": message.GetApGroupName(),
+		"domain_name": message.GetDomainName(),
+		"zone_name":   message.GetZoneName(),
 
-		"ap_mac": parseMAC(message.GetApMac()),
+		"ap_group_name": message.GetApGroupName(),
+		"ap_mac":        parseMAC(message.GetApMac()),
+
+		"switch_group_id": message.GetSwitchGroupId(),
+		"switch_mac":      parseMAC(message.GetSwitchId()),
 
 		"client_mac": parseMAC(message.GetClientMac()),
 	}

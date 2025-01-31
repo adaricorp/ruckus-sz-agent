@@ -29,6 +29,9 @@ The following message types are supported:
   * ApReport
   * ApStatus
   * ApWiredClient
+  * SwitchConf
+  * SwitchDetail
+  * SwitchReport
   * Event
   * SzApConf
   * SzSystemConf

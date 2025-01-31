@@ -438,6 +438,145 @@ func main() {
 				).Inc()
 				slog.Debug("Finished processing ap report message")
 			}
+		} else if switchMessage := sciMessage.GetSwitchMessage(); switchMessage != nil {
+			if *prometheusRemoteWriteURI == "" {
+				continue
+			}
+			if switchStatus := switchMessage.GetSwitchStatus(); switchStatus != nil {
+				if err := handleSwitchStatus(systemID, sciMessage.GetSentTimeMs(), switchStatus); err != nil {
+					instMessageErrorCounter.WithLabelValues(
+						systemID,
+						"switch_status",
+					).Inc()
+					slog.Error(
+						"Error processing switch status message",
+						"error",
+						err.Error(),
+					)
+				} else {
+					instProcessedMessageCounter.WithLabelValues(
+						systemID,
+						"switch_status",
+					).Inc()
+					slog.Debug("Finished processing switch status message")
+				}
+			} else if switchUnitStatus := switchMessage.GetSwitchUnitStatuses(); switchUnitStatus != nil {
+				if err := handleSwitchUnitStatus(systemID, sciMessage.GetSentTimeMs(), switchUnitStatus); err != nil {
+					instMessageErrorCounter.WithLabelValues(
+						systemID,
+						"switch_unit_status",
+					).Inc()
+					slog.Error(
+						"Error processing switch unit status message",
+						"error",
+						err.Error(),
+					)
+				} else {
+					instProcessedMessageCounter.WithLabelValues(
+						systemID,
+						"switch_unit_status",
+					).Inc()
+					slog.Debug("Finished processing switch unit status message")
+				}
+			} else if portStatus := switchMessage.GetPortStatuses(); portStatus != nil {
+				if err := handleSwitchPortStatus(systemID, sciMessage.GetSentTimeMs(), portStatus); err != nil {
+					instMessageErrorCounter.WithLabelValues(
+						systemID,
+						"switch_port_status",
+					).Inc()
+					slog.Error(
+						"Error processing switch port status message",
+						"error",
+						err.Error(),
+					)
+				} else {
+					instProcessedMessageCounter.WithLabelValues(
+						systemID,
+						"switch_port_status",
+					).Inc()
+					slog.Debug("Finished processing switch port status message")
+				}
+			} else if connectedDeviceStatus := switchMessage.GetConnectedDevicesStatus(); connectedDeviceStatus != nil {
+				if err := handleSwitchConnectedDeviceStatus(systemID, connectedDeviceStatus); err != nil {
+					instMessageErrorCounter.WithLabelValues(
+						systemID,
+						"switch_connected_device_status",
+					).Inc()
+					slog.Error(
+						"Error processing switch connected device status message",
+						"error",
+						err.Error(),
+					)
+				} else {
+					instProcessedMessageCounter.WithLabelValues(
+						systemID,
+						"switch_connected_device_status",
+					).Inc()
+					slog.Debug("Finished processing switch connected device status message")
+				}
+			} else if clientVisibility := switchMessage.GetSwitchClientVisibility(); clientVisibility != nil {
+				if err := handleSwitchClientVisibility(systemID, clientVisibility); err != nil {
+					instMessageErrorCounter.WithLabelValues(
+						systemID,
+						"switch_client_visibility",
+					).Inc()
+					slog.Error(
+						"Error processing switch client visibility message",
+						"error",
+						err.Error(),
+					)
+				} else {
+					instProcessedMessageCounter.WithLabelValues(
+						systemID,
+						"switch_client_visibility",
+					).Inc()
+					slog.Debug("Finished processing switch client visibility message")
+				}
+			}
+		} else if switchConfigMessage := sciMessage.GetSwitchConfigurationMessage(); switchConfigMessage != nil {
+			if *prometheusRemoteWriteURI == "" {
+				continue
+			}
+			slog.Debug("Starting to process switch configuration message")
+			if err := handleSwitchConfigurationMessage(systemID, switchConfigMessage); err != nil {
+				instMessageErrorCounter.WithLabelValues(
+					systemID,
+					"switch_configuration",
+				).Inc()
+				slog.Error(
+					"Error processing switch configuration message",
+					"error",
+					err.Error(),
+				)
+			} else {
+				instProcessedMessageCounter.WithLabelValues(
+					systemID,
+					"switch_configuration",
+				).Inc()
+				slog.Debug("Finished processing switch configuration message")
+			}
+		} else if switchDetailMessage := sciMessage.GetSwitchDetailMessage(); switchDetailMessage != nil {
+			if *prometheusRemoteWriteURI == "" {
+				continue
+			}
+			slog.Debug("Starting to process switch detail message")
+			if err := handleSwitchDetailMessage(systemID, sciMessage.GetSentTimeMs(), switchDetailMessage); err != nil {
+				instMessageErrorCounter.WithLabelValues(
+					systemID,
+					"switch_detail",
+				).Inc()
+				slog.Error(
+					"Error processing switch detail message",
+					"error",
+					err.Error(),
+				)
+			} else {
+				instProcessedMessageCounter.WithLabelValues(
+					systemID,
+					"switch_detail",
+				).Inc()
+				slog.Debug("Finished processing switch detail message")
+			}
 		} else if configMessage := sciMessage.GetConfigurationMessage(); configMessage != nil {
 			if *prometheusRemoteWriteURI == "" {
 				continue

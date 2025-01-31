@@ -1,5 +1,9 @@
 package main
 
+import "regexp"
+
+var shortPortNameRegex = regexp.MustCompile(`\d+\/.+`)
+
 // 802.11 reason codes (IEEE Std 802.11-2012, Table 8-36)
 var WiFiReasonCodes = map[string]string{
 	"0":  "Reserved",
