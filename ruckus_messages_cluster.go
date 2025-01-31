@@ -52,22 +52,10 @@ func handleApConfigurationMessage(systemID string, message *pb.ConfigurationMess
 
 			apMetrics := map[string]interface{}{
 				"ruckus_cluster_ap_status":              parseAPConnectionStatus(ap.ConnectionStatus),
+				"ruckus_cluster_ap_registration_status": parseIntegerString(ap.RegistrationState),
 				"ruckus_cluster_ap_last_seen_timestamp": ap.LastSeen,
 
 				"ruckus_cluster_ap_info": 1,
-			}
-
-			regState, err := strconv.Atoi(ap.RegistrationState)
-			if err == nil {
-				apMetrics["ruckus_cluster_ap_registration_status"] = regState
-			} else {
-				slog.Error(
-					"Failed to convert ap registration state from string",
-					"value",
-					ap.RegistrationState,
-					"error",
-					err,
-				)
 			}
 
 			labelMap := map[string]map[string]string{
@@ -375,22 +363,11 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 			"ruckus_cluster_data_blades_out_of_service":    clusterSummary.NumOfOutOfServiceDataBlades,
 			"ruckus_cluster_aps_connected":                 clusterSummary.NumOfConnectedAPs,
 			"ruckus_cluster_aps_disconnected":              clusterSummary.NumOfDisconnectedAPs,
-			"ruckus_cluster_uptime_seconds_total":          clusterSummary.Uptime,
+			"ruckus_cluster_aps_max":                       parseIntegerString(clusterSummary.MaxSupportedAps),
+
+			"ruckus_cluster_uptime_seconds_total": clusterSummary.Uptime,
 
 			"ruckus_cluster_info": 1,
-		}
-
-		maxAP, err := strconv.Atoi(clusterSummary.MaxSupportedAps)
-		if err == nil {
-			clusterMetrics["ruckus_cluster_aps_max"] = maxAP
-		} else {
-			slog.Error(
-				"Failed to convert max supported APs from string",
-				"value",
-				clusterSummary.MaxSupportedAps,
-				"error",
-				err,
-			)
 		}
 
 		l := strings.Split(clusterSummary.ControllerLicenseSummary, "/")
