@@ -45,10 +45,13 @@ func handleApConfigurationMessage(systemID string, message *pb.ConfigurationMess
 				"model":                 ap.Model,
 				"location":              ap.Location,
 				"fw_version":            ap.FwVersion,
+
+				"status":              strconv.FormatBool(parseAPConnectionStatus(ap.ConnectionStatus)),
+				"registration_status": ap.RegistrationState,
 			}
 
 			apMetrics := map[string]interface{}{
-				"ruckus_cluster_ap_connected":           parseAPConnectionStatus(ap.ConnectionStatus),
+				"ruckus_cluster_ap_status":              parseAPConnectionStatus(ap.ConnectionStatus),
 				"ruckus_cluster_ap_last_seen_timestamp": ap.LastSeen,
 
 				"ruckus_cluster_ap_info": 1,
@@ -56,7 +59,7 @@ func handleApConfigurationMessage(systemID string, message *pb.ConfigurationMess
 
 			regState, err := strconv.Atoi(ap.RegistrationState)
 			if err == nil {
-				apMetrics["ruckus_cluster_ap_registration_state"] = regState
+				apMetrics["ruckus_cluster_ap_registration_status"] = regState
 			} else {
 				slog.Error(
 					"Failed to convert ap registration state from string",
