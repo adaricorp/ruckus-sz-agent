@@ -602,37 +602,65 @@ func handleSwitchConfigurationMessage(
 
 	metricsFamily := map[string]*dto.MetricFamily{}
 
-	tenantDomains := map[string][]*pb.IcxDomainMessage{}
-	for _, tenant := range clusterInfo.GetTenantInfos() {
-		tenantName := tenant.GetTenantName()
-		tenantDomains[tenantName] = []*pb.IcxDomainMessage{}
+	tenants := []switchTenant{}
 
-		root := tenant.GetAdminDomain()
-		stack := []*pb.IcxDomainMessage{root}
+	for _, tenantMessage := range clusterInfo.GetTenantInfos() {
+		tenant := switchTenant{
+			tenantMessage: tenantMessage,
+		}
+
+		domains := []switchDomain{}
+
+		domainMessages := []*pb.IcxDomainMessage{}
+
+		stack := []*pb.IcxDomainMessage{}
+		stack = append(stack, tenantMessage.GetAdminDomain())
 
 		for len(stack) > 0 {
 			for range stack {
 				node := stack[0]
-				tenantDomains[tenantName] = append(
-					tenantDomains[tenantName],
-					node,
-				)
+				domainMessages = append(domainMessages, node)
 
 				stack = stack[1:]
 				stack = append(stack, node.GetSubDomainInfos()...)
 			}
 		}
+
+		for _, domainMessage := range domainMessages {
+			switchGroupMessages := []*pb.SwitchGroupMessage{}
+
+			stack := []*pb.SwitchGroupMessage{}
+			stack = append(stack, domainMessage.GetSwitchGroupInfos()...)
+
+			for len(stack) > 0 {
+				for range stack {
+					node := stack[0]
+					switchGroupMessages = append(switchGroupMessages, node)
+
+					stack = stack[1:]
+					stack = append(stack, node.GetSubSwitchGroupInfos()...)
+				}
+			}
+
+			domains = append(domains, switchDomain{
+				domainMessage:       domainMessage,
+				switchGroupMessages: switchGroupMessages,
+			})
+		}
+
+		tenant.domains = domains
+		tenants = append(tenants, tenant)
 	}
 
-	for tenantName, domains := range tenantDomains {
-		for _, domain := range domains {
-			for _, switchGroup := range domain.GetSwitchGroupInfos() {
+	for _, tenant := range tenants {
+		for _, domain := range tenant.domains {
+			for _, switchGroupMessage := range domain.switchGroupMessages {
 				switchGroupLabels := map[string]string{
-					"tenant_name": tenantName,
-					"domain_name": domain.GetDomainName(),
+					"tenant_name": tenant.tenantMessage.GetTenantName(),
+					"domain_name": domain.domainMessage.GetDomainName(),
 
-					"switch_group_id":   switchGroup.GetSwitchGroupId(),
-					"switch_group_name": switchGroup.GetSwitchGroupName(),
+					"switch_group_id":   switchGroupMessage.GetSwitchGroupId(),
+					"switch_group_name": switchGroupMessage.GetSwitchGroupName(),
 				}
 
 				switchGroupMetrics := map[string]interface{}{
