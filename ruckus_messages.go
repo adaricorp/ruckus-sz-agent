@@ -5,7 +5,27 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	pb "github.com/adaricorp/ruckus-sz-proto"
 )
+
+type apTenant struct {
+	tenantMessage *pb.TenantMessage
+
+	domainMessages []*pb.DomainMessage
+}
+
+type switchTenant struct {
+	tenantMessage *pb.IcxTenantMessage
+
+	domains []switchDomain
+}
+
+type switchDomain struct {
+	domainMessage *pb.IcxDomainMessage
+
+	switchGroupMessages []*pb.SwitchGroupMessage
+}
 
 func parseIntegerString(s string) int {
 	i, err := strconv.Atoi(s)
