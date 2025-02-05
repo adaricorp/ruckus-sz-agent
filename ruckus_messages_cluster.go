@@ -94,34 +94,38 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 
 	metricsFamily := map[string]*dto.MetricFamily{}
 
-	tenantDomains := map[string][]*pb.DomainMessage{}
-	for _, tenant := range clusterInfo.GetTenantInfos() {
-		tenantName := tenant.GetTenantName()
-		tenantDomains[tenantName] = []*pb.DomainMessage{}
+	tenants := []apTenant{}
 
-		root := tenant.GetAdminDomain()
-		stack := []*pb.DomainMessage{root}
+	for _, tenantMessage := range clusterInfo.GetTenantInfos() {
+		tenant := apTenant{
+			tenantMessage: tenantMessage,
+		}
+
+		domainMessages := []*pb.DomainMessage{}
+
+		stack := []*pb.DomainMessage{}
+		stack = append(stack, tenantMessage.GetAdminDomain())
 
 		for len(stack) > 0 {
 			for range stack {
 				node := stack[0]
-				tenantDomains[tenantName] = append(
-					tenantDomains[tenantName],
-					node,
-				)
+				domainMessages = append(domainMessages, node)
 
 				stack = stack[1:]
 				stack = append(stack, node.GetSubDomainInfos()...)
 			}
 		}
+
+		tenant.domainMessages = domainMessages
+		tenants = append(tenants, tenant)
 	}
 
-	for tenantName, domains := range tenantDomains {
-		for _, domain := range domains {
+	for _, tenant := range tenants {
+		for _, domainMessage := range tenant.domainMessages {
 			domainLabels := map[string]string{
-				"tenant_name": tenantName,
-				"domain_id":   domain.GetDomainId(),
-				"domain_name": domain.GetDomainName(),
+				"tenant_name": tenant.tenantMessage.GetTenantName(),
+				"domain_id":   domainMessage.GetDomainId(),
+				"domain_name": domainMessage.GetDomainName(),
 			}
 
 			domainMetrics := map[string]interface{}{
@@ -143,10 +147,10 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 				}
 			}
 
-			for _, zone := range domain.GetZoneInfos() {
+			for _, zone := range domainMessage.GetZoneInfos() {
 				zoneLabels := map[string]string{
-					"tenant_name": tenantName,
-					"domain_name": domain.GetDomainName(),
+					"tenant_name": tenant.tenantMessage.GetTenantName(),
+					"domain_name": domainMessage.GetDomainName(),
 
 					"zone_id":   zone.GetZoneId(),
 					"zone_name": zone.GetZoneName(),

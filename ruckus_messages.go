@@ -9,6 +9,12 @@ import (
 	pb "github.com/adaricorp/ruckus-sz-proto"
 )
 
+type apTenant struct {
+	tenantMessage *pb.TenantMessage
+
+	domainMessages []*pb.DomainMessage
+}
+
 type switchTenant struct {
 	tenantMessage *pb.IcxTenantMessage
 
