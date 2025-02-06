@@ -627,24 +627,33 @@ func handleSwitchConfigurationMessage(
 		}
 
 		for _, domainMessage := range domainMessages {
-			switchGroupMessages := []*pb.SwitchGroupMessage{}
+			switchGroups := []switchGroup{}
 
-			stack := []*pb.SwitchGroupMessage{}
-			stack = append(stack, domainMessage.GetSwitchGroupInfos()...)
+			for _, switchGroupMessage := range domainMessage.GetSwitchGroupInfos() {
+				subSwitchGroupMessages := []*pb.SwitchGroupMessage{}
 
-			for len(stack) > 0 {
-				for range stack {
-					node := stack[0]
-					switchGroupMessages = append(switchGroupMessages, node)
+				stack := []*pb.SwitchGroupMessage{}
+				stack = append(stack, switchGroupMessage.GetSubSwitchGroupInfos()...)
 
-					stack = stack[1:]
-					stack = append(stack, node.GetSubSwitchGroupInfos()...)
+				for len(stack) > 0 {
+					for range stack {
+						node := stack[0]
+						subSwitchGroupMessages = append(subSwitchGroupMessages, node)
+
+						stack = stack[1:]
+						stack = append(stack, node.GetSubSwitchGroupInfos()...)
+					}
 				}
+
+				switchGroups = append(switchGroups, switchGroup{
+					switchGroupMessage:     switchGroupMessage,
+					subSwitchGroupMessages: subSwitchGroupMessages,
+				})
 			}
 
 			domains = append(domains, switchDomain{
-				domainMessage:       domainMessage,
-				switchGroupMessages: switchGroupMessages,
+				domainMessage: domainMessage,
+				switchGroups:  switchGroups,
 			})
 		}
 
@@ -654,21 +663,34 @@ func handleSwitchConfigurationMessage(
 
 	for _, tenant := range tenants {
 		for _, domain := range tenant.domains {
-			for _, switchGroupMessage := range domain.switchGroupMessages {
+			for _, switchGroup := range domain.switchGroups {
 				switchGroupLabels := map[string]string{
 					"tenant_name": tenant.tenantMessage.GetTenantName(),
 					"domain_name": domain.domainMessage.GetDomainName(),
 
-					"switch_group_id":   switchGroupMessage.GetSwitchGroupId(),
-					"switch_group_name": switchGroupMessage.GetSwitchGroupName(),
+					"switch_group_id":   switchGroup.switchGroupMessage.GetSwitchGroupId(),
+					"switch_group_name": switchGroup.switchGroupMessage.GetSwitchGroupName(),
+				}
+
+				subSwitchGroupLabels := map[string]string{
+					"tenant_name": tenant.tenantMessage.GetTenantName(),
+					"domain_name": domain.domainMessage.GetDomainName(),
+
+					"switch_group_id":   switchGroup.switchGroupMessage.GetSwitchGroupId(),
+					"switch_group_name": switchGroup.switchGroupMessage.GetSwitchGroupName(),
+
+					"switch_subgroup_id":   switchGroup.switchGroupMessage.GetSwitchGroupId(),
+					"switch_subgroup_name": switchGroup.switchGroupMessage.GetSwitchGroupName(),
 				}
 
 				switchGroupMetrics := map[string]interface{}{
-					"ruckus_switch_group_info": 1,
+					"ruckus_switch_group_info":    1,
+					"ruckus_switch_subgroup_info": 1,
 				}
 
 				labelMap := map[string]map[string]string{
-					"ruckus_switch_group_info": switchGroupLabels,
+					"ruckus_switch_group_info":    switchGroupLabels,
+					"ruckus_switch_subgroup_info": subSwitchGroupLabels,
 				}
 
 				if errs := appendMetrics(
@@ -679,6 +701,38 @@ func handleSwitchConfigurationMessage(
 				); len(errs) >= 1 {
 					for _, err := range errs {
 						slog.Error("Error while appending metrics", "error", err.Error())
+					}
+				}
+
+				for _, subSwitchGroupMessage := range switchGroup.subSwitchGroupMessages {
+					subSwitchGroupLabels := map[string]string{
+						"tenant_name": tenant.tenantMessage.GetTenantName(),
+						"domain_name": domain.domainMessage.GetDomainName(),
+
+						"switch_group_id":   switchGroup.switchGroupMessage.GetSwitchGroupId(),
+						"switch_group_name": switchGroup.switchGroupMessage.GetSwitchGroupName(),
+
+						"switch_subgroup_id":   subSwitchGroupMessage.GetSwitchGroupId(),
+						"switch_subgroup_name": subSwitchGroupMessage.GetSwitchGroupName(),
+					}
+
+					subSwitchGroupMetrics := map[string]interface{}{
+						"ruckus_switch_subgroup_info": 1,
+					}
+
+					labelMap := map[string]map[string]string{
+						"ruckus_switch_subgroup_info": subSwitchGroupLabels,
+					}
+
+					if errs := appendMetrics(
+						timestamp,
+						subSwitchGroupMetrics,
+						labelMap,
+						metricsFamily,
+					); len(errs) >= 1 {
+						for _, err := range errs {
+							slog.Error("Error while appending metrics", "error", err.Error())
+						}
 					}
 				}
 			}
@@ -705,8 +759,8 @@ func handleSwitchDetailMessage(systemID string, ts int64, message *pb.SwitchDeta
 
 	for _, sw := range switches {
 		switchLabels := map[string]string{
-			"switch_group_name": sw.GetGroupName(),
-			"switch_group_id":   sw.GetGroupId(),
+			"switch_subgroup_name": sw.GetGroupName(),
+			"switch_subgroup_id":   sw.GetGroupId(),
 
 			"switch_name": sw.GetSwitchName(),
 			"switch_mac":  parseMAC(sw.GetId()),
