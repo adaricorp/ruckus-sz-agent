@@ -24,7 +24,13 @@ type switchTenant struct {
 type switchDomain struct {
 	domainMessage *pb.IcxDomainMessage
 
-	switchGroupMessages []*pb.SwitchGroupMessage
+	switchGroups []switchGroup
+}
+
+type switchGroup struct {
+	switchGroupMessage *pb.SwitchGroupMessage
+
+	subSwitchGroupMessages []*pb.SwitchGroupMessage
 }
 
 func parseIntegerString(s string) int {
