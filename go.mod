@@ -70,7 +70,7 @@ require (
 	github.com/grafana/jsonparser v0.0.0-20241004153430-023329977675 // indirect
 	github.com/grafana/pyroscope-go/godeltaprof v0.1.8 // indirect
 	github.com/grafana/regexp v0.0.0-20240518133315-a468a5bfb3bc // indirect
-	github.com/hashicorp/consul/api v1.31.0 // indirect
+	github.com/hashicorp/consul/api v1.31.1 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-hclog v1.6.3 // indirect
@@ -136,7 +136,7 @@ require (
 	go.uber.org/zap v1.27.0 // indirect
 	go4.org/netipx v0.0.0-20231129151722-fdeea329fbba // indirect
 	golang.org/x/crypto v0.33.0 // indirect
-	golang.org/x/exp v0.0.0-20240823005443-9b4947da3948 // indirect
+	golang.org/x/exp v0.0.0-20250106191152-7588d65b2ba8 // indirect
 	golang.org/x/mod v0.23.0 // indirect
 	golang.org/x/net v0.35.0 // indirect
 	golang.org/x/oauth2 v0.26.0 // indirect
