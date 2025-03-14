@@ -1,6 +1,7 @@
 module github.com/adaricorp/ruckus-sz-agent
 
 go 1.24
+
 require (
 	github.com/adaricorp/ruckus-sz-proto v0.0.0-20240710033852-72200c217cce
 	github.com/eclipse/paho.golang v0.22.0
@@ -12,7 +13,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.21.1
 	github.com/prometheus/client_model v0.6.1
-	github.com/prometheus/common v0.62.0
+	github.com/prometheus/common v0.63.0
 	github.com/prometheus/prometheus v0.302.1
 	google.golang.org/grpc v1.71.0
 	google.golang.org/protobuf v1.36.5
