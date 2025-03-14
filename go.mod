@@ -1,6 +1,7 @@
 module github.com/adaricorp/ruckus-sz-agent
 
 go 1.24
+
 require (
 	github.com/adaricorp/ruckus-sz-proto v0.0.0-20240710033852-72200c217cce
 	github.com/eclipse/paho.golang v0.22.0
@@ -163,7 +164,7 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250303144028-a0af3efb3deb // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	k8s.io/apimachinery v0.32.2 // indirect
+	k8s.io/apimachinery v0.32.3 // indirect
 	k8s.io/client-go v0.32.2 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/utils v0.0.0-20241104100929-3ea5e8cea738 // indirect
