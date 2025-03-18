@@ -514,8 +514,8 @@ go.opentelemetry.io/collector/component/componentstatus v0.121.0 h1:G4KqBUuAqnQ1
 go.opentelemetry.io/collector/component/componentstatus v0.121.0/go.mod h1:ufRv8q15XNdbr9nNzdepMHlLl2aC3NHQgecCzp5VRns=
 go.opentelemetry.io/collector/component/componenttest v0.121.0 h1:4q1/7WnP9LPKaY4HAd8/OkzhllZpRACKAOlWsqbrzqc=
 go.opentelemetry.io/collector/component/componenttest v0.121.0/go.mod h1:H7bEXDPMYNeWcHal0xyKlVfRPByVxale7hCJ+Myjq3Q=
-go.opentelemetry.io/collector/confmap v1.27.0 h1:OIjPcjij1NxkVQsQVmHro4+t1eYNFiUGib9+J9YBZhM=
-go.opentelemetry.io/collector/confmap v1.27.0/go.mod h1:tmOa6iw3FJsEgfBHKALqvcdfRtf71JZGor0wSM5MoH8=
+go.opentelemetry.io/collector/confmap v1.28.0 h1:pUQh4eOW0YQ1GFWTDP5pw/ZMQuppkz6oSoDDloAH/Sc=
+go.opentelemetry.io/collector/confmap v1.28.0/go.mod h1:k/3fo+2RE6m+OKlJzx78Q8hstABYwYgvXO3u9zyTeHI=
 go.opentelemetry.io/collector/confmap/xconfmap v0.121.0 h1:pZ7SOl/i3kUIPdUwIeHHsYqzOHNLCwiyXZnwQ7rLO3E=
 go.opentelemetry.io/collector/confmap/xconfmap v0.121.0/go.mod h1:YI1Sp8mbYro/H3rqH4csTq68VUuie5WVb7LI1o5+tVc=
 go.opentelemetry.io/collector/consumer v1.27.0 h1:JoXdoCeFDJG3d9TYrKHvTT4eBhzKXDVTkWW5mDfnLiY=
@@ -524,6 +524,8 @@ go.opentelemetry.io/collector/consumer/consumertest v0.121.0 h1:EIJPAXQY0w9j1k/e
 go.opentelemetry.io/collector/consumer/consumertest v0.121.0/go.mod h1:Hmj+TizzsLU0EmS2n/rJYScOybNmm3mrAjis6ed7qTw=
 go.opentelemetry.io/collector/consumer/xconsumer v0.121.0 h1:/FJ7L6+G++FvktXc/aBnnYDIKLoYsWLh0pKbvzFFwF8=
 go.opentelemetry.io/collector/consumer/xconsumer v0.121.0/go.mod h1:KKy8Qg/vOnyseoi7A9/x1a1oEqSmf0WBHkJFlnQH0Ow=
+go.opentelemetry.io/collector/featuregate v1.28.0 h1:nkaMw0HyOSxojLwlezF2O/xJ9T/Jo1a0iEetesT9lr0=
+go.opentelemetry.io/collector/featuregate v1.28.0/go.mod h1:Y/KsHbvREENKvvN9RlpiWk/IGBK+CATBYzIIpU7nccc=
 go.opentelemetry.io/collector/pdata v1.27.0 h1:66yI7FYkUDia74h48Fd2/KG2Vk8DxZnGw54wRXykCEU=
 go.opentelemetry.io/collector/pdata v1.27.0/go.mod h1:18e8/xDZsqyj00h/5HM5GLdJgBzzG9Ei8g9SpNoiMtI=
 go.opentelemetry.io/collector/pdata/pprofile v0.121.0 h1:DFBelDRsZYxEaSoxSRtseAazsHJfqfC/Yl64uPicl2g=
