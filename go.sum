@@ -379,8 +379,8 @@ github.com/open-telemetry/opentelemetry-collector-contrib/pkg/pdatatest v0.122.0
 github.com/open-telemetry/opentelemetry-collector-contrib/pkg/pdatatest v0.122.0/go.mod h1:45Di232vetvGjROIPxlBlyBMBAgA95szYP8du09shDE=
 github.com/open-telemetry/opentelemetry-collector-contrib/pkg/pdatautil v0.122.0 h1:Jsn9I74nG85Iw7wWET6g0eQ9tbwVndgNHbzHqdlZVqI=
 github.com/open-telemetry/opentelemetry-collector-contrib/pkg/pdatautil v0.122.0/go.mod h1:BpcyQo7MedcfxlBmIgRB5DxdLlEa0wHRJ/Nhe8jjnW4=
-github.com/open-telemetry/opentelemetry-collector-contrib/processor/deltatocumulativeprocessor v0.121.0 h1:+wj+Sw08WDdL/9lD4OUy1PFgQMsiyLuSmlmb3HbKPv4=
-github.com/open-telemetry/opentelemetry-collector-contrib/processor/deltatocumulativeprocessor v0.121.0/go.mod h1:YczZl2MmjOUdg5eXg+fAW0my/EG+77b27ue6vj7xPHU=
+github.com/open-telemetry/opentelemetry-collector-contrib/processor/deltatocumulativeprocessor v0.122.0 h1:VoVWWmasrx6boiis/OV+HmkEXtVm73LXeZMYHJwEgwE=
+github.com/open-telemetry/opentelemetry-collector-contrib/processor/deltatocumulativeprocessor v0.122.0/go.mod h1:DEk8LYKrIZS01fhJXohi4tRR89iEcF3zt0oHDTB2TT0=
 github.com/opencontainers/go-digest v1.0.0 h1:apOUWs51W5PlhuyGyz9FCeeBIOUDA/6nW8Oi/yOhh5U=
 github.com/opencontainers/go-digest v1.0.0/go.mod h1:0JzlMkj0TRzQZfJkVvzbP0HBR3IKzErnv2BNG4W4MAM=
 github.com/opencontainers/image-spec v1.1.0 h1:8SG7/vwALn54lVB/0yZ/MMwhFrPYtpEHQb2IpWsCzug=
@@ -446,6 +446,8 @@ github.com/prometheus/prometheus v0.302.1 h1:xqVdrwrB4WNpdgJqxsz5loqFWNUZitsK8my
 github.com/prometheus/prometheus v0.302.1/go.mod h1:YcyCoTbUR/TM8rY3Aoeqr0AWTu/pu1Ehh+trpX3eRzg=
 github.com/prometheus/sigv4 v0.1.2 h1:R7570f8AoM5YnTUPFm3mjZH5q2k4D+I/phCWvZ4PXG8=
 github.com/prometheus/sigv4 v0.1.2/go.mod h1:GF9fwrvLgkQwDdQ5BXeV9XUSCH/IPNqzvAoaohfjqMU=
+github.com/puzpuzpuz/xsync/v3 v3.5.1 h1:GJYJZwO6IdxN/IKbneznS6yPkVC+c3zyY/j19c++5Fg=
+github.com/puzpuzpuz/xsync/v3 v3.5.1/go.mod h1:VjzYrABPabuM4KyBh1Ftq6u8nhwY5tBPKP9jpmh0nnA=
 github.com/redis/go-redis/v9 v9.7.0 h1:HhLSs+B6O021gwzl+locl0zEDnyNkxMtf/Z3NNBMa9E=
 github.com/redis/go-redis/v9 v9.7.0/go.mod h1:f6zhXITC7JUJIlPEiBOTXxJgPLdZcA93GewI7inzyWw=
 github.com/rogpeppe/go-internal v1.13.1 h1:KvO1DLK/DRN07sQ1LQKScxyZJuNnedQ5/wKSR38lUII=
@@ -516,8 +518,8 @@ go.opentelemetry.io/collector/component/componenttest v0.122.1 h1:HE4oeLub2FWVTU
 go.opentelemetry.io/collector/component/componenttest v0.122.1/go.mod h1:o3Xq6z3C0aVhrd/fD56aKxShrILVnHnbgQVP5NoFuic=
 go.opentelemetry.io/collector/confmap v1.28.0 h1:pUQh4eOW0YQ1GFWTDP5pw/ZMQuppkz6oSoDDloAH/Sc=
 go.opentelemetry.io/collector/confmap v1.28.0/go.mod h1:k/3fo+2RE6m+OKlJzx78Q8hstABYwYgvXO3u9zyTeHI=
-go.opentelemetry.io/collector/confmap/xconfmap v0.121.0 h1:pZ7SOl/i3kUIPdUwIeHHsYqzOHNLCwiyXZnwQ7rLO3E=
-go.opentelemetry.io/collector/confmap/xconfmap v0.121.0/go.mod h1:YI1Sp8mbYro/H3rqH4csTq68VUuie5WVb7LI1o5+tVc=
+go.opentelemetry.io/collector/confmap/xconfmap v0.122.0 h1:uRwR2/DEhLCwsdQyD5rTG/cAPUm5ixZb96y3rUaUo/g=
+go.opentelemetry.io/collector/confmap/xconfmap v0.122.0/go.mod h1:76K9ypccfRyorlYYit8O82mX4hseQP8VJ/TYqCKI4fA=
 go.opentelemetry.io/collector/consumer v1.28.1 h1:3lHW2e0i7kEkbDqK1vErA8illqPpwDxMzgc5OUDsJ0Y=
 go.opentelemetry.io/collector/consumer v1.28.1/go.mod h1:g0T16JPMYFN6T2noh+1YBxJSt5i5Zp+Y0Y6pvkMqsDQ=
 go.opentelemetry.io/collector/consumer/consumertest v0.122.1 h1:LKkLMdWwJCuOYyCMVzwc0OG9vncIqpl8Tp9+H8RikNg=
