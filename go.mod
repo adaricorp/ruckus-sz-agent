@@ -134,8 +134,8 @@ require (
 	go.etcd.io/etcd/client/v3 v3.5.19 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.opentelemetry.io/collector/component v1.28.1 // indirect
-	go.opentelemetry.io/collector/confmap v1.28.0 // indirect
-	go.opentelemetry.io/collector/confmap/xconfmap v0.121.0 // indirect
+	go.opentelemetry.io/collector/confmap v1.28.1 // indirect
+	go.opentelemetry.io/collector/confmap/xconfmap v0.122.1 // indirect
 	go.opentelemetry.io/collector/consumer v1.28.1 // indirect
 	go.opentelemetry.io/collector/featuregate v1.28.1 // indirect
 	go.opentelemetry.io/collector/pdata v1.28.1 // indirect
