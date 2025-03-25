@@ -2,6 +2,8 @@ module github.com/adaricorp/ruckus-sz-agent
 
 go 1.24
 
+replace gonum.org/v1/gonum v0.16.0 => github.com/gonum/gonum v0.16.0
+
 require (
 	github.com/adaricorp/ruckus-sz-proto v0.0.0-20240710033852-72200c217cce
 	github.com/eclipse/paho.golang v0.22.0
