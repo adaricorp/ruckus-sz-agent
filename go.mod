@@ -141,7 +141,7 @@ require (
 	github.com/stretchr/testify v1.10.0 // indirect
 	github.com/uber/jaeger-client-go v2.30.0+incompatible // indirect
 	github.com/uber/jaeger-lib v2.4.1+incompatible // indirect
-	go.etcd.io/etcd/api/v3 v3.5.19 // indirect
+	go.etcd.io/etcd/api/v3 v3.5.20 // indirect
 	go.etcd.io/etcd/client/pkg/v3 v3.5.19 // indirect
 	go.etcd.io/etcd/client/v3 v3.5.19 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
