@@ -2,7 +2,13 @@ module github.com/adaricorp/ruckus-sz-agent
 
 go 1.24
 
-replace gonum.org/v1/gonum v0.16.0 => github.com/gonum/gonum v0.16.0
+replace gonum.org/v1/gonum v0.0.0-20180816165407-929014505bf4 => github.com/gonum/gonum v0.0.0-20180816165407-929014505bf4
+
+replace gonum.org/v1/gonum v0.8.2 => github.com/gonum/gonum v0.8.2
+
+replace gonum.org/v1/netlib v0.0.0-20190313105609-8cb42192e0e0 => github.com/gonum/netlib v0.0.0-20190313105609-8cb42192e0e0
+
+replace gonum.org/v1/plot v0.0.0-20190515093506-e2840ee46a6b => github.com/gonum/plot v0.0.0-20190515093506-e2840ee46a6b
 
 require (
 	github.com/adaricorp/ruckus-sz-proto v0.0.0-20240710033852-72200c217cce
