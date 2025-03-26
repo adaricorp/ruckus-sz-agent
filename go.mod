@@ -10,6 +10,8 @@ replace gonum.org/v1/netlib v0.0.0-20190313105609-8cb42192e0e0 => github.com/gon
 
 replace gonum.org/v1/plot v0.0.0-20190515093506-e2840ee46a6b => github.com/gonum/plot v0.0.0-20190515093506-e2840ee46a6b
 
+replace github.com/armon/go-metrics v0.4.1 => github.com/hashicorp/go-metrics v0.4.1
+
 require (
 	github.com/adaricorp/ruckus-sz-proto v0.0.0-20240710033852-72200c217cce
 	github.com/eclipse/paho.golang v0.22.0
