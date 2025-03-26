@@ -131,7 +131,7 @@ require (
 	github.com/prometheus/procfs v0.16.0 // indirect
 	github.com/prometheus/sigv4 v0.1.2 // indirect
 	github.com/puzpuzpuz/xsync/v3 v3.5.1 // indirect
-	github.com/redis/go-redis/v9 v9.7.1 // indirect
+	github.com/redis/go-redis/v9 v9.7.3 // indirect
 	github.com/sean-/seed v0.0.0-20170313163322-e2103e2c3529 // indirect
 	github.com/sercand/kuberesolver/v5 v5.1.1 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
