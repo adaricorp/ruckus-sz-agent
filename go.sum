@@ -508,8 +508,8 @@ github.com/yuin/gopher-lua v1.1.1 h1:kYKnWBjvbNP4XLT3+bPEwAXJx262OhaHDWDVOPjL46M
 github.com/yuin/gopher-lua v1.1.1/go.mod h1:GBR0iDaNXjAgGg9zfCvksxSRnQx76gclCIb7kdAd1Pw=
 go.etcd.io/etcd/api/v3 v3.5.21 h1:A6O2/JDb3tvHhiIz3xf9nJ7REHvtEFJJ3veW3FbCnS8=
 go.etcd.io/etcd/api/v3 v3.5.21/go.mod h1:c3aH5wcvXv/9dqIw2Y810LDXJfhSYdHQ0vxmP3CCHVY=
-go.etcd.io/etcd/client/pkg/v3 v3.5.20 h1:sZIAtra+xCo56gdf6BR62to/hiie5Bwl7hQIqMzVTEM=
-go.etcd.io/etcd/client/pkg/v3 v3.5.20/go.mod h1:qaOi1k4ZA9lVLejXNvyPABrVEe7VymMF2433yyRQ7O0=
+go.etcd.io/etcd/client/pkg/v3 v3.5.21 h1:lPBu71Y7osQmzlflM9OfeIV2JlmpBjqBNlLtcoBqUTc=
+go.etcd.io/etcd/client/pkg/v3 v3.5.21/go.mod h1:BgqT/IXPjK9NkeSDjbzwsHySX3yIle2+ndz28nVsjUs=
 go.etcd.io/etcd/client/v3 v3.5.20 h1:jMT2MwQEhyvhQg49Cec+1ZHJzfUf6ZgcmV0GjPv0tIQ=
 go.etcd.io/etcd/client/v3 v3.5.20/go.mod h1:J5lbzYRMUR20YolS5UjlqqMcu3/wdEvG5VNBhzyo3m0=
 go.opentelemetry.io/auto/sdk v1.1.0 h1:cH53jehLUN6UFLY71z+NDOiNJqDdPRaXzTel0sJySYA=
