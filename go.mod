@@ -120,7 +120,7 @@ require (
 	github.com/mwitkow/go-conntrack v0.0.0-20190716064945-2f068394615f // indirect
 	github.com/open-telemetry/opentelemetry-collector-contrib/internal/exp/metrics v0.123.0 // indirect
 	github.com/open-telemetry/opentelemetry-collector-contrib/pkg/pdatautil v0.123.0 // indirect
-	github.com/open-telemetry/opentelemetry-collector-contrib/processor/deltatocumulativeprocessor v0.122.0 // indirect
+	github.com/open-telemetry/opentelemetry-collector-contrib/processor/deltatocumulativeprocessor v0.123.0 // indirect
 	github.com/opentracing-contrib/go-grpc v0.1.2 // indirect
 	github.com/opentracing-contrib/go-stdlib v1.0.0 // indirect
 	github.com/opentracing/opentracing-go v1.2.1-0.20220228012449-10b1cf09e00b // indirect
@@ -147,7 +147,7 @@ require (
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.opentelemetry.io/collector/component v1.29.0 // indirect
 	go.opentelemetry.io/collector/confmap v1.29.0 // indirect
-	go.opentelemetry.io/collector/confmap/xconfmap v0.122.1 // indirect
+	go.opentelemetry.io/collector/confmap/xconfmap v0.123.0 // indirect
 	go.opentelemetry.io/collector/consumer v1.29.0 // indirect
 	go.opentelemetry.io/collector/featuregate v1.29.0 // indirect
 	go.opentelemetry.io/collector/internal/telemetry v0.123.0 // indirect
