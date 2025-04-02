@@ -148,12 +148,12 @@ require (
 	go.opentelemetry.io/collector/component v1.29.0 // indirect
 	go.opentelemetry.io/collector/confmap v1.29.0 // indirect
 	go.opentelemetry.io/collector/confmap/xconfmap v0.122.1 // indirect
-	go.opentelemetry.io/collector/consumer v1.28.1 // indirect
+	go.opentelemetry.io/collector/consumer v1.29.0 // indirect
 	go.opentelemetry.io/collector/featuregate v1.29.0 // indirect
 	go.opentelemetry.io/collector/internal/telemetry v0.123.0 // indirect
 	go.opentelemetry.io/collector/pdata v1.29.0 // indirect
 	go.opentelemetry.io/collector/pipeline v0.123.0 // indirect
-	go.opentelemetry.io/collector/processor v0.122.1 // indirect
+	go.opentelemetry.io/collector/processor v1.29.0 // indirect
 	go.opentelemetry.io/collector/semconv v0.123.0 // indirect
 	go.opentelemetry.io/contrib/bridges/otelzap v0.10.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/httptrace/otelhttptrace v0.60.0 // indirect
