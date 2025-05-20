@@ -2,6 +2,8 @@ module github.com/adaricorp/ruckus-sz-agent
 
 go 1.24
 
+toolchain go1.24.3
+
 replace gonum.org/v1/gonum v0.0.0-20180816165407-929014505bf4 => github.com/gonum/gonum v0.0.0-20180816165407-929014505bf4
 
 replace gonum.org/v1/gonum v0.8.2 => github.com/gonum/gonum v0.8.2
