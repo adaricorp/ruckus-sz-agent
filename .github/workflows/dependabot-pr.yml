@@ -10,7 +10,7 @@ jobs:
     if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           ref: "${{ github.event.pull_request.head.sha }}"
@@ -52,7 +52,7 @@ jobs:
     if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: "${{ github.event.pull_request.head.sha }}"
 
@@ -99,7 +99,7 @@ jobs:
     if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
