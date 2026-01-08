@@ -40,7 +40,7 @@ jobs:
         with:
           distribution: goreleaser
           version: latest
-          args: release --clean --skip=publish --snapshot
+          args: release --clean --skip=publish --snapshot --parallelism 2
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v6
