@@ -2,6 +2,8 @@ module github.com/adaricorp/ruckus-sz-agent
 
 go 1.25.6
 
+replace github.com/armon/go-metrics v0.4.1 => github.com/hashicorp/go-metrics v0.4.1
+
 require (
 	github.com/adaricorp/ruckus-sz-proto v0.0.0-20251216200232-c18b21a8301f
 	github.com/eclipse/paho.golang v0.23.0
