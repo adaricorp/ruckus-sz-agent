@@ -10,7 +10,7 @@ require (
 	github.com/gogo/protobuf v1.3.2
 	github.com/golang/snappy v1.0.0
 	github.com/grafana/loki/pkg/push v0.0.0-20260106205257-1fa69aaf589e
-	github.com/grafana/loki/v3 v3.6.5
+	github.com/grafana/loki/v3 v3.6.6
 	github.com/peterbourgon/ff/v4 v4.0.0-beta.1
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.23.2
