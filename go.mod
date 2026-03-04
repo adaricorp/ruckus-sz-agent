@@ -183,7 +183,7 @@ require (
 	go.opentelemetry.io/otel/exporters/prometheus v0.63.0 // indirect
 	go.opentelemetry.io/otel/exporters/stdout/stdoutlog v0.17.0 // indirect
 	go.opentelemetry.io/otel/exporters/stdout/stdoutmetric v1.41.0 // indirect
-	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.40.0 // indirect
+	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.41.0 // indirect
 	go.opentelemetry.io/otel/log v0.17.0 // indirect
 	go.opentelemetry.io/otel/metric v1.41.0 // indirect
 	go.opentelemetry.io/otel/sdk v1.41.0 // indirect
