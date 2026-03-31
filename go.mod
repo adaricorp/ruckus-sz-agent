@@ -4,6 +4,8 @@ go 1.25.8
 
 replace github.com/armon/go-metrics v0.4.1 => github.com/hashicorp/go-metrics v0.4.1
 
+replace github.com/hashicorp/memberlist => github.com/grafana/memberlist v0.3.1-0.20251126142931-6f9f62ab6f86
+
 require (
 	github.com/adaricorp/ruckus-sz-proto v0.0.0-20251216200232-c18b21a8301f
 	github.com/eclipse/paho.golang v0.23.0
