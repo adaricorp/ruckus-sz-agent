@@ -421,8 +421,8 @@ github.com/mwitkow/go-conntrack v0.0.0-20190716064945-2f068394615f/go.mod h1:qRW
 github.com/oklog/ulid v1.3.1 h1:EGfNDEx6MqHz8B3uNV6QAib1UR2Lm97sHi3ocA6ESJ4=
 github.com/oklog/ulid/v2 v2.1.1 h1:suPZ4ARWLOJLegGFiZZ1dFAkqzhMjL3J1TzI+5wHz8s=
 github.com/oklog/ulid/v2 v2.1.1/go.mod h1:rcEKHmBBKfef9DhnvX7y1HZBYxjXb0cP5ExxNsTT1QQ=
-github.com/open-telemetry/opentelemetry-collector-contrib/internal/exp/metrics v0.148.0 h1:CiTjQE/Hh5xK2t56ogrDK4nl0+tJPNmASCs4zEYZ/xU=
-github.com/open-telemetry/opentelemetry-collector-contrib/internal/exp/metrics v0.148.0/go.mod h1:WUFkzTiOpt7EYyL67gv1GOf3RD8qKWGtin3lY9LYzW4=
+github.com/open-telemetry/opentelemetry-collector-contrib/internal/exp/metrics v0.149.0 h1:Zovdium/2408dqJzSxA5XebZBxGBnDkfrai1HKT5Omc=
+github.com/open-telemetry/opentelemetry-collector-contrib/internal/exp/metrics v0.149.0/go.mod h1:ughjuka9JQd81X6we9PmdvaiIjeOWtKK04BladDtzZc=
 github.com/open-telemetry/opentelemetry-collector-contrib/pkg/pdatautil v0.149.0 h1:OZKthV+cLQO5MCFhBQme3AveZ5vorqaFwb0Qn8jvSQQ=
 github.com/open-telemetry/opentelemetry-collector-contrib/pkg/pdatautil v0.149.0/go.mod h1:eB74l+/1nW5tofwCjD5TKRqHFYnBSWo0j0xWD8BHYuE=
 github.com/open-telemetry/opentelemetry-collector-contrib/processor/deltatocumulativeprocessor v0.148.0 h1:xgD/kNGp/wWY+bwY599Pc01OamYN17phRiTP934bM5Y=
@@ -588,8 +588,8 @@ go.opentelemetry.io/collector/internal/testutil v0.149.0 h1:OWfUPO3NFKSaJtz/SBZp
 go.opentelemetry.io/collector/internal/testutil v0.149.0/go.mod h1:Jkjs6rkqs973LqgZ0Fe3zrokQRKULYXPIf4HuqStiEE=
 go.opentelemetry.io/collector/pdata v1.55.0 h1:WBgye8bo8koUyV9Vmp/r2Q3lgDezdsgfKDQAaM1oT2I=
 go.opentelemetry.io/collector/pdata v1.55.0/go.mod h1:6jPrbM4tuliCPACDznjFtxnnHisfKfzwrBVoeuESYuk=
-go.opentelemetry.io/collector/pdata/pprofile v0.148.0 h1:MgrNZmqwhZGfiYwcKKtM/iXgTZqqvG5dUphriRXMZHU=
-go.opentelemetry.io/collector/pdata/pprofile v0.148.0/go.mod h1:MTTMnZPqWX1S/rBDatU0W19udlycBkWuzVV5qnemHdc=
+go.opentelemetry.io/collector/pdata/pprofile v0.149.0 h1:4/uI7wsgMnmBZm6Z/VNY6sWnaFN09+Nk3jr7XEmTtOk=
+go.opentelemetry.io/collector/pdata/pprofile v0.149.0/go.mod h1:4uprs5wMp4MI1/bcP5mYERfobFxBn+QoeNFQBUSVk/U=
 go.opentelemetry.io/collector/pdata/testdata v0.148.0 h1:yzakPuFgoKK8WcrlhyYHLMLA/kLScQKGsXkIgwieAQ8=
 go.opentelemetry.io/collector/pdata/testdata v0.148.0/go.mod h1:2rFvxm8qwd3nlO90FtJw6ZGAjt+bLndxmQuJaMO9kfQ=
 go.opentelemetry.io/collector/pipeline v1.54.0 h1:jYlCkdFLITVBdeB+IGS07zXWywEgvT3Ky46vdKKT+Ks=
