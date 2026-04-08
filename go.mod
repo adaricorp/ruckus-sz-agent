@@ -138,7 +138,7 @@ require (
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/prometheus/client_golang/exp v0.0.0-20260401111112-af7f59c5bbe2 // indirect
-	github.com/prometheus/exporter-toolkit v0.15.1 // indirect
+	github.com/prometheus/exporter-toolkit v0.16.0 // indirect
 	github.com/prometheus/otlptranslator v1.0.0 // indirect
 	github.com/prometheus/procfs v0.20.1 // indirect
 	github.com/prometheus/sigv4 v0.4.1 // indirect
