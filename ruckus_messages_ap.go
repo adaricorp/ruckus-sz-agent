@@ -56,10 +56,8 @@ func handleApStatus(systemID string, message *pb.APStatus) error {
 
 	metricsFamily := map[string]*dto.MetricFamily{}
 
-	if errs := appendMetrics(timestamp, apMetrics, labelMap, metricsFamily); len(errs) >= 1 {
-		for _, err := range errs {
-			slog.Error("Error while appending metrics", "error", err.Error())
-		}
+	if err := appendMetrics(timestamp, apMetrics, labelMap, metricsFamily); err != nil {
+		slog.Error("Error while appending metrics", "error", err.Error())
 	}
 
 	for _, port := range apStatusData.GetLanPortStatus() {
@@ -86,15 +84,13 @@ func handleApStatus(systemID string, message *pb.APStatus) error {
 			"default":                 portLabels,
 		}
 
-		if errs := appendMetrics(
+		if err := appendMetrics(
 			timestamp,
 			portMetrics,
 			labelMap,
 			metricsFamily,
-		); len(errs) >= 1 {
-			for _, err := range errs {
-				slog.Error("Error while appending metrics", "error", err.Error())
-			}
+		); err != nil {
+			slog.Error("Error while appending metrics", "error", err.Error())
 		}
 	}
 
@@ -159,15 +155,13 @@ func handleApStatus(systemID string, message *pb.APStatus) error {
 			"default":              radioLabels,
 		}
 
-		if errs := appendMetrics(
+		if err := appendMetrics(
 			timestamp,
 			radioMetrics,
 			labelMap,
 			metricsFamily,
-		); len(errs) >= 1 {
-			for _, err := range errs {
-				slog.Error("Error while appending metrics", "error", err.Error())
-			}
+		); err != nil {
+			slog.Error("Error while appending metrics", "error", err.Error())
 		}
 	}
 
@@ -242,15 +236,13 @@ func handleApClient(systemID string, message *pb.APClientStats) error {
 			"default":                        clientLabels,
 		}
 
-		if errs := appendMetrics(
+		if err := appendMetrics(
 			timestamp,
 			clientMetrics,
 			labelMap,
 			metricsFamily,
-		); len(errs) >= 1 {
-			for _, err := range errs {
-				slog.Error("Error while appending metrics", "error", err.Error())
-			}
+		); err != nil {
+			slog.Error("Error while appending metrics", "error", err.Error())
 		}
 	}
 
@@ -313,15 +305,13 @@ func handleApWiredClient(systemID string, message *pb.APWiredClientStats) error 
 			"default":                     clientLabels,
 		}
 
-		if errs := appendMetrics(
+		if err := appendMetrics(
 			timestamp,
 			clientMetrics,
 			labelMap,
 			metricsFamily,
-		); len(errs) >= 1 {
-			for _, err := range errs {
-				slog.Error("Error while appending metrics", "error", err.Error())
-			}
+		); err != nil {
+			slog.Error("Error while appending metrics", "error", err.Error())
 		}
 	}
 
@@ -373,15 +363,13 @@ func handleApReport(systemID string, message *pb.APReportStats) error {
 			"default": clientLabels,
 		}
 
-		if errs := appendMetrics(
+		if err := appendMetrics(
 			timestamp,
 			clientMetrics,
 			labelMap,
 			metricsFamily,
-		); len(errs) >= 1 {
-			for _, err := range errs {
-				slog.Error("Error while appending metrics", "error", err.Error())
-			}
+		); err != nil {
+			slog.Error("Error while appending metrics", "error", err.Error())
 		}
 	}
 
