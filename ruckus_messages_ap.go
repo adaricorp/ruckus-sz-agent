@@ -1,12 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"log/slog"
 	"strconv"
 	"time"
 
 	pb "github.com/adaricorp/ruckus-sz-proto"
-	"github.com/pkg/errors"
 	dto "github.com/prometheus/client_model/go"
 )
 
@@ -183,7 +183,7 @@ func handleApStatus(systemID string, message *pb.APStatus) error {
 	}
 
 	if err := prom.write(metricsFamily, apLabels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil
@@ -266,7 +266,7 @@ func handleApClient(systemID string, message *pb.APClientStats) error {
 	}
 
 	if err := prom.write(metricsFamily, apLabels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil
@@ -335,7 +335,7 @@ func handleApWiredClient(systemID string, message *pb.APWiredClientStats) error 
 	}
 
 	if err := prom.write(metricsFamily, apLabels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil
@@ -397,7 +397,7 @@ func handleApReport(systemID string, message *pb.APReportStats) error {
 	}
 
 	if err := prom.write(metricsFamily, apLabels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil

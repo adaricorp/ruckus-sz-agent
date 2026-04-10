@@ -2,13 +2,13 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log/slog"
 	"strconv"
 	"strings"
 	"time"
 
 	pb "github.com/adaricorp/ruckus-sz-proto"
-	"github.com/pkg/errors"
 	dto "github.com/prometheus/client_model/go"
 )
 
@@ -81,7 +81,7 @@ func handleApConfigurationMessage(systemID string, message *pb.ConfigurationMess
 	}
 
 	if err := prom.write(metricsFamily, clusterLabels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil
@@ -434,7 +434,7 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 	}
 
 	if err := prom.write(metricsFamily, clusterLabels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil
@@ -494,7 +494,7 @@ func handleZoneConfigurationMessage(systemID string, message *pb.ConfigurationMe
 	}
 
 	if err := prom.write(metricsFamily, clusterLabels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil
@@ -545,7 +545,7 @@ func handleApGroupConfigurationMessage(systemID string, message *pb.Configuratio
 	}
 
 	if err := prom.write(metricsFamily, clusterLabels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil

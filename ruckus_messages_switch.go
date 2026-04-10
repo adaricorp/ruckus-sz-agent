@@ -2,13 +2,13 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log/slog"
 	"net"
 	"strconv"
 	"time"
 
 	pb "github.com/adaricorp/ruckus-sz-proto"
-	"github.com/pkg/errors"
 
 	dto "github.com/prometheus/client_model/go"
 )
@@ -205,7 +205,7 @@ func handleSwitchStatus(systemID string, ts int64, message *pb.SwitchStatus) err
 	}
 
 	if err := prom.write(metricsFamily, labels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil
@@ -259,7 +259,7 @@ func handleSwitchUnitStatus(systemID string, ts int64, switchUnits []*pb.SwitchU
 	}
 
 	if err := prom.write(metricsFamily, systemLabels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil
@@ -433,7 +433,7 @@ func handleSwitchPortStatus(systemID string, ts int64, ports []*pb.PortStatus) e
 	}
 
 	if err := prom.write(metricsFamily, systemLabels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil
@@ -496,7 +496,7 @@ func handleSwitchConnectedDeviceStatus(
 	}
 
 	if err := prom.write(metricsFamily, systemLabels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil
@@ -586,7 +586,7 @@ func handleSwitchClientVisibility(
 	}
 
 	if err := prom.write(metricsFamily, systemLabels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil
@@ -744,7 +744,7 @@ func handleSwitchConfigurationMessage(
 	}
 
 	if err := prom.write(metricsFamily, systemLabels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil
@@ -814,7 +814,7 @@ func handleSwitchDetailMessage(systemID string, ts int64, message *pb.SwitchDeta
 	}
 
 	if err := prom.write(metricsFamily, labels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil

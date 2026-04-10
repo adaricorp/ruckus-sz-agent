@@ -2,10 +2,10 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/grafana/loki/v3/pkg/logproto"
-	"github.com/pkg/errors"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -20,10 +20,10 @@ func newLokiWriteClient(server string, timeout time.Duration) (lokiWriteClient, 
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
 	if err != nil {
-		return lokiWriteClient{}, errors.Wrapf(
-			err,
-			"Failed to create gRPC client for server: %s",
+		return lokiWriteClient{}, fmt.Errorf(
+			"failed to create gRPC client for server %s: %w",
 			server,
+			err,
 		)
 	}
 

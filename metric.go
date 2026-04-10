@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/gogo/protobuf/proto"
-	"github.com/pkg/errors"
 	dto "github.com/prometheus/client_model/go"
 )
 
@@ -109,7 +108,7 @@ func appendMetrics(
 		m, err := newPromMetric(k, timestamp, labels, v)
 		if err != nil {
 			instMetricErrorCounter.WithLabelValues(k).Inc()
-			errs = append(errs, errors.Wrapf(err, "Error creating metric"))
+			errs = append(errs, fmt.Errorf("error creating metric: %w", err))
 			continue
 		}
 
