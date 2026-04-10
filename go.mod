@@ -14,7 +14,6 @@ require (
 	github.com/grafana/loki/pkg/push v0.0.0-20260401215757-351fd9f50713
 	github.com/grafana/loki/v3 v3.7.1
 	github.com/peterbourgon/ff/v4 v4.0.0-beta.1
-	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.23.2
 	github.com/prometheus/client_model v0.6.2
 	github.com/prometheus/common v0.67.5
@@ -136,6 +135,7 @@ require (
 	github.com/opentracing/opentracing-go v1.2.1-0.20220228012449-10b1cf09e00b // indirect
 	github.com/pires/go-proxyproto v0.11.0 // indirect
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c // indirect
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/prometheus/client_golang/exp v0.0.0-20260401111112-af7f59c5bbe2 // indirect
 	github.com/prometheus/exporter-toolkit v0.16.0 // indirect

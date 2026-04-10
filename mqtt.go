@@ -2,13 +2,13 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"log/slog"
 	"net/url"
 
 	"github.com/eclipse/paho.golang/autopaho"
 	"github.com/eclipse/paho.golang/paho"
-	"github.com/pkg/errors"
 )
 
 func newMQTTConnection(
@@ -23,10 +23,10 @@ func newMQTTConnection(
 ) (*autopaho.ConnectionManager, error) {
 	mqttURL, err := url.Parse(uri)
 	if err != nil {
-		return nil, errors.Wrapf(
-			err,
-			"Failed to parse mqtt uri %s",
+		return nil, fmt.Errorf(
+			"failed to parse mqtt uri %s: %w",
 			uri,
+			err,
 		)
 	}
 
@@ -73,7 +73,7 @@ func newMQTTConnection(
 
 	mqttConnection, err := autopaho.NewConnection(mqttContext, mqttConfig)
 	if err != nil {
-		return nil, errors.Wrapf(err, "Failed to create mqtt connection")
+		return nil, fmt.Errorf("failed to create mqtt connection: %w", err)
 	}
 
 	return mqttConnection, nil

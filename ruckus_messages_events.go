@@ -1,10 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"time"
 
 	pb "github.com/adaricorp/ruckus-sz-proto"
-	"github.com/pkg/errors"
 )
 
 func handleEvent(systemID string, message *pb.EventMessage) error {
@@ -51,11 +51,11 @@ func handleEvent(systemID string, message *pb.EventMessage) error {
 		message.GetDescription(),
 	)
 	if err != nil {
-		return errors.Wrapf(err, "Error creating event (%s)", event)
+		return fmt.Errorf("error creating event (%s): %w", event, err)
 	}
 
 	if err := loki.write(event); err != nil {
-		return errors.Wrapf(err, "Error writing event to loki (%s)", event)
+		return fmt.Errorf("error writing event to loki (%s): %w", event, err)
 	}
 
 	return nil

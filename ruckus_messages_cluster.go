@@ -2,13 +2,13 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log/slog"
 	"strconv"
 	"strings"
 	"time"
 
 	pb "github.com/adaricorp/ruckus-sz-proto"
-	"github.com/pkg/errors"
 	dto "github.com/prometheus/client_model/go"
 )
 
@@ -63,15 +63,13 @@ func handleApConfigurationMessage(systemID string, message *pb.ConfigurationMess
 				"default":                apLabels,
 			}
 
-			if errs := appendMetrics(
+			if err := appendMetrics(
 				timestamp,
 				apMetrics,
 				labelMap,
 				metricsFamily,
-			); len(errs) >= 1 {
-				for _, err := range errs {
-					slog.Error("Error while appending metrics", "error", err.Error())
-				}
+			); err != nil {
+				slog.Error("Error while appending metrics", "error", err.Error())
 			}
 		}
 	}
@@ -81,7 +79,7 @@ func handleApConfigurationMessage(systemID string, message *pb.ConfigurationMess
 	}
 
 	if err := prom.write(metricsFamily, clusterLabels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil
@@ -136,15 +134,13 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 				"ruckus_domain_info": domainLabels,
 			}
 
-			if errs := appendMetrics(
+			if err := appendMetrics(
 				timestamp,
 				domainMetrics,
 				labelMap,
 				metricsFamily,
-			); len(errs) >= 1 {
-				for _, err := range errs {
-					slog.Error("Error while appending metrics", "error", err.Error())
-				}
+			); err != nil {
+				slog.Error("Error while appending metrics", "error", err.Error())
 			}
 
 			for _, zone := range domainMessage.GetZoneInfos() {
@@ -164,15 +160,13 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 					"ruckus_zone_info": zoneLabels,
 				}
 
-				if errs := appendMetrics(
+				if err := appendMetrics(
 					timestamp,
 					zoneMetrics,
 					labelMap,
 					metricsFamily,
-				); len(errs) >= 1 {
-					for _, err := range errs {
-						slog.Error("Error while appending metrics", "error", err.Error())
-					}
+				); err != nil {
+					slog.Error("Error while appending metrics", "error", err.Error())
 				}
 			}
 		}
@@ -224,15 +218,13 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 				"default":              bladeLabels,
 			}
 
-			if errs := appendMetrics(
+			if err := appendMetrics(
 				timestamp,
 				bladeMetrics,
 				labelMap,
 				metricsFamily,
-			); len(errs) >= 1 {
-				for _, err := range errs {
-					slog.Error("Error while appending metrics", "error", err.Error())
-				}
+			); err != nil {
+				slog.Error("Error while appending metrics", "error", err.Error())
 			}
 		}
 	}
@@ -317,19 +309,17 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 					"default": bladeLabels,
 				}
 
-				if errs := appendMetrics(
+				if err := appendMetrics(
 					quarterStartTime,
 					bladeMetrics,
 					labelMap,
 					metricsFamily,
-				); len(errs) >= 1 {
-					for _, err := range errs {
-						slog.Error(
-							"Error while appending metrics",
-							"error",
-							err,
-						)
-					}
+				); err != nil {
+					slog.Error(
+						"Error while appending metrics",
+						"error",
+						err,
+					)
 				}
 			}
 		}
@@ -415,15 +405,13 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 			"default":             {},
 		}
 
-		if errs := appendMetrics(
+		if err := appendMetrics(
 			timestamp,
 			clusterMetrics,
 			labelMap,
 			metricsFamily,
-		); len(errs) >= 1 {
-			for _, err := range errs {
-				slog.Error("Error while appending metrics", "error", err.Error())
-			}
+		); err != nil {
+			slog.Error("Error while appending metrics", "error", err.Error())
 		}
 	}
 
@@ -434,7 +422,7 @@ func handleSystemConfigurationMessage(systemID string, message *pb.Configuration
 	}
 
 	if err := prom.write(metricsFamily, clusterLabels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil
@@ -476,15 +464,13 @@ func handleZoneConfigurationMessage(systemID string, message *pb.ConfigurationMe
 				"default":                  zoneLabels,
 			}
 
-			if errs := appendMetrics(
+			if err := appendMetrics(
 				timestamp,
 				zoneMetrics,
 				labelMap,
 				metricsFamily,
-			); len(errs) >= 1 {
-				for _, err := range errs {
-					slog.Error("Error while appending metrics", "error", err.Error())
-				}
+			); err != nil {
+				slog.Error("Error while appending metrics", "error", err.Error())
 			}
 		}
 	}
@@ -494,7 +480,7 @@ func handleZoneConfigurationMessage(systemID string, message *pb.ConfigurationMe
 	}
 
 	if err := prom.write(metricsFamily, clusterLabels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil
@@ -527,15 +513,13 @@ func handleApGroupConfigurationMessage(systemID string, message *pb.Configuratio
 				"ruckus_ap_group_info": apGroupLabels,
 			}
 
-			if errs := appendMetrics(
+			if err := appendMetrics(
 				timestamp,
 				apGroupMetrics,
 				labelMap,
 				metricsFamily,
-			); len(errs) >= 1 {
-				for _, err := range errs {
-					slog.Error("Error while appending metrics", "error", err.Error())
-				}
+			); err != nil {
+				slog.Error("Error while appending metrics", "error", err.Error())
 			}
 		}
 	}
@@ -545,7 +529,7 @@ func handleApGroupConfigurationMessage(systemID string, message *pb.Configuratio
 	}
 
 	if err := prom.write(metricsFamily, clusterLabels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil

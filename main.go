@@ -298,15 +298,13 @@ func main() {
 				"instance": hostname,
 			}
 
-			metricsFamily, errs := metricSliceToMap(metrics)
-			if len(errs) >= 1 {
-				for _, err := range errs {
-					slog.Error(
-						"Error while converting metrics slice to map",
-						"error",
-						err,
-					)
-				}
+			metricsFamily, err := metricSliceToMap(metrics)
+			if err != nil {
+				slog.Error(
+					"Error while converting metrics slice to map",
+					"error",
+					err,
+				)
 			}
 
 			if err := prom.write(metricsFamily, labels); err != nil {

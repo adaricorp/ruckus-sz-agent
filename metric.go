@@ -1,12 +1,12 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"maps"
 	"time"
 
 	"github.com/gogo/protobuf/proto"
-	"github.com/pkg/errors"
 	dto "github.com/prometheus/client_model/go"
 )
 
@@ -94,7 +94,7 @@ func appendMetrics(
 	metricMap map[string]interface{},
 	labelMap map[string]map[string]string,
 	metricsFamily map[string]*dto.MetricFamily,
-) []error {
+) error {
 	errs := []error{}
 
 	for k, v := range metricMap {
@@ -109,7 +109,7 @@ func appendMetrics(
 		m, err := newPromMetric(k, timestamp, labels, v)
 		if err != nil {
 			instMetricErrorCounter.WithLabelValues(k).Inc()
-			errs = append(errs, errors.Wrapf(err, "Error creating metric"))
+			errs = append(errs, fmt.Errorf("error creating metric: %w", err))
 			continue
 		}
 
@@ -120,14 +120,10 @@ func appendMetrics(
 		}
 	}
 
-	if len(errs) >= 1 {
-		return errs
-	}
-
-	return nil
+	return errors.Join(errs...)
 }
 
-func metricSliceToMap(metrics []*dto.MetricFamily) (map[string]*dto.MetricFamily, []error) {
+func metricSliceToMap(metrics []*dto.MetricFamily) (map[string]*dto.MetricFamily, error) {
 	metricsFamily := map[string]*dto.MetricFamily{}
 
 	errs := []error{}
@@ -143,5 +139,5 @@ func metricSliceToMap(metrics []*dto.MetricFamily) (map[string]*dto.MetricFamily
 		metricsFamily[metric.GetName()] = metric
 	}
 
-	return metricsFamily, errs
+	return metricsFamily, errors.Join(errs...)
 }

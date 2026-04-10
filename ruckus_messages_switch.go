@@ -2,13 +2,13 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log/slog"
 	"net"
 	"strconv"
 	"time"
 
 	pb "github.com/adaricorp/ruckus-sz-proto"
-	"github.com/pkg/errors"
 
 	dto "github.com/prometheus/client_model/go"
 )
@@ -51,10 +51,8 @@ func handleSwitchStatus(systemID string, ts int64, message *pb.SwitchStatus) err
 
 	metricsFamily := map[string]*dto.MetricFamily{}
 
-	if errs := appendMetrics(timestamp, switchMetrics, labelMap, metricsFamily); len(errs) >= 1 {
-		for _, err := range errs {
-			slog.Error("Error while appending metrics", "error", err.Error())
-		}
+	if err := appendMetrics(timestamp, switchMetrics, labelMap, metricsFamily); err != nil {
+		slog.Error("Error while appending metrics", "error", err.Error())
 	}
 
 	if message.GetPowerSupplyGroups() != "" {
@@ -93,19 +91,17 @@ func handleSwitchStatus(systemID string, ts int64, message *pb.SwitchStatus) err
 						"default":                     psuLabels,
 					}
 
-					if errs := appendMetrics(
+					if err := appendMetrics(
 						timestamp,
 						psuMetrics,
 						psuLabelMap,
 						metricsFamily,
-					); len(errs) >= 1 {
-						for _, err := range errs {
-							slog.Error(
-								"Error while appending metrics",
-								"error",
-								err.Error(),
-							)
-						}
+					); err != nil {
+						slog.Error(
+							"Error while appending metrics",
+							"error",
+							err.Error(),
+						)
 					}
 				}
 			}
@@ -134,19 +130,17 @@ func handleSwitchStatus(systemID string, ts int64, message *pb.SwitchStatus) err
 						"default": fanLabels,
 					}
 
-					if errs := appendMetrics(
+					if err := appendMetrics(
 						timestamp,
 						fanMetrics,
 						fanLabelMap,
 						metricsFamily,
-					); len(errs) >= 1 {
-						for _, err := range errs {
-							slog.Error(
-								"Error while appending metrics",
-								"error",
-								err.Error(),
-							)
-						}
+					); err != nil {
+						slog.Error(
+							"Error while appending metrics",
+							"error",
+							err.Error(),
+						)
 					}
 				}
 			}
@@ -175,19 +169,17 @@ func handleSwitchStatus(systemID string, ts int64, message *pb.SwitchStatus) err
 						"default": temperatureLabels,
 					}
 
-					if errs := appendMetrics(
+					if err := appendMetrics(
 						timestamp,
 						temperatureMetrics,
 						temperatureLabelMap,
 						metricsFamily,
-					); len(errs) >= 1 {
-						for _, err := range errs {
-							slog.Error(
-								"Error while appending metrics",
-								"error",
-								err.Error(),
-							)
-						}
+					); err != nil {
+						slog.Error(
+							"Error while appending metrics",
+							"error",
+							err.Error(),
+						)
 					}
 				}
 			}
@@ -205,7 +197,7 @@ func handleSwitchStatus(systemID string, ts int64, message *pb.SwitchStatus) err
 	}
 
 	if err := prom.write(metricsFamily, labels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil
@@ -245,12 +237,8 @@ func handleSwitchUnitStatus(systemID string, ts int64, switchUnits []*pb.SwitchU
 			"default":                 switchUnitLabels,
 		}
 
-		if errs := appendMetrics(timestamp, switchUnitMetrics, labelMap, metricsFamily); len(
-			errs,
-		) >= 1 {
-			for _, err := range errs {
-				slog.Error("Error while appending metrics", "error", err.Error())
-			}
+		if err := appendMetrics(timestamp, switchUnitMetrics, labelMap, metricsFamily); err != nil {
+			slog.Error("Error while appending metrics", "error", err.Error())
 		}
 	}
 
@@ -259,7 +247,7 @@ func handleSwitchUnitStatus(systemID string, ts int64, switchUnits []*pb.SwitchU
 	}
 
 	if err := prom.write(metricsFamily, systemLabels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil
@@ -412,19 +400,15 @@ func handleSwitchPortStatus(systemID string, ts int64, ports []*pb.PortStatus) e
 						"default":                      portLabels,
 					}
 
-					if errs := appendMetrics(timestamp, vlanMetrics, vlanLabelMap, metricsFamily); len(errs) >= 1 {
-						for _, err := range errs {
-							slog.Error("Error while appending metrics", "error", err.Error())
-						}
+					if err := appendMetrics(timestamp, vlanMetrics, vlanLabelMap, metricsFamily); err != nil {
+						slog.Error("Error while appending metrics", "error", err.Error())
 					}
 				}
 			}
 		}
 
-		if errs := appendMetrics(timestamp, portMetrics, labelMap, metricsFamily); len(errs) >= 1 {
-			for _, err := range errs {
-				slog.Error("Error while appending metrics", "error", err.Error())
-			}
+		if err := appendMetrics(timestamp, portMetrics, labelMap, metricsFamily); err != nil {
+			slog.Error("Error while appending metrics", "error", err.Error())
 		}
 	}
 
@@ -433,7 +417,7 @@ func handleSwitchPortStatus(systemID string, ts int64, ports []*pb.PortStatus) e
 	}
 
 	if err := prom.write(metricsFamily, systemLabels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil
@@ -482,12 +466,8 @@ func handleSwitchConnectedDeviceStatus(
 			"default":                   deviceLabels,
 		}
 
-		if errs := appendMetrics(timestamp, deviceMetrics, labelMap, metricsFamily); len(
-			errs,
-		) >= 1 {
-			for _, err := range errs {
-				slog.Error("Error while appending metrics", "error", err.Error())
-			}
+		if err := appendMetrics(timestamp, deviceMetrics, labelMap, metricsFamily); err != nil {
+			slog.Error("Error while appending metrics", "error", err.Error())
 		}
 	}
 
@@ -496,7 +476,7 @@ func handleSwitchConnectedDeviceStatus(
 	}
 
 	if err := prom.write(metricsFamily, systemLabels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil
@@ -572,12 +552,8 @@ func handleSwitchClientVisibility(
 			"default":                         clientLabels,
 		}
 
-		if errs := appendMetrics(timestamp, clientMetrics, labelMap, metricsFamily); len(
-			errs,
-		) >= 1 {
-			for _, err := range errs {
-				slog.Error("Error while appending metrics", "error", err.Error())
-			}
+		if err := appendMetrics(timestamp, clientMetrics, labelMap, metricsFamily); err != nil {
+			slog.Error("Error while appending metrics", "error", err.Error())
 		}
 	}
 
@@ -586,7 +562,7 @@ func handleSwitchClientVisibility(
 	}
 
 	if err := prom.write(metricsFamily, systemLabels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil
@@ -693,15 +669,13 @@ func handleSwitchConfigurationMessage(
 					"ruckus_switch_subgroup_info": subSwitchGroupLabels,
 				}
 
-				if errs := appendMetrics(
+				if err := appendMetrics(
 					timestamp,
 					switchGroupMetrics,
 					labelMap,
 					metricsFamily,
-				); len(errs) >= 1 {
-					for _, err := range errs {
-						slog.Error("Error while appending metrics", "error", err.Error())
-					}
+				); err != nil {
+					slog.Error("Error while appending metrics", "error", err.Error())
 				}
 
 				for _, subSwitchGroupMessage := range switchGroup.subSwitchGroupMessages {
@@ -724,15 +698,13 @@ func handleSwitchConfigurationMessage(
 						"ruckus_switch_subgroup_info": subSwitchGroupLabels,
 					}
 
-					if errs := appendMetrics(
+					if err := appendMetrics(
 						timestamp,
 						subSwitchGroupMetrics,
 						labelMap,
 						metricsFamily,
-					); len(errs) >= 1 {
-						for _, err := range errs {
-							slog.Error("Error while appending metrics", "error", err.Error())
-						}
+					); err != nil {
+						slog.Error("Error while appending metrics", "error", err.Error())
 					}
 				}
 			}
@@ -744,7 +716,7 @@ func handleSwitchConfigurationMessage(
 	}
 
 	if err := prom.write(metricsFamily, systemLabels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil
@@ -800,12 +772,8 @@ func handleSwitchDetailMessage(systemID string, ts int64, message *pb.SwitchDeta
 			"default":                    switchLabels,
 		}
 
-		if errs := appendMetrics(timestamp, switchMetrics, labelMap, metricsFamily); len(
-			errs,
-		) >= 1 {
-			for _, err := range errs {
-				slog.Error("Error while appending metrics", "error", err.Error())
-			}
+		if err := appendMetrics(timestamp, switchMetrics, labelMap, metricsFamily); err != nil {
+			slog.Error("Error while appending metrics", "error", err.Error())
 		}
 	}
 
@@ -814,7 +782,7 @@ func handleSwitchDetailMessage(systemID string, ts int64, message *pb.SwitchDeta
 	}
 
 	if err := prom.write(metricsFamily, labels); err != nil {
-		return errors.Wrapf(err, "Error writing metrics to prometheus")
+		return fmt.Errorf("error writing metrics to prometheus: %w", err)
 	}
 
 	return nil
