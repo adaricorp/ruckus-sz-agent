@@ -1,6 +1,6 @@
 module github.com/adaricorp/ruckus-sz-agent
 
-go 1.25.9
+go 1.26.2
 
 replace github.com/armon/go-metrics v0.4.1 => github.com/hashicorp/go-metrics v0.4.1
 
