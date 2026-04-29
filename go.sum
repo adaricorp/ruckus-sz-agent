@@ -421,8 +421,8 @@ github.com/mwitkow/go-conntrack v0.0.0-20190716064945-2f068394615f/go.mod h1:qRW
 github.com/oklog/ulid v1.3.1 h1:EGfNDEx6MqHz8B3uNV6QAib1UR2Lm97sHi3ocA6ESJ4=
 github.com/oklog/ulid/v2 v2.1.1 h1:suPZ4ARWLOJLegGFiZZ1dFAkqzhMjL3J1TzI+5wHz8s=
 github.com/oklog/ulid/v2 v2.1.1/go.mod h1:rcEKHmBBKfef9DhnvX7y1HZBYxjXb0cP5ExxNsTT1QQ=
-github.com/open-telemetry/opentelemetry-collector-contrib/internal/exp/metrics v0.150.0 h1:kRIR4xDIE94IGdHMrYlfMjzlxInL8f9UO9jz+R4iHEc=
-github.com/open-telemetry/opentelemetry-collector-contrib/internal/exp/metrics v0.150.0/go.mod h1:aOBH3hR2zVgVFUbpTSjxuHTCkx+rvg7OWDNnTYUDB3w=
+github.com/open-telemetry/opentelemetry-collector-contrib/internal/exp/metrics v0.151.0 h1:RAnPnD3DcYVzd+BbPGtauEsy86BCjSa+SEykD6y3oKo=
+github.com/open-telemetry/opentelemetry-collector-contrib/internal/exp/metrics v0.151.0/go.mod h1:B2rs2x914jqvMApxRWs8R/fjtnJFy6Ml8bnaZHChKVQ=
 github.com/open-telemetry/opentelemetry-collector-contrib/pkg/pdatautil v0.151.0 h1:c8+upXGwDxokINkuChSD7INYHlpcCAyQs2aXpx4rzSs=
 github.com/open-telemetry/opentelemetry-collector-contrib/pkg/pdatautil v0.151.0/go.mod h1:Ln3K9yJgPAwEUXqCoR8htVs6bk3cyj6zIPOyM/LhiPo=
 github.com/open-telemetry/opentelemetry-collector-contrib/processor/deltatocumulativeprocessor v0.150.0 h1:Jg2Ets7VwgAZUmnaptx7TJTnjPG7nYZhGOeaveTpC/8=
