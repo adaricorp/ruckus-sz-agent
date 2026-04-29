@@ -79,8 +79,8 @@ github.com/aws/aws-sdk-go-v2/service/lightsail v1.51.0 h1:cg6PxzoIide2wiEyLfikOF
 github.com/aws/aws-sdk-go-v2/service/lightsail v1.51.0/go.mod h1:YvX7hjUWecrKX8fBkbEncyddEW85xjNH+u5JHioITOw=
 github.com/aws/aws-sdk-go-v2/service/rds v1.117.0 h1:T1Xe9sYxSUUQOvd1RsFeVk/IXFPdqSiN0atXu/Hy/8A=
 github.com/aws/aws-sdk-go-v2/service/rds v1.117.0/go.mod h1:QbXW4coAMakHQhf1qhE0eVVCen9gwB/Kvn+HHHKhpGY=
-github.com/aws/aws-sdk-go-v2/service/signin v1.0.10 h1:a1Fq/KXn75wSzoJaPQTgZO0wHGqE9mjFnylnqEPTchA=
-github.com/aws/aws-sdk-go-v2/service/signin v1.0.10/go.mod h1:p6+MXNxW7IA6dMgHfTAzljuwSKD0NCm/4lbS4t6+7vI=
+github.com/aws/aws-sdk-go-v2/service/signin v1.0.11 h1:TdJ+HdzOBhU8+iVAOGUTU63VXopcumCOF1paFulHWZc=
+github.com/aws/aws-sdk-go-v2/service/signin v1.0.11/go.mod h1:R82ZRExE/nheo0N+T8zHPcLRTcH8MGsnR3BiVGX0TwI=
 github.com/aws/aws-sdk-go-v2/service/sso v1.30.16 h1:x6bKbmDhsgSZwv6q19wY/u3rLk/3FGjJWyqKcIRufpE=
 github.com/aws/aws-sdk-go-v2/service/sso v1.30.16/go.mod h1:CudnEVKRtLn0+3uMV0yEXZ+YZOKnAtUJ5DmDhilVnIw=
 github.com/aws/aws-sdk-go-v2/service/ssooidc v1.35.20 h1:oK/njaL8GtyEihkWMD4k3VgHCT64RQKkZwh0DG5j8ak=
