@@ -51,8 +51,8 @@ github.com/alicebob/miniredis/v2 v2.37.0 h1:RheObYW32G1aiJIj81XVt78ZHJpHonHLHW7O
 github.com/alicebob/miniredis/v2 v2.37.0/go.mod h1:TcL7YfarKPGDAthEtl5NBeHZfeUQj6OXMm/+iu5cLMM=
 github.com/aws/aws-sdk-go v1.55.8 h1:JRmEUbU52aJQZ2AjX4q4Wu7t4uZjOu71uyNmaWlUkJQ=
 github.com/aws/aws-sdk-go v1.55.8/go.mod h1:ZkViS9AqA6otK+JBBNH2++sx1sgxrPKcSzPPvQkUtXk=
-github.com/aws/aws-sdk-go-v2 v1.41.11 h1:9PRf7jyTMEUM6fuNRAJa2mO/skJfrF50rENJwf2LXqw=
-github.com/aws/aws-sdk-go-v2 v1.41.11/go.mod h1:iiUX27gOXRuYaoeUVXhUpPwjJHzISfPAjjcuhUbLSVs=
+github.com/aws/aws-sdk-go-v2 v1.41.12 h1:DIKX2c31ekm9RA2D9FBj1EWXx++9AdAqRw+e78Tq2Ck=
+github.com/aws/aws-sdk-go-v2 v1.41.12/go.mod h1:27+ACypSLljLAEKsCYOmrjKh83vuTRkuAe9Uv/3A4bg=
 github.com/aws/aws-sdk-go-v2/config v1.32.21 h1:1i1v5jWn6iNPl7zkH4VwIXQOb+OMqMRFNjdHQeZbFVo=
 github.com/aws/aws-sdk-go-v2/config v1.32.21/go.mod h1:7NXDJjk0e4QOMv3Y3ppwALx3ifdSQHzCACFtRX5J1hI=
 github.com/aws/aws-sdk-go-v2/credentials v1.19.21 h1:0+HscFXtNa4+3buV4IlG6v5lnOdzi5TrpicFGjKHgh4=
@@ -89,8 +89,8 @@ github.com/aws/aws-sdk-go-v2/service/ssooidc v1.36.4 h1:p9+Fizo2sUB6wI5Yb3K5lmyk
 github.com/aws/aws-sdk-go-v2/service/ssooidc v1.36.4/go.mod h1:0x10Wy0dVS4Gn552xhHY5th2QdYpfJf44EsfyYGV194=
 github.com/aws/aws-sdk-go-v2/service/sts v1.43.1 h1:r/vUkpLilfCA3sxbRnkHbJejaoVHEdj4FEhv+Zva4DU=
 github.com/aws/aws-sdk-go-v2/service/sts v1.43.1/go.mod h1:t01JURC8Fe5M+7R1K0vzIZ2NT04HqvZR+FjlHrHDT2A=
-github.com/aws/smithy-go v1.27.0 h1:ZoFioDKJxkSIW2otF9T0aPtNlUwhdVCcuZh/rzH9Hus=
-github.com/aws/smithy-go v1.27.0/go.mod h1:YE2RhdIuDbA5E5bTdciG9KrW3+TiEONeUWCqxX9i1Fc=
+github.com/aws/smithy-go v1.27.1 h1:4T340VFndXtADGF52gYa1POyL7s9E4Z1OeZ1hCscIw8=
+github.com/aws/smithy-go v1.27.1/go.mod h1:YE2RhdIuDbA5E5bTdciG9KrW3+TiEONeUWCqxX9i1Fc=
 github.com/bboreham/go-loser v0.0.0-20230920113527-fcc2c21820a3 h1:6df1vn4bBlDDo4tARvBm7l6KA9iVMnE3NWizDeWSrps=
 github.com/bboreham/go-loser v0.0.0-20230920113527-fcc2c21820a3/go.mod h1:CIWtjkly68+yqLPbvwwR/fjNJA/idrtULjZWh2v1ys0=
 github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973/go.mod h1:Dwedo/Wpr24TaqPxmxbtue+5NUziq4I4S80YR8gNf3Q=
