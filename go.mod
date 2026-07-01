@@ -18,7 +18,7 @@ require (
 	github.com/prometheus/client_model v0.6.2
 	github.com/prometheus/common v0.69.0
 	github.com/prometheus/prometheus v0.312.1-0.20260612131846-2ad3a8717015
-	google.golang.org/grpc v1.81.1
+	google.golang.org/grpc v1.82.0
 	google.golang.org/protobuf v1.36.12-0.20260120151049-f2248ac996af
 )
 
