@@ -14,7 +14,7 @@ require (
 	github.com/grafana/loki/pkg/push v0.0.0-20260401215757-351fd9f50713
 	github.com/grafana/loki/v3 v3.7.3
 	github.com/peterbourgon/ff/v4 v4.0.0-beta.1
-	github.com/prometheus/client_golang v1.23.2
+	github.com/prometheus/client_golang v1.24.0
 	github.com/prometheus/client_model v0.6.2
 	github.com/prometheus/common v0.70.0
 	github.com/prometheus/prometheus v0.313.1
