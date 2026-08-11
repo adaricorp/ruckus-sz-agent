@@ -165,7 +165,7 @@ require (
 	go.opentelemetry.io/collector/featuregate v1.63.0 // indirect
 	go.opentelemetry.io/collector/internal/componentalias v0.157.0 // indirect
 	go.opentelemetry.io/collector/pdata v1.63.0 // indirect
-	go.opentelemetry.io/collector/pipeline v1.63.0 // indirect
+	go.opentelemetry.io/collector/pipeline v1.64.0 // indirect
 	go.opentelemetry.io/collector/processor v1.63.0 // indirect
 	go.opentelemetry.io/contrib/bridges/prometheus v0.69.0 // indirect
 	go.opentelemetry.io/contrib/exporters/autoexport v0.69.0 // indirect
