@@ -37,7 +37,7 @@ require (
 	github.com/alecthomas/units v0.0.0-20240927000941-0f3dac36c52b // indirect
 	github.com/armon/go-metrics v0.4.1 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.46.0 // indirect
-	github.com/aws/aws-sdk-go-v2/config v1.32.38 // indirect
+	github.com/aws/aws-sdk-go-v2/config v1.33.1 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.20.1 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.19.2 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.5.2 // indirect
@@ -139,7 +139,7 @@ require (
 	github.com/prometheus/exporter-toolkit v0.19.0 // indirect
 	github.com/prometheus/otlptranslator v1.0.0 // indirect
 	github.com/prometheus/procfs v0.22.0 // indirect
-	github.com/prometheus/sigv4 v0.4.1 // indirect
+	github.com/prometheus/sigv4 v0.5.0 // indirect
 	github.com/puzpuzpuz/xsync/v4 v4.5.0 // indirect
 	github.com/redis/go-redis/v9 v9.22.0 // indirect
 	github.com/sean-/seed v0.0.0-20170313163322-e2103e2c3529 // indirect
