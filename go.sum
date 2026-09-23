@@ -320,8 +320,8 @@ github.com/hashicorp/serf v0.10.4 h1:TCQOrJXHZ1Xf80c4WBhMM9OwUFgDaIP0R+YvoQUKadI
 github.com/hashicorp/serf v0.10.4/go.mod h1:l+s5Q1OSPWU6b9l9m7ODJzTp7mLevSaVzAI03Nka2F0=
 github.com/hetznercloud/hcloud-go/v2 v2.47.0 h1:SI7C4cvdYReb2aHUEQ8KBMOqxNnmd4hOZti1SbPq3Qk=
 github.com/hetznercloud/hcloud-go/v2 v2.47.0/go.mod h1:pdG7fFGlYsCAaJ9r0QOIF0O6wQcpbJxT2VT8aP6XlIc=
-github.com/huandu/xstrings v1.5.0 h1:2ag3IFq9ZDANvthTwTiqSSZLjDc+BedvHPAp5tJy2TI=
-github.com/huandu/xstrings v1.5.0/go.mod h1:y5/lhBue+AyNmUVz9RLU9xbLR0o4KIIExikq4ovT0aE=
+github.com/huandu/xstrings v1.6.1 h1:yYdKSd6Sjv3fNZt9BDjl1FDsPNfQEaYi19L5LzK2JKs=
+github.com/huandu/xstrings v1.6.1/go.mod h1:y5/lhBue+AyNmUVz9RLU9xbLR0o4KIIExikq4ovT0aE=
 github.com/ionos-cloud/sdk-go/v6 v6.3.11 h1:m4mX03vflm631znIPutojJxLZvxD5Mt3xv/soy0kLIc=
 github.com/ionos-cloud/sdk-go/v6 v6.3.11/go.mod h1:nUGHP4kZHAZngCVr4v6C8nuargFrtvt7GrzH/hqn7c4=
 github.com/jaegertracing/jaeger-idl v0.11.4 h1:qFGVG4sx4SbUai1sbIaor/zl7do0IWvU1vzeV+OKhEg=
