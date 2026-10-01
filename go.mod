@@ -4,7 +4,7 @@ go 1.26.8
 
 replace github.com/armon/go-metrics v0.4.1 => github.com/hashicorp/go-metrics v0.4.1
 
-replace github.com/hashicorp/memberlist => github.com/grafana/memberlist v0.3.1-0.20251126142931-6f9f62ab6f86
+replace github.com/hashicorp/memberlist => github.com/grafana/memberlist v0.3.1-0.20260515134459-1798cf41aca7
 
 require (
 	github.com/adaricorp/ruckus-sz-proto v0.0.0-20260717011055-d0e4d95521ad
