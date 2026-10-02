@@ -157,16 +157,16 @@ require (
 	go.etcd.io/etcd/client/pkg/v3 v3.6.14 // indirect
 	go.etcd.io/etcd/client/v3 v3.6.12 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
-	go.opentelemetry.io/collector/component v1.67.0 // indirect
+	go.opentelemetry.io/collector/component v1.68.0 // indirect
 	go.opentelemetry.io/collector/confmap v1.68.0 // indirect
 	go.opentelemetry.io/collector/consumer v1.68.0 // indirect
 	go.opentelemetry.io/collector/consumer/xconsumer v0.162.0 // indirect
 	go.opentelemetry.io/collector/featuregate v1.68.0 // indirect
-	go.opentelemetry.io/collector/internal/componentalias v0.161.0 // indirect
+	go.opentelemetry.io/collector/internal/componentalias v0.162.0 // indirect
 	go.opentelemetry.io/collector/pdata v1.68.0 // indirect
 	go.opentelemetry.io/collector/pdata/pprofile v0.162.0 // indirect
 	go.opentelemetry.io/collector/pipeline v1.68.0 // indirect
-	go.opentelemetry.io/collector/processor v1.67.0 // indirect
+	go.opentelemetry.io/collector/processor v1.68.0 // indirect
 	go.opentelemetry.io/collector/processor/xprocessor v0.161.0 // indirect
 	go.opentelemetry.io/contrib/bridges/prometheus v0.71.0 // indirect
 	go.opentelemetry.io/contrib/exporters/autoexport v0.71.0 // indirect
