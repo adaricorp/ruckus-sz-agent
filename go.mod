@@ -146,7 +146,7 @@ require (
 	github.com/shopspring/decimal v1.6.0 // indirect
 	github.com/sony/gobreaker/v2 v2.4.0 // indirect
 	github.com/spf13/cast v1.10.0 // indirect
-	github.com/stretchr/objx v0.5.3 // indirect
+	github.com/stretchr/objx v0.8.0 // indirect
 	github.com/stretchr/testify v1.12.1 // indirect
 	github.com/tjhop/slog-gokit v0.2.2 // indirect
 	github.com/uber/jaeger-client-go v2.30.0+incompatible // indirect
