@@ -8,7 +8,7 @@ replace github.com/hashicorp/memberlist => github.com/grafana/memberlist v0.3.1-
 
 require (
 	github.com/adaricorp/ruckus-sz-proto v0.0.0-20260717011055-d0e4d95521ad
-	github.com/eclipse/paho.golang v0.23.0
+	github.com/eclipse/paho.golang v0.24.0
 	github.com/gogo/protobuf v1.3.2
 	github.com/golang/snappy v1.0.0
 	github.com/grafana/loki/pkg/push v0.0.0-20260811170223-1c85f9be7ea2
