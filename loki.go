@@ -8,6 +8,7 @@ import (
 	"github.com/grafana/loki/v3/pkg/logproto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/metadata"
 )
 
 type lokiWriteClient struct {
@@ -36,6 +37,10 @@ func newLokiWriteClient(server string, timeout time.Duration) (lokiWriteClient, 
 func (l lokiWriteClient) write(entry logEntry) error {
 	ctx, cancel := context.WithTimeout(context.Background(), l.timeout)
 	defer cancel()
+
+	if *lokiTenantID != "" {
+		ctx = metadata.AppendToOutgoingContext(ctx, "X-Scope-OrgID", *lokiTenantID)
+	}
 
 	_, err := loki.client.Push(ctx, &logproto.PushRequest{
 		Streams: []logproto.Stream{entry.marshal()},

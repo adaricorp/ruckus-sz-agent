@@ -78,3 +78,6 @@ All metric names for prometheus start with `ruckus_`.
 ### Loki
 
 All event streams for loki have `{service="ruckus"}` as a label.
+
+Every push names the Loki tenant `--loki-tenant-id` (default `fake`) in
+`X-Scope-OrgID`; set it to an empty string to send none.
