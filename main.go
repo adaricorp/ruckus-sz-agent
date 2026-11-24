@@ -38,6 +38,7 @@ var (
 	logLevel                  *string
 	slogLevel                 *slog.LevelVar = new(slog.LevelVar)
 	lokiServer                *string
+	lokiTenantID              *string
 	lokiMetricId              *string
 	lokiTimestampFuture       *time.Duration
 	lokiTimestampPast         *time.Duration
@@ -80,6 +81,11 @@ func init() {
 		"warn",
 	)
 	lokiServer = fs.StringLong("loki-server", "localhost:9096", "Loki server to connect to")
+	lokiTenantID = fs.StringLong(
+		"loki-tenant-id",
+		"fake",
+		"Loki tenant sent as X-Scope-OrgID on every push; empty sends none",
+	)
 	lokiMetricId = fs.StringLong(
 		"loki-metric-id",
 		"ruckus",
